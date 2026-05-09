@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const BASE = window.location.pathname.startsWith("/moving-in-mobile/") ? "/moving-in-mobile/" : "/";
 
@@ -37,6 +37,25 @@ function CTA({ children, outline = false, onClick, className = "" }) {
     >
       {children}
     </button>
+  );
+}
+
+function TopBar({ onOpen }) {
+  return (
+    <div className="relative z-[90] w-full bg-red-600 text-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+        <button
+          type="button"
+          onClick={onOpen}
+          className="relative z-[95] rounded bg-white px-5 py-2 text-sm font-semibold uppercase tracking-wide text-red-600 shadow hover:bg-neutral-100"
+        >
+          What Is My Home Worth?
+        </button>
+        <a href="tel:2518959322" className="relative z-[95] text-lg font-semibold tracking-wide hover:underline">
+          ☎ (251) 895-9322
+        </a>
+      </div>
+    </div>
   );
 }
 
@@ -155,7 +174,7 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
             <CTA outline>Get Your Free Rowe Report</CTA>
           </div>
           <p className="mt-5 text-sm text-white/80">Or call/text me directly</p>
-          <p className="text-3xl font-semibold tracking-tight">☎ {phone}</p>
+          <p className="text-3xl font-semibold tracking-tight"><a href="tel:2518959322">☎ {phone}</a></p>
         </div>
 
         <div className="relative hidden h-[520px] lg:block">
@@ -237,7 +256,7 @@ function Footer({ setPage }) {
         </div>
         <div>
           <h4 className="font-semibold uppercase">Contact</h4>
-          <p className="mt-3 text-sm leading-7 text-white/70">☎ {phone}<br />✉ tinarowe@kw.com<br />📍 1210 Hillcrest Road<br />Mobile, AL 36695</p>
+          <p className="mt-3 text-sm leading-7 text-white/70"><a href="tel:2518959322">☎ {phone}</a><br />✉ tinarowe@kw.com<br />📍 1210 Hillcrest Road<br />Mobile, AL 36695</p>
         </div>
         <div>
           <h4 className="font-semibold uppercase">Follow Me</h4>
@@ -339,7 +358,7 @@ function HomePage({ setPage }) {
           <div className="flex flex-col gap-3">
             <CTA>Schedule a Call With Tina</CTA>
             <CTA outline>Get The Rowe Report First</CTA>
-            <p className="text-3xl font-semibold">☎ {phone}</p>
+            <p className="text-3xl font-semibold"><a href="tel:2518959322">☎ {phone}</a></p>
           </div>
         </div>
       </section>
@@ -504,7 +523,31 @@ function ContactPage({ setPage }) {
 
 export default function MovingInMobileMockup() {
   const [page, setPage] = useState("home");
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+  const popupDismissedRef = useRef(false);
+
+  const openLeadPopup = () => {
+    setShowPopup(true);
+  };
+
+  const closeLeadPopup = () => {
+    popupDismissedRef.current = true;
+    setShowPopup(false);
+  };
+
+  // ensure popup does NOT fire instantly and only after delay
+  useEffect(() => {
+    setShowPopup(false); // explicit reset on mount
+
+    const delay = 6500;
+    const timer = window.setTimeout(() => {
+      if (!popupDismissedRef.current) {
+        setShowPopup(true);
+      }
+    }, delay);
+
+    return () => window.clearTimeout(timer);
+  }, [page]);
 
   const pages = {
     home: <HomePage setPage={setPage} />,
@@ -528,18 +571,19 @@ export default function MovingInMobileMockup() {
       {showPopup ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 px-4 backdrop-blur-[1px]">
           <div className="relative max-w-xl rounded-lg bg-white p-8 text-center shadow-2xl">
-            <button type="button" onClick={() => setShowPopup(false)} className="absolute right-4 top-3 text-2xl">×</button>
+            <button type="button" onClick={closeLeadPopup} className="absolute right-4 top-3 text-2xl">×</button>
             <h2 className="font-display text-4xl uppercase">Get Mobile Homes <span className="text-red-600">Before Everyone Else</span></h2>
             <p className="mt-3 text-neutral-600">Sign up for listing alerts, price drops, and local market updates from Tina.</p>
             <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
               <input className="rounded border p-3" placeholder="Email or phone" />
               <CTA>Send Me Homes</CTA>
             </div>
-            <button type="button" onClick={() => setShowPopup(false)} className="mt-4 text-sm underline">No thanks, continue browsing</button>
+            <button type="button" onClick={closeLeadPopup} className="mt-4 text-sm underline">No thanks, continue browsing</button>
           </div>
         </div>
       ) : null}
 
+      <TopBar onOpen={openLeadPopup} />
       <Header page={page} setPage={setPage} />
       {pages[page] || pages.home}
     </div>
