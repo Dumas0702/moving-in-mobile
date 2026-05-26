@@ -13,6 +13,16 @@ const ASSETS = {
   facebook: `${BASE}facebook.png`,
   instagram: `${BASE}instagram.png`,
   youtube: `${BASE}youtube.png`,
+  linkedin: `${BASE}linkedin.png`,
+  handshakeIcon: `${BASE}handshake-icon.png`,
+  marketingIcon: `${BASE}marketing-icon.png`,
+  communicationIcon: `${BASE}communication-icon.png`,
+  marketIcon: `${BASE}market-icon.png`,
+  processAnalyze: `${BASE}process-analyze.png`,
+  processStrategize: `${BASE}process-strategize.png`,
+  processMarket: `${BASE}process-market.png`,
+  processNegotiate: `${BASE}process-negotiate.png`,
+  processSold: `${BASE}process-sold.png`,
 };
 
 const phone = "(251) 895-9322";
@@ -23,10 +33,12 @@ function cx(...classes) {
 }
 
 function CTA({ children, outline = false, onClick, className = "" }) {
+  const handleClick = onClick || (() => window.dispatchEvent(new CustomEvent("openLeadPopup")));
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={handleClick}
       className={cx(
         "rounded-md px-6 py-3 text-sm font-semibold uppercase tracking-wide transition",
         outline
@@ -37,6 +49,33 @@ function CTA({ children, outline = false, onClick, className = "" }) {
     >
       {children}
     </button>
+  );
+}
+
+function SocialSidebar() {
+  const socials = [
+    { icon: ASSETS.facebook, alt: "Facebook", href: "#" },
+    { icon: ASSETS.instagram, alt: "Instagram", href: "#" },
+    { icon: ASSETS.youtube, alt: "YouTube", href: "#" },
+    { icon: ASSETS.linkedin, alt: "LinkedIn", href: "#" },
+  ];
+
+  return (
+    <div className="fixed left-4 top-1/2 z-[60] hidden -translate-y-1/2 flex-col gap-3 lg:flex">
+      {socials.map((social) => (
+        <a
+          key={social.alt}
+          href={social.href}
+          className="group flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-black/80 shadow-xl backdrop-blur transition hover:scale-105 hover:border-red-500 hover:bg-red-600"
+        >
+          <img
+            src={social.icon}
+            alt={social.alt}
+            className="h-6 w-6 object-contain brightness-0 invert transition group-hover:brightness-0 group-hover:invert"
+          />
+        </a>
+      ))}
+    </div>
   );
 }
 
@@ -62,13 +101,13 @@ function TopBar({ onOpen }) {
 function Header({ page, setPage }) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black text-white shadow-xl">
-      <div className="mx-auto flex h-[120px] max-w-7xl items-center justify-between px-5">
+      <div className="mx-auto flex h-[120px] max-w-7xl items-center justify-between gap-10 px-5">
         <button type="button" onClick={() => setPage("home")} className="flex shrink-0 items-center gap-4">
           <img src={ASSETS.logo} alt="The Rowe Report" className="h-[300px] w-auto object-contain" />
           <img src={ASSETS.kw} alt="Keller Williams Mobile" className="h-[75px] w-auto object-contain" />
         </button>
 
-        <nav className="hidden items-center gap-7 font-display text-[17px] uppercase tracking-[0.08em] lg:flex">
+        <nav className="hidden items-center gap-8 font-display text-[17px] uppercase tracking-[0.08em] lg:flex xl:gap-10">
           {navItems.map((item) => {
             const key = item.toLowerCase();
             const active = page === key;
@@ -88,7 +127,7 @@ function Header({ page, setPage }) {
           })}
         </nav>
 
-        <CTA onClick={() => setPage("resources")}>Get Your Rowe Report</CTA>
+        <div className="ml-16 shrink-0"><CTA onClick={() => setPage("resources")}>Get Your Rowe Report</CTA></div>
       </div>
     </header>
   );
@@ -96,17 +135,33 @@ function Header({ page, setPage }) {
 
 function IconBlock({ icon, title, text, dark = false }) {
   return (
-    <div className={cx("px-4 py-4 text-center md:border-r last:border-r-0", dark ? "border-white/10" : "border-neutral-200")}>
-      <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center text-4xl text-red-600">{icon}</div>
-      <h3 className="font-display text-[18px] font-semibold uppercase leading-tight tracking-tight">{title}</h3>
-      <p className={cx("mx-auto mt-1.5 max-w-[170px] text-[13px] leading-5", dark ? "text-white/75" : "text-neutral-700")}>{text}</p>
+    <div
+      className={cx(
+        "px-4 py-4 text-center md:border-r last:border-r-0",
+        dark ? "border-white/10" : "border-neutral-200"
+      )}
+    >
+      <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center text-red-600">
+        {icon}
+      </div>
+      <h3 className="font-display text-[18px] font-semibold uppercase leading-tight tracking-tight">
+        {title}
+      </h3>
+      <p
+        className={cx(
+          "mx-auto mt-1.5 max-w-[170px] text-[13px] leading-5",
+          dark ? "text-white/75" : "text-neutral-700"
+        )}
+      >
+        {text}
+      </p>
     </div>
   );
 }
 
 function FormPanel({ title, button = "Get My Free Report", dark = true }) {
   const words = title.split(" ");
-  const fields = ["First Name", "Last Name", "Email Address", "Phone Number", "Property Address"];
+  const fields = ["Name", "Phone Number", "Email Address", "Property Address"];
 
   return (
     <div className={cx("rounded-lg p-7 shadow-2xl", dark ? "bg-black text-white" : "bg-white text-black")}>
@@ -125,7 +180,12 @@ function FormPanel({ title, button = "Get My Free Report", dark = true }) {
             placeholder={field}
           />
         ))}
-        <CTA className="w-full">{button}</CTA>
+        <textarea
+          className="min-h-28 rounded border border-neutral-300 bg-white px-4 py-3 text-sm text-black outline-none"
+          placeholder="How can Tina help?"
+        />
+        <CTA className="w-full" onClick={() => window.dispatchEvent(new CustomEvent("submitLeadForm"))}>{button}</CTA>
+        <button type="button" className={cx("text-center text-sm underline", dark ? "text-white/75" : "text-neutral-500")}>No thanks, continue browsing</button>
         <p className={cx("text-center text-xs", dark ? "text-white/70" : "text-neutral-500")}>🔒 We respect your privacy. No spam, ever.</p>
       </div>
     </div>
@@ -158,7 +218,7 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
           <div className="mt-4 h-1 w-24 bg-red-600" />
           <p className="mt-4 max-w-[500px] text-[17px] font-medium leading-7 text-white/90">{text}</p>
           {quote ? (
-            <div className="absolute right-4 top-36 hidden max-w-[260px] rotate-[-2deg] xl:block">
+            <div className="absolute right-8 top-40 hidden max-w-[240px] rotate-[-2deg] xl:block">
               <p className="font-hand text-[35px] leading-[1.15] text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
                 I don’t just<br />
                 list homes...<br />
@@ -171,14 +231,14 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
           ) : null}
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <CTA>{button}</CTA>
-            <CTA outline>Get Your Free Rowe Report</CTA>
+            <CTA outline onClick={() => window.dispatchEvent(new CustomEvent("navigatePage", { detail: "resources" }))}>Get Your Free Rowe Report</CTA>
           </div>
           <p className="mt-5 text-sm text-white/80">Or call/text me directly</p>
           <p className="text-3xl font-semibold tracking-tight"><a href="tel:2518959322">☎ {phone}</a></p>
         </div>
 
         <div className="relative hidden h-[520px] lg:block">
-          <img src={ASSETS.tina} alt="Tina Rowe" className="absolute bottom-[-40px] right-2 h-[620px] w-auto object-contain object-bottom drop-shadow-2xl" />
+          <img src={ASSETS.tina} alt="Tina Rowe" className="absolute bottom-[-40px] right-56 h-[620px] w-auto object-contain object-bottom drop-shadow-2xl" />
           {form ? (
             <div className="absolute right-0 top-5 w-[360px]">
               <FormPanel title={form} button="Send Me Homes That Match" />
@@ -191,16 +251,29 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
 }
 
 function ProcessSection() {
-  const steps = [["1", "Analyze"], ["2", "Strategize"], ["3", "Market"], ["4", "Negotiate"], ["5", "Sold"]];
+  const steps = [
+    [ASSETS.processAnalyze, "Analyze"],
+    [ASSETS.processStrategize, "Strategize"],
+    [ASSETS.processMarket, "Market"],
+    [ASSETS.processNegotiate, "Negotiate"],
+    [ASSETS.processSold, "Sold"],
+  ];
+
   return (
     <section className="bg-neutral-50 py-14">
       <div className="mx-auto max-w-7xl px-6 text-center">
         <h2 className="font-display text-4xl font-semibold uppercase">
           My <span className="text-red-600">Proven</span> Process to Get Your Home Sold
         </h2>
+
         <div className="mt-8 grid gap-5 md:grid-cols-5">
-          {steps.map(([num, label]) => (
-            <IconBlock key={label} icon={num} title={label} text="Clear guidance and expert execution every step of the way." />
+          {steps.map(([icon, label]) => (
+            <IconBlock
+              key={label}
+              icon={<img src={icon} alt={label} className="h-16 w-16 object-contain" />}
+              title={label}
+              text="Clear guidance and expert execution every step of the way."
+            />
           ))}
         </div>
       </div>
@@ -261,7 +334,7 @@ function Footer({ setPage }) {
         <div>
           <h4 className="font-semibold uppercase">Follow Me</h4>
           <div className="mt-4 flex gap-4">
-            {[ASSETS.facebook, ASSETS.instagram, ASSETS.youtube].map((src) => (
+            {[ASSETS.facebook, ASSETS.instagram, ASSETS.youtube, ASSETS.linkedin].map((src) => (
               <img key={src} src={src} alt="social" className="h-9 w-9 rounded-full border border-white/30 p-2" />
             ))}
           </div>
@@ -272,6 +345,14 @@ function Footer({ setPage }) {
 }
 
 function HomePage({ setPage }) {
+  const iconStyle = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.85,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+  };
+
   return (
     <>
       <Hero
@@ -284,16 +365,36 @@ function HomePage({ setPage }) {
 
       <section className="bg-[#07111b] py-4 text-white">
         <div className="mx-auto grid max-w-7xl gap-2 px-6 md:grid-cols-4">
-          <IconBlock dark icon="🎯" title="Strategic Marketing" text="Your home seen by the right buyers." />
-          <IconBlock dark icon="💬" title="Clear Communication" text="You're always informed." />
-          <IconBlock dark icon="📊" title="Local Market Expertise" text="In-depth knowledge of Mobile." />
-          <IconBlock dark icon="🤝" title="Results-Driven Approach" text="Proven strategies that get homes SOLD." />
+          <IconBlock
+            dark
+            icon={<img src={ASSETS.marketingIcon} alt="Strategic Marketing" className="h-14 w-14 object-contain" />}
+            title="Strategic Marketing"
+            text="Your home seen by the right buyers."
+          />
+          <IconBlock
+            dark
+            icon={<img src={ASSETS.communicationIcon} alt="Clear Communication" className="h-14 w-14 object-contain" />}
+            title="Clear Communication"
+            text="You're always informed."
+          />
+          <IconBlock
+            dark
+            icon={<img src={ASSETS.marketIcon} alt="Local Market Expertise" className="h-14 w-14 object-contain" />}
+            title="Local Market Expertise"
+            text="In-depth knowledge of Mobile."
+          />
+          <IconBlock
+            dark
+            icon={<img src={ASSETS.handshakeIcon} alt="Handshake" className="h-14 w-14 object-contain" />}
+            title="Results-Driven Approach"
+            text="Proven strategies that get homes SOLD."
+          />
         </div>
       </section>
 
       <section className="bg-white py-12">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[.72fr_1.02fr_.86fr] lg:items-center">
-          <img src={ASSETS.guide} alt="Rowe Report" className="max-h-[380px] justify-self-center rounded-lg object-contain shadow-2xl" />
+          <img src={ASSETS.van} alt="The Rowe Report Van" className="max-h-[380px] justify-self-center rounded-lg object-contain" />
           <div>
             <h2 className="font-display text-[2.65rem] font-semibold uppercase leading-[0.97]">
               Before You List Again... <br />
@@ -357,7 +458,7 @@ function HomePage({ setPage }) {
           </div>
           <div className="flex flex-col gap-3">
             <CTA>Schedule a Call With Tina</CTA>
-            <CTA outline>Get The Rowe Report First</CTA>
+            <CTA outline onClick={() => setPage("resources")}>Get The Rowe Report First</CTA>
             <p className="text-3xl font-semibold"><a href="tel:2518959322">☎ {phone}</a></p>
           </div>
         </div>
@@ -535,9 +636,24 @@ export default function MovingInMobileMockup() {
     setShowPopup(false);
   };
 
-  // ensure popup does NOT fire instantly and only after delay
   useEffect(() => {
-    setShowPopup(false); // explicit reset on mount
+    setShowPopup(false);
+
+    const handleOpenLeadPopup = () => openLeadPopup();
+    window.addEventListener("openLeadPopup", handleOpenLeadPopup);
+
+    const handleNavigatePage = (event) => {
+      if (event.detail) {
+        setPage(event.detail);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+    window.addEventListener("navigatePage", handleNavigatePage);
+
+    const handleSubmitLeadForm = () => {
+      alert("Thank you! Tina will reach out soon.");
+    };
+    window.addEventListener("submitLeadForm", handleSubmitLeadForm);
 
     const delay = 6500;
     const timer = window.setTimeout(() => {
@@ -546,7 +662,12 @@ export default function MovingInMobileMockup() {
       }
     }, delay);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("openLeadPopup", handleOpenLeadPopup);
+      window.removeEventListener("navigatePage", handleNavigatePage);
+      window.removeEventListener("submitLeadForm", handleSubmitLeadForm);
+    };
   }, [page]);
 
   const pages = {
@@ -572,17 +693,22 @@ export default function MovingInMobileMockup() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 px-4 backdrop-blur-[1px]">
           <div className="relative max-w-xl rounded-lg bg-white p-8 text-center shadow-2xl">
             <button type="button" onClick={closeLeadPopup} className="absolute right-4 top-3 text-2xl">×</button>
-            <h2 className="font-display text-4xl uppercase">Get Mobile Homes <span className="text-red-600">Before Everyone Else</span></h2>
-            <p className="mt-3 text-neutral-600">Sign up for listing alerts, price drops, and local market updates from Tina.</p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
-              <input className="rounded border p-3" placeholder="Email or phone" />
-              <CTA>Send Me Homes</CTA>
+            <h2 className="font-display text-4xl uppercase">Let Tina Help With <span className="text-red-600">Your Next Move</span></h2>
+            <p className="mt-3 text-neutral-600">Tell Tina what you need — home value, Rowe Report, listings, selling strategy, or general questions.</p>
+            <div className="mt-5 grid gap-3 text-left">
+              <input className="rounded border p-3" placeholder="Name" />
+              <input className="rounded border p-3" placeholder="Phone Number" />
+              <input className="rounded border p-3" placeholder="Email Address" />
+              <input className="rounded border p-3" placeholder="Property Address" />
+              <textarea className="min-h-28 rounded border p-3" placeholder="Additional details / How can Tina help?" />
+              <CTA className="w-full">Submit My Information</CTA>
             </div>
             <button type="button" onClick={closeLeadPopup} className="mt-4 text-sm underline">No thanks, continue browsing</button>
           </div>
         </div>
       ) : null}
 
+      <SocialSidebar />
       <TopBar onOpen={openLeadPopup} />
       <Header page={page} setPage={setPage} />
       {pages[page] || pages.home}
