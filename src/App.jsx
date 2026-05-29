@@ -61,7 +61,7 @@ function SocialSidebar() {
   ];
 
   return (
-    <div className="fixed left-4 top-1/2 z-[60] hidden -translate-y-1/2 flex-col gap-3 lg:flex">
+    <div className="fixed left-4 top-1/2 z-[40] hidden -translate-y-1/2 flex-col gap-3 2xl:flex">
       {socials.map((social) => (
         <a
           key={social.alt}
@@ -82,15 +82,15 @@ function SocialSidebar() {
 function TopBar({ onOpen }) {
   return (
     <div className="relative z-[90] w-full bg-red-600 text-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-2 px-4 py-3 text-center sm:flex-row sm:justify-between sm:px-6">
         <button
           type="button"
           onClick={onOpen}
-          className="relative z-[95] rounded bg-white px-5 py-2 text-sm font-semibold uppercase tracking-wide text-red-600 shadow hover:bg-neutral-100"
+          className="relative z-[95] rounded bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-red-600 shadow hover:bg-neutral-100 sm:px-5 sm:text-sm"
         >
           What Is My Home Worth?
         </button>
-        <a href="tel:2518959322" className="relative z-[95] text-lg font-semibold tracking-wide hover:underline">
+        <a href="tel:2518959322" className="relative z-[95] text-base font-semibold tracking-wide hover:underline sm:text-lg">
           ☎ (251) 895-9322
         </a>
       </div>
@@ -99,15 +99,23 @@ function TopBar({ onOpen }) {
 }
 
 function Header({ page, setPage }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const goToPage = (key) => {
+    setPage(key);
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black text-white shadow-xl">
-      <div className="mx-auto flex h-[120px] max-w-7xl items-center justify-between gap-10 px-5">
-        <button type="button" onClick={() => setPage("home")} className="flex shrink-0 items-center gap-4">
-          <img src={ASSETS.logo} alt="The Rowe Report" className="h-[300px] w-auto object-contain" />
-          <img src={ASSETS.kw} alt="Keller Williams Mobile" className="h-[75px] w-auto object-contain" />
+      <div className="mx-auto flex min-h-[92px] max-w-7xl items-center justify-between gap-4 px-4 py-2 xl:h-[120px] xl:gap-10 xl:px-5 xl:py-0">
+        <button type="button" onClick={() => goToPage("home")} className="flex shrink-0 items-center gap-2 xl:gap-4">
+          <img src={ASSETS.logo} alt="The Rowe Report" className="h-[92px] w-auto object-contain sm:h-[115px] md:h-[140px] xl:h-[300px]" />
+          <img src={ASSETS.kw} alt="Keller Williams Mobile" className="h-[28px] w-auto object-contain sm:h-[34px] md:h-[40px] xl:h-[75px]" />
         </button>
 
-        <nav className="hidden items-center gap-8 font-display text-[17px] uppercase tracking-[0.08em] lg:flex xl:gap-10">
+        <nav className="hidden items-center gap-8 font-display text-[17px] uppercase tracking-[0.08em] xl:flex 2xl:gap-10">
           {navItems.map((item) => {
             const key = item.toLowerCase();
             const active = page === key;
@@ -115,7 +123,7 @@ function Header({ page, setPage }) {
               <button
                 key={item}
                 type="button"
-                onClick={() => setPage(key)}
+                onClick={() => goToPage(key)}
                 className={cx(
                   "relative py-3 transition hover:text-red-500",
                   active && "after:absolute after:inset-x-0 after:-bottom-1 after:h-1 after:bg-red-600"
@@ -127,8 +135,47 @@ function Header({ page, setPage }) {
           })}
         </nav>
 
-        <div className="ml-16 shrink-0"><CTA onClick={() => setPage("resources")}>Get Your Rowe Report</CTA></div>
+        <div className="hidden shrink-0 xl:ml-10 xl:block 2xl:ml-16">
+          <CTA onClick={() => goToPage("resources")} className="px-4 py-2 text-[11px] xl:px-6 xl:py-3 xl:text-sm">
+            Get Your Rowe Report
+          </CTA>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setMobileOpen((open) => !open)}
+          className="ml-auto rounded border border-white/25 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white xl:hidden"
+          aria-expanded={mobileOpen}
+        >
+          Menu
+        </button>
       </div>
+
+      {mobileOpen ? (
+        <div className="border-t border-white/10 bg-black px-4 pb-4 xl:hidden">
+          <div className="mx-auto grid max-w-7xl gap-2">
+            {navItems.map((item) => {
+              const key = item.toLowerCase();
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => goToPage(key)}
+                  className={cx(
+                    "rounded px-4 py-3 text-left font-display text-lg uppercase tracking-wide hover:bg-white/10",
+                    page === key && "bg-red-600 text-white"
+                  )}
+                >
+                  {item}
+                </button>
+              );
+            })}
+            <CTA onClick={() => goToPage("resources")} className="mt-2 w-full">
+              Get Your Rowe Report
+            </CTA>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }
@@ -307,7 +354,7 @@ function Footer({ setPage }) {
     <footer className="bg-black text-white">
       <div className="bg-red-600 py-5">
         <div className="mx-auto grid max-w-7xl gap-4 px-6 text-center md:grid-cols-3">
-          <button type="button" onClick={() => setPage("contact")} className="font-semibold uppercase">☎ Call or Text Tina<br /><span className="font-normal">{phone}</span></button>
+          <a href="tel:2518959322" className="font-semibold uppercase">☎ Call or Text Tina<br /><span className="font-normal">{phone}</span></a>
           <button type="button" onClick={() => setPage("contact")} className="font-semibold uppercase">📅 Schedule a Call<br /><span className="font-normal">Let’s talk about your goals.</span></button>
           <button type="button" onClick={() => setPage("resources")} className="font-semibold uppercase">📄 Get Your Free Report<br /><span className="font-normal">See what your home is worth</span></button>
         </div>
@@ -329,7 +376,7 @@ function Footer({ setPage }) {
         </div>
         <div>
           <h4 className="font-semibold uppercase">Contact</h4>
-          <p className="mt-3 text-sm leading-7 text-white/70"><a href="tel:2518959322">☎ {phone}</a><br />✉ tinarowe@kw.com<br />📍 1210 Hillcrest Road<br />Mobile, AL 36695</p>
+          <p className="mt-3 text-sm leading-7 text-white/70"><a href="tel:2518959322">☎ {phone}</a><br />✉ <a href="mailto:tinarowe@kw.com" className="hover:text-red-500">tinarowe@kw.com</a><br />📍 <a href="https://maps.apple.com/?address=1210%20Hillcrest%20Road,%20Mobile,%20AL%2036695" target="_blank" rel="noreferrer" className="hover:text-red-500">1210 Hillcrest Road<br />Mobile, AL 36695</a></p>
         </div>
         <div>
           <h4 className="font-semibold uppercase">Follow Me</h4>
@@ -613,7 +660,7 @@ function ContactPage({ setPage }) {
           </div>
           <div className="rounded-lg bg-neutral-50 p-8 shadow-xl">
             <h2 className="font-display text-3xl font-semibold uppercase">Prefer To Reach Me <span className="text-red-600">Directly?</span></h2>
-            <p className="mt-6 text-lg leading-9">☎ <b>{phone}</b><br />✉ <b className="text-red-600">tinarowe@kw.com</b><br />📍 <b>1210 Hillcrest Road<br />Mobile, AL 36695</b><br />⏰ <b>24/7</b></p>
+            <p className="mt-6 text-lg leading-9">☎ <a href="tel:2518959322"><b>{phone}</b></a><br />✉ <a href="mailto:tinarowe@kw.com" className="font-bold text-red-600 hover:text-red-700">tinarowe@kw.com</a><br />📍 <a href="https://maps.apple.com/?address=1210%20Hillcrest%20Road,%20Mobile,%20AL%2036695" target="_blank" rel="noreferrer" className="font-bold hover:text-red-500">1210 Hillcrest Road<br />Mobile, AL 36695</a><br />⏰ <b>24/7</b></p>
           </div>
         </div>
       </section>
@@ -691,16 +738,16 @@ export default function MovingInMobileMockup() {
 
       {showPopup ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 px-4 backdrop-blur-[1px]">
-          <div className="relative max-w-xl rounded-lg bg-white p-8 text-center shadow-2xl">
+          <div className="relative max-h-[88vh] w-full max-w-xl overflow-y-auto rounded-lg bg-white p-4 text-center shadow-2xl sm:p-8">
             <button type="button" onClick={closeLeadPopup} className="absolute right-4 top-3 text-2xl">×</button>
-            <h2 className="font-display text-4xl uppercase">Let Tina Help With <span className="text-red-600">Your Next Move</span></h2>
-            <p className="mt-3 text-neutral-600">Tell Tina what you need — home value, Rowe Report, listings, selling strategy, or general questions.</p>
-            <div className="mt-5 grid gap-3 text-left">
+            <h2 className="font-display text-2xl uppercase leading-tight sm:text-4xl">Let Tina Help With <span className="text-red-600">Your Next Move</span></h2>
+            <p className="mt-2 text-sm text-neutral-600 sm:mt-3 sm:text-base">Tell Tina what you need — home value, Rowe Report, listings, selling strategy, or general questions.</p>
+            <div className="mt-4 grid gap-2 text-left sm:mt-5 sm:gap-3">
               <input className="rounded border p-3" placeholder="Name" />
               <input className="rounded border p-3" placeholder="Phone Number" />
               <input className="rounded border p-3" placeholder="Email Address" />
               <input className="rounded border p-3" placeholder="Property Address" />
-              <textarea className="min-h-28 rounded border p-3" placeholder="Additional details / How can Tina help?" />
+              <textarea className="min-h-20 rounded border p-3 sm:min-h-28" placeholder="Additional details / How can Tina help?" />
               <CTA className="w-full">Submit My Information</CTA>
             </div>
             <button type="button" onClick={closeLeadPopup} className="mt-4 text-sm underline">No thanks, continue browsing</button>
