@@ -299,11 +299,31 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
 
 function ProcessSection() {
   const steps = [
-    [ASSETS.processAnalyze, "Analyze"],
-    [ASSETS.processStrategize, "Strategize"],
-    [ASSETS.processMarket, "Market"],
-    [ASSETS.processNegotiate, "Negotiate"],
-    [ASSETS.processSold, "Sold"],
+    [
+      ASSETS.processAnalyze,
+      "Analyze",
+      "I break down exactly what went wrong and what needs to change.",
+    ],
+    [
+      ASSETS.processStrategize,
+      "Strategize",
+      "We create a custom plan for pricing, positioning, and timing.",
+    ],
+    [
+      ASSETS.processMarket,
+      "Market",
+      "Your home gets maximum exposure where buyers are actually looking.",
+    ],
+    [
+      ASSETS.processNegotiate,
+      "Negotiate",
+      "I fight to get you top dollar and the strongest terms.",
+    ],
+    [
+      ASSETS.processSold,
+      "Sold",
+      "Smooth closing, clear communication, no surprises.",
+    ],
   ];
 
   return (
@@ -314,12 +334,12 @@ function ProcessSection() {
         </h2>
 
         <div className="mt-8 grid gap-5 md:grid-cols-5">
-          {steps.map(([icon, label]) => (
+          {steps.map(([icon, label, description]) => (
             <IconBlock
               key={label}
               icon={<img src={icon} alt={label} className="h-16 w-16 object-contain" />}
               title={label}
-              text="Clear guidance and expert execution every step of the way."
+              text={description}
             />
           ))}
         </div>
