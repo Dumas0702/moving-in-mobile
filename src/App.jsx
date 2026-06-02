@@ -27,6 +27,28 @@ const ASSETS = {
 
 const phone = "(251) 895-9322";
 const navItems = ["Home", "About", "Sellers", "Buyers", "Neighborhoods", "Resources", "Contact"];
+const socials = [
+  {
+    icon: ASSETS.facebook,
+    alt: "Facebook",
+    href: "https://www.facebook.com/tina.rowe.484411",
+  },
+  {
+    icon: ASSETS.instagram,
+    alt: "Instagram",
+    href: "https://www.instagram.com/therowereport",
+  },
+  {
+    icon: ASSETS.youtube,
+    alt: "YouTube",
+    href: "https://www.youtube.com/@TheRoweReportMobile",
+  },
+  {
+    icon: ASSETS.linkedin,
+    alt: "LinkedIn",
+    href: "https://www.linkedin.com/in/therowereport",
+  },
+];
 
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -53,21 +75,17 @@ function CTA({ children, outline = false, onClick, className = "" }) {
 }
 
 function SocialSidebar() {
-  const socials = [
-    { icon: ASSETS.facebook, alt: "Facebook", href: "#" },
-    { icon: ASSETS.instagram, alt: "Instagram", href: "#" },
-    { icon: ASSETS.youtube, alt: "YouTube", href: "#" },
-    { icon: ASSETS.linkedin, alt: "LinkedIn", href: "#" },
-  ];
-
   return (
     <div className="fixed left-4 top-1/2 z-[40] hidden -translate-y-1/2 flex-col gap-3 2xl:flex">
       {socials.map((social) => (
         <a
           key={social.alt}
           href={social.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={social.alt}
           className="group flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-black/80 shadow-xl backdrop-blur transition hover:scale-105 hover:border-red-500 hover:bg-red-600"
-        >
+>
           <img
             src={social.icon}
             alt={social.alt}
@@ -401,10 +419,22 @@ function Footer({ setPage }) {
         <div>
           <h4 className="font-semibold uppercase">Follow Me</h4>
           <div className="mt-4 flex gap-4">
-            {[ASSETS.facebook, ASSETS.instagram, ASSETS.youtube, ASSETS.linkedin].map((src) => (
-              <img key={src} src={src} alt="social" className="h-9 w-9 rounded-full border border-white/30 p-2" />
-            ))}
-          </div>
+  {socials.map((social) => (
+    <a
+      key={social.alt}
+      href={social.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={social.alt}
+    >
+      <img
+        src={social.icon}
+        alt={social.alt}
+        className="h-9 w-9 rounded-full border border-white/30 p-2 transition hover:border-red-500"
+      />
+    </a>
+  ))}
+</div>
         </div>
       </div>
     </footer>
