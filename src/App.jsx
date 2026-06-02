@@ -660,13 +660,44 @@ function NeighborhoodsPage({ setPage }) {
 
 function ResourcesPage({ setPage }) {
   const resources = ["Market Overview", "Pricing Trends", "Sales Activity", "Seller's Advantage", "Neighborhood Breakdown", "Local Insights"];
+
+  const vendorGroups = [
+    ["Appliance Repair", [["ASAP Appliance Repair", "(251) 510-0088"], ["Appliance Tech of Mobile", "(251) 525-3496"], ["Coastal Repair Solutions", "(251) 721-6177"]]],
+    ["Appraisers", [["Chad Anderson", "(251) 510-5296"], ["Michael Holifield", "(251) 554-2668"], ["Stacey Wade", "(251) 661-8440"], ["Tripp Baldwin", "(251) 550-5390"]]],
+    ["Electricians", [["Jake Brewster", "(251) 550-9813"], ["Jonathon Hay", "(251) 599-8430"], ["Rick Andrews", "(251) 222-5681"], ["Sean Kroner", "(251) 508-0057"]]],
+    ["Estate Sales", [["Jody Crane", "(251) 753-0690"]]],
+    ["Fencing", [["James Fleming", "(251) 366-9248"]]],
+    ["Handyman", [["Eric Schaffer", "(251) 591-4253"], ["Gary Parker", "(251) 689-4949"], ["Jeff Youngblood", "(251) 366-5289"], ["Mike Freeman", "(251) 646-6281"]]],
+    ["Heating and Cooling", [["Hembree Heating & Air", "(251) 259-4664"]]],
+    ["Home Cleaners", [["Brandy Whitten", "(251) 721-5393"], ["Karen Smith", "(251) 421-9491"]]],
+    ["Home Inspectors", [["Darrell Pitts", "(251) 472-6727"], ["Julian Wiik", "(251) 490-3178"], ["Michael Burchfield", "(251) 404-0957"]]],
+    ["Home Warranty", [["Lisa Burns", "(850) 393-7106"], ["Todd Powell", "(850) 739-4376"]]],
+    ["Insurance Company", [["Goosehead", "(251) 263-7924"]]],
+    ["Mortgage Company", [["Ashley Darst", "(952) 715-7295"], ["Jesse Robinson", "(251) 599-4385"]]],
+    ["Moving Services", [["Azalea City Moving Co.", "(251) 633-8889"], ["Pink Zebra Moving", "(251) 999-7222"]]],
+    ["Plumbers", [["Rod Deberry", "(251) 721-0688"], ["Jeff Byrd", "(251) 232-2813"], ["Nathan Herring", "(251) 675-6757"]]],
+    ["Renovations", [["Coery Williams", "(251) 525-7039"]]],
+    ["Roofers", [["Frank Reusser", "(251) 610-0812"], ["Jason Impson", "(251) 401-1158"]]],
+    ["Surveyors", [["Joe Stewart", "(251) 554-8449"]]],
+  ];
+
+  const phoneLink = (phoneNumber) => `tel:${phoneNumber.replace(/\D/g, "")}`;
+
   return (
     <>
-      <Hero title="The Rowe Report" redTitle="Real Results." text="The Rowe Report gives you local market data, neighborhood breakdowns, pricing trends, and expert insights you need to make a smart move." button="Get Your Rowe Report" />
+      <Hero
+        title="The Rowe Report"
+        redTitle="Real Results."
+        text="The Rowe Report gives you local market data, neighborhood breakdowns, pricing trends, and expert insights you need to make a smart move."
+        button="Get Your Rowe Report"
+      />
+
       <section className="bg-white py-16">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_.9fr]">
           <div>
-            <h2 className="font-display text-4xl font-semibold uppercase">What's Inside The <span className="text-red-600">Rowe Report</span></h2>
+            <h2 className="font-display text-4xl font-semibold uppercase">
+              What's Inside The <span className="text-red-600">Rowe Report</span>
+            </h2>
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               {resources.map((item) => (
                 <IconBlock key={item} icon="●" title={item} text="Helpful insight to make a confident decision." />
@@ -676,17 +707,68 @@ function ResourcesPage({ setPage }) {
           <FormPanel title="Get Your Free Rowe Report" button="Get My Home Value + Report" />
         </div>
       </section>
+
+      <section className="bg-neutral-50 py-16">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="mb-10 text-center">
+            <p className="font-semibold uppercase tracking-widest text-red-600">Local Resources</p>
+            <h2 className="font-display text-4xl font-semibold uppercase">
+              Tina's <span className="text-red-600">Vendor List</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-neutral-600">
+              Browse local vendors by category. Tap a phone number to call directly.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {vendorGroups.map(([category, vendors]) => (
+              <details key={category} className="group overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
+                <summary className="flex cursor-pointer list-none items-center justify-between bg-black px-6 py-4 font-display text-xl font-semibold uppercase tracking-wide text-white transition hover:bg-red-600">
+                  {category}
+                  <span className="ml-4 text-2xl transition group-open:rotate-45">+</span>
+                </summary>
+
+                <div className="divide-y divide-neutral-100 px-6">
+                  {vendors.map(([name, vendorPhone]) => (
+                    <div key={`${category}-${name}`} className="grid gap-2 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
+                      <span className="font-semibold text-neutral-900">{name}</span>
+                      <a href={phoneLink(vendorPhone)} className="font-semibold text-red-600 hover:text-black hover:underline">
+                        {vendorPhone}
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </details>
+            ))}
+          </div>
+
+          <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-6 text-neutral-500">
+            Vendor list is provided as a helpful resource only. Clients should independently verify licensing, insurance, availability, pricing, and suitability before hiring any vendor.
+          </p>
+        </div>
+      </section>
+
       <section className="bg-neutral-50 py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 md:grid-cols-2">
           <div>
-            <h2 className="font-display text-3xl font-semibold uppercase">Recent <span className="text-red-600">Rowe Report</span> Topics</h2>
-            {["Why Homes in Mobile Aren't Selling Right Now", "What Homes Are Actually Selling For", "The #1 Mistake That Keeps Homes From Selling", "Is Now Still A Good Time To Sell in Mobile?"].map((topic) => (
-              <div key={topic} className="mt-3 rounded border bg-white p-4 font-semibold shadow-sm">{topic} →</div>
+            <h2 className="font-display text-3xl font-semibold uppercase">
+              Recent <span className="text-red-600">Rowe Report</span> Topics
+            </h2>
+            {[
+              "Why Homes in Mobile Aren't Selling Right Now",
+              "What Homes Are Actually Selling For",
+              "The #1 Mistake That Keeps Homes From Selling",
+              "Is Now Still A Good Time To Sell in Mobile?",
+            ].map((topic) => (
+              <div key={topic} className="mt-3 rounded border bg-white p-4 font-semibold shadow-sm">
+                {topic} →
+              </div>
             ))}
           </div>
           <img src={ASSETS.van} alt="The Rowe Report Van" className="rounded-lg shadow-xl" />
         </div>
       </section>
+
       <Footer setPage={setPage} />
     </>
   );
