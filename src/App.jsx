@@ -23,6 +23,11 @@ const ASSETS = {
   processMarket: `${BASE}process-market.png`,
   processNegotiate: `${BASE}process-negotiate.png`,
   processSold: `${BASE}process-sold.png`,
+  localExpertIcon: `${BASE}local-expert-icon.png`,
+  honestyIcon: `${BASE}honesty-icon.png`,
+  integrityIcon: `${BASE}integrity-icon.png`,
+  commitmentIcon: `${BASE}commitment-icon.png`,
+  careIcon: `${BASE}care-icon.png`,
 };
 
 const phone = "(251) 895-9322";
@@ -569,24 +574,125 @@ function HomePage({ setPage }) {
 function AboutPage({ setPage }) {
   return (
     <>
-      <Hero title="Hi, I'm Tina Rowe" redTitle="Focused on Getting Homes Sold." text="I believe every homeowner deserves an agent who will truly fight for their best outcome. Whether your home didn't sell or you're making a move, I have the strategy, experience, and determination to get you top dollar." />
-      <section className="bg-white py-16">
+      <Hero
+        title="Hi, I'm Tina Rowe"
+        redTitle="Focused On Getting Homes Sold."
+        text="I believe every homeowner deserves an agent who will truly fight for their best outcome. Whether your home didn't sell or you're thinking about making a move, I have the strategy, experience, and determination to get you top dollar."
+      />
+
+      <section className="bg-white py-12">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.8fr_1.2fr]">
-          <img src={ASSETS.tinaAlt} alt="Tina Rowe" className="rounded-lg shadow-xl" />
           <div>
-            <p className="font-bold uppercase tracking-widest text-red-600">Get to know me</p>
-            <h2 className="font-display text-4xl font-semibold uppercase leading-tight">A strong negotiator. A problem solver. A local.</h2>
-            <p className="mt-5 text-lg leading-8">Real estate is more than buying and selling homes — it's helping people make life-changing decisions with confidence. I provide honest advice, clear communication, and a proven plan that gets results.</p>
-            <div className="mt-8 grid gap-5 md:grid-cols-4">
-              <IconBlock icon="🤝" title="Advocate" text="I put your interests first." />
-              <IconBlock icon="🎯" title="Strategist" text="Plans that get homes sold." />
-              <IconBlock icon="💬" title="Communicator" text="You always know where you stand." />
-              <IconBlock icon="🏠" title="Local Expert" text="I know Mobile and the people." />
+            <img src={ASSETS.tinaAlt} alt="Tina Rowe" className="rounded-lg shadow-xl" />
+
+            <div className="mt-8">
+              <h2 className="font-hand text-4xl text-red-600">Why Sellers Choose Me</h2>
+              <p className="mt-4 leading-7">
+                I’m a lifelong Mobile local, and I know this market inside and out — not just the neighborhoods, but what actually makes homes sell.
+              </p>
+              <p className="mt-4 leading-7">
+                I don’t approach real estate like most agents. Too many homes sit on the market because of the wrong pricing, weak marketing, or no real strategy. That costs sellers time, money, and frustration.
+              </p>
+              <p className="mt-4 font-semibold">I do things differently.</p>
+              <p className="mt-4 leading-7">
+                I focus on positioning your home to stand out, attract the right buyers, and create the kind of demand that leads to strong offers.
+              </p>
+              <p className="mt-4 leading-7">
+                Whether your home didn’t sell the first time or you’re thinking about listing, my goal is simple:
+                <span className="font-semibold text-red-600"> Get you the best possible outcome — with a clear plan from day one.</span>
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <p className="font-semibold uppercase tracking-widest text-red-600">Get To Know Me</p>
+            <h2 className="mt-3 font-display text-4xl font-semibold uppercase leading-tight">
+              A Strong Negotiator. <br />
+              A Problem Solver. A Local.
+            </h2>
+            <div className="mt-3 h-1 w-20 bg-red-600" />
+
+            <p className="mt-5 leading-7">
+              Real estate is more than buying and selling homes — it’s about helping people make life-changing decisions with confidence. I started my real estate career with one goal in mind: to provide honest advice, clear communication, and a proven plan that gets results.
+            </p>
+            <p className="mt-4 leading-7">
+              I specialize in helping sellers, especially those who have had their homes sit on the market, get the outcome they deserve.
+            </p>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <IconBlock icon={<img src={ASSETS.handshakeIcon} alt="Advocate" className="h-12 w-12 object-contain" />} title="Advocate" text="I’ll always put your best interests first." />
+              <IconBlock icon={<img src={ASSETS.marketingIcon} alt="Strategist" className="h-12 w-12 object-contain" />} title="Strategist" text="I create custom plans that get your home sold." />
+              <IconBlock icon={<img src={ASSETS.communicationIcon} alt="Communicator" className="h-12 w-12 object-contain" />} title="Communicator" text="You’ll always know where you stand." />
+              <IconBlock
+                icon={<img src={ASSETS.localExpertIcon} alt="Local Expert" className="h-12 w-12 object-contain" />}
+                title="Local Expert"
+                text="I know Mobile, the market, and the people."
+            />
+            </div>
+
+            <div className="mt-10 grid gap-8 lg:grid-cols-2">
+              <div className="rounded-lg bg-neutral-100 p-7">
+                <h3 className="font-display text-3xl font-semibold uppercase leading-tight">
+                  What You Can <span className="text-red-600">Expect</span> When You Work With Me
+                </h3>
+                <ul className="mt-5 space-y-4 text-sm leading-6">
+                  <li>✅ A clear pricing strategy based on real market data</li>
+                  <li>✅ Marketing that actually gets your home seen — not just listed</li>
+                  <li>✅ Honest communication — you’ll always know what’s happening</li>
+                  <li>✅ Strong negotiation to protect your bottom line</li>
+                  <li>✅ A step-by-step plan so nothing is left to chance</li>
+                </ul>
+              </div>
+
+              <div className="overflow-hidden rounded-lg border bg-white shadow-lg">
+                <img src={ASSETS.tina} alt="Tina Rowe" className="h-56 w-full object-cover object-top" />
+                <div className="p-5 text-center">
+                  <h3 className="font-display text-2xl font-semibold uppercase text-red-600">
+                    Thinking About Selling Your Home?
+                  </h3>
+                  <p className="mt-2 text-sm">Before you list, let’s talk about your strategy.</p>
+                  <CTA className="mt-4 w-full">Schedule A Call With Tina</CTA>
+                  <CTA outline className="mt-3 w-full border-black text-black hover:bg-black hover:text-white">
+                    Find Out What Your Home Is Worth
+                  </CTA>
+                  <a href="tel:2518959322" className="mt-4 block text-2xl font-semibold">
+                    ☎ {phone}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
-      <TestimonialsSection title="What Sellers Say" />
+
+      <section className="bg-white pb-12">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <h2 className="font-display text-3xl font-semibold uppercase">
+            The <span className="text-red-600">Values</span> I Bring To Every Client
+          </h2>
+
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            <IconBlock
+              icon={<img src={ASSETS.honestyIcon} alt="Honesty" className="h-14 w-14 object-contain" />}
+              title="Honesty" text="I give you the truth, even when it’s not what you want to hear." />
+            <IconBlock
+              icon={<img src={ASSETS.integrityIcon} alt="Integrity" className="h-14 w-14 object-contain" />}
+              title="Integrity" text="I do what I say I’ll do and I always follow through." />
+            <IconBlock
+              icon={<img src={ASSETS.commitmentIcon} alt="Commitment" className="h-14 w-14 object-contain" />}
+              title="Commitment" text="I’m committed to your success from start to finish." />
+            <IconBlock
+              icon={<img src={ASSETS.marketIcon} alt="Results" className="h-14 w-14 object-contain" />}
+              title="Results" text="I focus on strategies that deliver the best possible outcome." />
+            <IconBlock
+              icon={<img src={ASSETS.careIcon} alt="Care" className="h-14 w-14 object-contain" />}
+              title="Care" text="I treat every client like family." />
+          </div>
+        </div>
+      </section>
+
+      <TestimonialsSection title="What Sellers Say After Working With Me" />
+
       <Footer setPage={setPage} />
     </>
   );
