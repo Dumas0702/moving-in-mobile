@@ -28,6 +28,15 @@ const ASSETS = {
   integrityIcon: `${BASE}integrity-icon.png`,
   commitmentIcon: `${BASE}commitment-icon.png`,
   careIcon: `${BASE}care-icon.png`,
+  checkCircleIcon: `${BASE}check-circle-red.png`,
+  penPaperIcon: `${BASE}pen-paper.png`,
+  locationIcon: `${BASE}location-icon.png`,
+  investorIcon: `${BASE}investor-icon.png`,
+  bigHouseIcon: `${BASE}big-house.png`,
+  buyersLoveMobile: `${BASE}buyers-love-mobile.jpg`,
+  benefit1: `${BASE}benefit1.JPG`,
+  benefit2: `${BASE}benefit2.JPG`,
+  benefit3: `${BASE}benefit3.JPG`,
 };
 
 const phone = "(251) 895-9322";
@@ -51,7 +60,7 @@ const socials = [
   {
     icon: ASSETS.linkedin,
     alt: "LinkedIn",
-    href: "https://www.linkedin.com/in/therowereport",
+    href: "https://www.linkedin.com/in/tina-rowe-76368b353/",
   },
 ];
 
@@ -104,18 +113,21 @@ function SocialSidebar() {
 
 function TopBar({ onOpen }) {
   return (
-    <div className="relative z-[90] w-full bg-red-600 text-white">
+    <div className="relative z-[90] w-full border-b border-red-600 bg-white text-red-600">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-2 px-4 py-3 text-center sm:flex-row sm:justify-between sm:px-6">
         <button
           type="button"
           onClick={onOpen}
-          className="relative z-[95] rounded bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-red-600 shadow hover:bg-neutral-100 sm:px-5 sm:text-sm"
+          className="relative z-[95] rounded bg-red-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shadow hover:bg-red-700 sm:px-5 sm:text-sm"
         >
           What Is My Home Worth?
         </button>
-        <a href="tel:2518959322" className="relative z-[95] text-base font-semibold tracking-wide hover:underline sm:text-lg">
-          ☎ (251) 895-9322
-        </a>
+        <a
+  href="tel:2518959322"
+  className="relative z-[95] text-base font-semibold tracking-wide text-red-600 hover:text-red-700 hover:underline sm:text-lg"
+  >
+    ☎ (251) 895-9322
+  </a>
       </div>
     </div>
   );
@@ -395,11 +407,11 @@ function TestimonialsSection({ title }) {
 function Footer({ setPage }) {
   return (
     <footer className="bg-black text-white">
-      <div className="bg-red-600 py-5">
-        <div className="mx-auto grid max-w-7xl gap-4 px-6 text-center md:grid-cols-3">
-          <a href="tel:2518959322" className="font-semibold uppercase">☎ Call or Text Tina<br /><span className="font-normal">{phone}</span></a>
-          <button type="button" onClick={() => setPage("contact")} className="font-semibold uppercase">📅 Schedule a Call<br /><span className="font-normal">Let’s talk about your goals.</span></button>
-          <button type="button" onClick={() => setPage("resources")} className="font-semibold uppercase">📄 Get Your Free Report<br /><span className="font-normal">See what your home is worth</span></button>
+      <div className="border-t border-red-600 border-b border-red-600 bg-white py-5">
+        <div className="mx-auto grid max-w-7xl gap-4 px-6 text-center text-red-600 md:grid-cols-3">
+          <a href="tel:2518959322" className="font-semibold uppercase text-red-600 transition hover:text-red-700">☎ Call or Text Tina<br /><span className="font-normal text-neutral-600">{phone}</span></a>
+          <button type="button" onClick={() => setPage("contact")} className="font-semibold uppercase text-red-600 transition hover:text-red-700">📅 Schedule a Call<br /><span className="font-normal text-neutral-600">Let’s talk about your goals.</span></button>
+          <button type="button" onClick={() => setPage("resources")} className="font-semibold uppercase text-red-600 transition hover:text-red-700">📄 Get Your Free Report<br /><span className="font-normal text-neutral-600">See what your home is worth</span></button>
         </div>
       </div>
 
@@ -550,9 +562,7 @@ function HomePage({ setPage }) {
 
       <section className="relative overflow-hidden bg-black py-8 text-white">
         <img src={ASSETS.skyline} alt="homes" className="absolute inset-0 h-full w-full object-cover opacity-25" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-6 md:grid-cols-[.5fr_1.2fr_.9fr]">
-          <img src={ASSETS.tinaAlt} alt="Tina Rowe" className="hidden max-h-40 object-contain md:block" />
-          <div>
+        <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-6 md:grid-cols-[.5fr_1.2fr_.9fr]"> <div>
             <h2 className="font-display text-4xl font-semibold uppercase leading-tight">
               Don’t Relist Your Home Without a <span className="text-red-600">Better Strategy.</span>
             </h2>
@@ -583,7 +593,23 @@ function AboutPage({ setPage }) {
       <section className="bg-white py-12">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.8fr_1.2fr]">
           <div>
-            <img src={ASSETS.tinaAlt} alt="Tina Rowe" className="rounded-lg shadow-xl" />
+            <div className="grid gap-3 rounded-lg bg-white p-2 shadow-xl sm:grid-cols-2">
+              <img
+                src={ASSETS.benefit1}
+                alt="Tina Rowe community benefit event"
+                className="h-[360px] w-full rounded-md object-cover sm:row-span-2"
+              />
+              <img
+                src={ASSETS.benefit3}
+                alt="Tina Rowe at community benefit"
+                className="h-[174px] w-full rounded-md object-cover"
+              />
+              <img
+                src={ASSETS.benefit2}
+                alt="Tina Rowe volunteering at community benefit"
+                className="h-[174px] w-full rounded-md object-cover"
+              />
+            </div>
 
             <div className="mt-8">
               <h2 className="font-hand text-4xl text-red-600">Why Sellers Choose Me</h2>
@@ -719,51 +745,315 @@ function SellersPage({ setPage }) {
 }
 
 function BuyersPage({ setPage }) {
+  const buyerSteps = [
+    [
+      ASSETS.marketingIcon,
+      "1. Understand Your Goals",
+      "We get clear on what you want — and what you don’t.",
+    ],
+    [
+      ASSETS.processAnalyze,
+      "2. Find The Right Homes",
+      "I hand-pick the best options that fit your needs and budget.",
+    ],
+    [
+      ASSETS.processStrategize,
+      "3. Tour Strategically",
+      "We focus only on homes that are the right fit.",
+    ],
+    [
+      ASSETS.penPaperIcon,
+      "4. Make A Strong Offer",
+      "I’ll help you stand out and win in multiple-offer situations.",
+    ],
+    [
+      ASSETS.handshakeIcon,
+      "5. Negotiate Smart",
+      "I protect your money and fight for the best terms.",
+    ],
+    [
+      ASSETS.processSold,
+      "6. Close Smoothly",
+      "Clear communication and a stress-free closing.",
+    ],
+  ];
+
+  const buyerBenefits = [
+    ["Get more home for your money", "Affordable prices and great value."],
+    ["Coastal lifestyle without coastal prices", "Beaches, boating, and beautiful sunsets."],
+    ["Strong communities + great schools", "Great neighborhoods and family-friendly living."],
+    ["Growth, charm, and opportunity", "A thriving economy with a rich history."],
+  ];
+
+  const buyerTypes = [
+    [
+      ASSETS.localExpertIcon,
+      "First-Time Buyers",
+      "I simplify everything so you feel confident every step of the way.",
+    ],
+    [
+      ASSETS.bigHouseIcon,
+      "Move-Up Buyers",
+      "Upgrade smart without overpaying or rushing the process.",
+    ],
+    [
+      ASSETS.locationIcon,
+      "Relocating Buyers",
+      "I help you navigate Mobile like a local and make a smooth transition.",
+    ],
+    [
+      ASSETS.investorIcon,
+      "Investors",
+      "Find opportunities that make sense and fit your goals.",
+    ],
+  ];
+
   return (
     <>
-      <Hero title="Find the Right Home — Without Overpaying" redTitle="Or Missing Out" text="In today's market, the right strategy matters. I help you find, win, and secure the right home without the stress." form="Get Access To Homes Before Everyone Else" button="Start My Home Search" reverse />
-      <section className="bg-white py-14">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-center font-display text-4xl font-semibold uppercase">How I Help You <span className="text-red-600">Win</span> The Right Home</h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-6">
-            {["Understand Goals", "Find Homes", "Tour Strategically", "Make Offer", "Negotiate Smart", "Close Smoothly"].map((title, index) => (
-              <IconBlock key={title} icon={index + 1} title={title} text="Smart guidance for every step." />
+      <section className="relative overflow-hidden bg-black text-white">
+        <img
+          src={ASSETS.skyline}
+          alt="Mobile skyline"
+          className="absolute inset-0 h-full w-full object-cover opacity-85"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/40" />
+
+        <div className="relative mx-auto grid min-h-[560px] max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[.75fr_1fr_.78fr] lg:items-center">
+          <div className="hidden self-end lg:block">
+            <img
+              src={ASSETS.tina}
+              alt="Tina Rowe"
+              className="h-[560px] w-auto object-contain object-bottom"
+            />
+          </div>
+
+          <div>
+            <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
+              Find The Right Home—<br />
+              Without Overpaying<br />
+              <span className="text-red-600">Or Missing Out</span>
+            </h1>
+
+            <p className="mt-6 max-w-xl text-lg leading-8">
+              In today’s market, the right strategy matters. I help you find, win,
+              and secure the right home — without the stress.
+            </p>
+
+            <p className="mt-6 font-hand text-4xl">Tina Rowe</p>
+            <p className="mt-3 max-w-sm text-lg">
+              I help buyers win in competitive markets — without overpaying.
+            </p>
+          </div>
+
+          <FormPanel
+            title="Get Access To Homes Before Everyone Else"
+            button="Send Me Homes That Match"
+          />
+        </div>
+      </section>
+
+      <section className="bg-white py-12">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <h2 className="font-display text-4xl font-semibold uppercase">
+            How I Help You <span className="text-red-600">Win</span> The Right Home
+          </h2>
+
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+            {buyerSteps.map(([icon, title, text]) => (
+              <IconBlock
+                key={title}
+                icon={
+                  <img
+                    src={icon}
+                    alt={title}
+                    className="h-14 w-14 object-contain"
+                  />
+                }
+                title={title}
+                text={text}
+              />
             ))}
           </div>
         </div>
       </section>
+
+      <section className="bg-white pb-10">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-2">
+          <div className="overflow-hidden rounded-lg border bg-white shadow-lg">
+            <img
+              src={ASSETS.buyersLoveMobile}
+              alt="Beautiful Mobile Alabama home"
+              className="h-64 w-full object-cover"
+            />
+
+            <div className="p-8">
+              <h2 className="font-display text-3xl font-semibold uppercase">
+                Why Buyers Love <span className="text-red-600">Mobile, AL</span>
+              </h2>
+
+              <ul className="mt-6 space-y-6">
+                {buyerBenefits.map(([title, text]) => (
+                  <li key={title} className="flex items-start gap-4">
+                    <img
+                      src={ASSETS.checkCircleIcon}
+                      alt=""
+                      className="mt-1 h-7 w-7 shrink-0 object-contain"
+                    />
+                    <div>
+                      <div className="font-semibold">{title}</div>
+                      <div className="text-sm text-neutral-600">{text}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="relative min-h-[560px] overflow-hidden rounded-lg bg-black p-8 text-white shadow-lg">
+            <img
+              src={ASSETS.skyline}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover opacity-25"
+            />
+
+            <div className="relative grid h-full gap-6 md:grid-cols-[1fr_1fr] md:items-end">
+              <div className="relative z-10">
+                <h2 className="font-display text-4xl font-semibold uppercase leading-tight">
+                  Stop Missing Out<br />
+                  <span className="text-red-600">On The Right Homes</span>
+                </h2>
+
+                <p className="mt-4 text-lg leading-7">
+                  The best homes don’t last long — and many never hit the public
+                  market. Let me give you the advantage.
+                </p>
+
+                <CTA className="mt-5">Get Homes Sent To Me First</CTA>
+                <CTA outline className="mt-3 w-full">
+                  Schedule A Call With Tina
+                </CTA>
+
+                <a href="tel:2518959322" className="mt-5 block text-3xl font-semibold">
+                  ☎ {phone}
+                </a>
+              </div>
+
+              <div className="relative hidden h-full min-h-[520px] md:block">
+                <img
+                  src={ASSETS.tina}
+                  alt="Tina Rowe"
+                  className="absolute bottom-[-25px] right-[-20px] h-[560px] w-auto max-w-none object-contain object-bottom lg:h-[620px]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-10 text-center">
+        <div className="mx-auto max-w-7xl px-6">
+          <h2 className="font-display text-4xl font-semibold uppercase">
+            No Matter Where You Are,{" "}
+            <span className="text-red-600">I’ve Got You Covered</span>
+          </h2>
+
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {buyerTypes.map(([icon, title, text]) => (
+              <IconBlock
+                key={title}
+                icon={
+                  <img
+                    src={icon}
+                    alt={title}
+                    className="h-16 w-16 object-contain"
+                  />
+                }
+                title={title}
+                text={text}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <TestimonialsSection title="What Buyers Say After Working With Me" />
+
+      <section className="bg-red-600 py-6 text-white">
+        <div className="mx-auto grid max-w-7xl items-center gap-4 px-6 text-center lg:grid-cols-[1fr_auto_auto_auto]">
+          <h2 className="font-display text-3xl font-semibold uppercase">
+            Buying A Home Doesn’t Have To Be Stressful—<br />
+            If You Have The Right Agent
+          </h2>
+
+          <CTA outline onClick={() => window.dispatchEvent(new CustomEvent("openLeadPopup"))}>
+            Start My Home Search
+          </CTA>
+
+          <CTA outline onClick={() => setPage("contact")}>
+            Talk To Tina First
+          </CTA>
+
+          <a href="tel:2518959322" className="text-2xl font-semibold">
+            Call or Text<br />
+            {phone}
+          </a>
+        </div>
+      </section>
+
       <Footer setPage={setPage} />
     </>
   );
 }
-
 function NeighborhoodsPage({ setPage }) {
   const areas = ["Downtown Mobile", "Midtown", "The Spring Hill Area", "West Mobile", "Point Clear"];
+
   return (
     <>
-      <Hero title="Find Your Perfect Neighborhood" redTitle="In Mobile, AL" text="Every neighborhood has its own style and story. I’ll help you find the one that fits your lifestyle and goals." button="Search Neighborhoods" />
+      <Hero
+        title="Find Your Perfect Neighborhood"
+        redTitle="In Mobile, AL"
+        text="Every neighborhood has its own style and story. I’ll help you find the one that fits your lifestyle and goals."
+        button="Search Neighborhoods"
+      />
+
       <section className="bg-white py-10">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="font-display text-4xl font-semibold uppercase">Popular Neighborhoods in <span className="text-red-600">Mobile</span></h2>
+          <h2 className="font-display text-4xl font-semibold uppercase">
+            Popular Neighborhoods in <span className="text-red-600">Mobile</span>
+          </h2>
+
           <div className="mt-8 grid gap-5 md:grid-cols-5">
             {areas.map((area, index) => (
               <div key={area} className="overflow-hidden rounded-lg border bg-white shadow-lg">
-                <img src={index === 0 ? ASSETS.skyline : "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=700&q=80"} alt={area} className="h-40 w-full object-cover" />
+                <img
+                  src={
+                    index === 0
+                      ? ASSETS.skyline
+                      : "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=700&q=80"
+                  }
+                  alt={area}
+                  className="h-40 w-full object-cover"
+                />
+
                 <div className="p-5 text-center">
                   <h3 className="font-display text-xl font-semibold uppercase">{area}</h3>
-                  <p className="mt-2 text-sm text-neutral-700">Homes, lifestyle, market insight, and local guidance.</p>
-                  <button className="mt-5 w-full rounded border py-2 font-bold uppercase hover:bg-red-600 hover:text-white">View Homes</button>
+                  <p className="mt-2 text-sm text-neutral-700">
+                    Homes, lifestyle, market insight, and local guidance.
+                  </p>
+                  <button className="mt-5 w-full rounded border py-2 font-bold uppercase hover:bg-red-600 hover:text-white">
+                    View Homes
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
       <Footer setPage={setPage} />
     </>
   );
 }
-
 function ResourcesPage({ setPage }) {
   const resources = ["Market Overview", "Pricing Trends", "Sales Activity", "Seller's Advantage", "Neighborhood Breakdown", "Local Insights"];
 
