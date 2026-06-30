@@ -37,6 +37,9 @@ const ASSETS = {
   benefit1: `${BASE}benefit1.JPG`,
   benefit2: `${BASE}benefit2.JPG`,
   benefit3: `${BASE}benefit3.JPG`,
+  fullServiceIcon: `${BASE}full-service.png`,
+  realtorEOL: `${BASE}REALTOREOL.PNG`,
+  realtorEOLWhite: `${BASE}REALTOREOL-white.png`,
 };
 
 const phone = "(251) 895-9322";
@@ -407,51 +410,164 @@ function TestimonialsSection({ title }) {
 function Footer({ setPage }) {
   return (
     <footer className="bg-black text-white">
-      <div className="border-t border-red-600 border-b border-red-600 bg-white py-5">
+      <div className="border-y border-red-600 bg-white py-5">
         <div className="mx-auto grid max-w-7xl gap-4 px-6 text-center text-red-600 md:grid-cols-3">
-          <a href="tel:2518959322" className="font-semibold uppercase text-red-600 transition hover:text-red-700">☎ Call or Text Tina<br /><span className="font-normal text-neutral-600">{phone}</span></a>
-          <button type="button" onClick={() => setPage("contact")} className="font-semibold uppercase text-red-600 transition hover:text-red-700">📅 Schedule a Call<br /><span className="font-normal text-neutral-600">Let’s talk about your goals.</span></button>
-          <button type="button" onClick={() => setPage("resources")} className="font-semibold uppercase text-red-600 transition hover:text-red-700">📄 Get Your Free Report<br /><span className="font-normal text-neutral-600">See what your home is worth</span></button>
+          <a
+            href="tel:2518959322"
+            className="font-semibold uppercase text-red-600 transition hover:text-red-700"
+          >
+            ☎ Call or Text Tina
+            <br />
+            <span className="font-normal text-neutral-600">{phone}</span>
+          </a>
+
+          <button
+            type="button"
+            onClick={() => setPage("contact")}
+            className="font-semibold uppercase text-red-600 transition hover:text-red-700"
+          >
+            📅 Schedule a Call
+            <br />
+            <span className="font-normal text-neutral-600">
+              Let’s talk about your goals.
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setPage("resources")}
+            className="font-semibold uppercase text-red-600 transition hover:text-red-700"
+          >
+            📄 Get Your Free Report
+            <br />
+            <span className="font-normal text-neutral-600">
+              See what your home is worth
+            </span>
+          </button>
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:grid-cols-4">
-        <div>
-          <img src={ASSETS.logo} alt="The Rowe Report" className="h-[320px] w-auto" />
-          <img src={ASSETS.kw} alt="Keller Williams Mobile" className="mt-[-6px] h-[80px] w-auto" />
-          <p className="mt-3 text-xs text-white/60">Helping homeowners and buyers make confident moves in Mobile, AL and the surrounding areas.</p>
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-10 lg:grid-cols-[1.75fr_0.85fr_1.1fr_0.9fr] lg:items-start">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-6 shadow-2xl">
+          <div className="grid gap-6 md:grid-cols-[1fr_1fr] md:items-center">
+            <div className="flex flex-col items-center md:items-start">
+              <img
+                src={ASSETS.logo}
+                alt="The Rowe Report"
+                className="h-44 w-auto max-w-full object-contain"
+              />
+
+              <img
+                src={ASSETS.kw}
+                alt="kw Keller Williams Mobile"
+                className="mt-4 h-20 w-auto max-w-full object-contain"
+              />
+            </div>
+
+            <div className="flex flex-col items-center md:items-start">
+              <img
+                src={ASSETS.realtorEOLWhite}
+                alt="REALTOR® and Equal Housing Opportunity"
+                className="h-20 w-auto max-w-full object-contain"
+              />
+
+              <p className="mt-5 max-w-sm text-center text-sm leading-6 text-white/75 md:text-left">
+                Helping homeowners and buyers throughout Mobile and Baldwin County
+                with honest advice, proven strategies, and exceptional service.
+              </p>
+
+              <p className="mt-3 text-center text-xs leading-5 text-white/45 md:text-left">
+                Each office is independently owned and operated.
+              </p>
+            </div>
+          </div>
         </div>
-        <div>
-          <h4 className="font-semibold uppercase">Quick Links</h4>
-          <div className="mt-3 grid gap-1 text-sm text-white/70">
+
+        <div className="pt-2">
+          <h4 className="font-display text-xl font-semibold uppercase tracking-wide text-white">
+            Quick Links
+          </h4>
+
+          <div className="mt-5 grid gap-2 text-sm text-white/75">
             {navItems.slice(0, 6).map((item) => (
-              <button key={item} type="button" onClick={() => setPage(item.toLowerCase())} className="text-left hover:text-red-500">{item}</button>
+              <button
+                key={item}
+                type="button"
+                onClick={() => setPage(item.toLowerCase())}
+                className="text-left transition hover:text-red-500"
+              >
+                {item}
+              </button>
             ))}
           </div>
         </div>
-        <div>
-          <h4 className="font-semibold uppercase">Contact</h4>
-          <p className="mt-3 text-sm leading-7 text-white/70"><a href="tel:2518959322">☎ {phone}</a><br />✉ <a href="mailto:tinarowe@kw.com" className="hover:text-red-500">tinarowe@kw.com</a><br />📍 <a href="https://maps.apple.com/?address=1210%20Hillcrest%20Road,%20Mobile,%20AL%2036695" target="_blank" rel="noreferrer" className="hover:text-red-500">1210 Hillcrest Road<br />Mobile, AL 36695</a></p>
+
+        <div className="pt-2">
+          <h4 className="font-display text-xl font-semibold uppercase tracking-wide text-white">
+            Contact
+          </h4>
+
+          <div className="mt-5 space-y-3 text-sm leading-7 text-white/80">
+            <a href="tel:2518959322" className="block hover:text-red-500">
+              ☎ {phone}
+            </a>
+
+            <a
+              href="mailto:tinarowe@kw.com"
+              className="block hover:text-red-500"
+            >
+              ✉ tinarowe@kw.com
+            </a>
+
+            <a
+              href="https://maps.apple.com/?address=1210%20Hillcrest%20Road,%20Mobile,%20AL%2036695"
+              target="_blank"
+              rel="noreferrer"
+              className="block hover:text-red-500"
+            >
+              📍 1210 Hillcrest Road
+              <br />
+              Mobile, AL 36695
+            </a>
+          </div>
         </div>
-        <div>
-          <h4 className="font-semibold uppercase">Follow Me</h4>
-          <div className="mt-4 flex gap-4">
-  {socials.map((social) => (
-    <a
-      key={social.alt}
-      href={social.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={social.alt}
-    >
-      <img
-        src={social.icon}
-        alt={social.alt}
-        className="h-9 w-9 rounded-full border border-white/30 p-2 transition hover:border-red-500"
-      />
-    </a>
-  ))}
-</div>
+
+        <div className="pt-2">
+          <h4 className="font-display text-xl font-semibold uppercase tracking-wide text-white">
+            Follow Me
+          </h4>
+
+          <div className="mt-5 flex gap-4">
+            {socials.map((social) => (
+              <a
+                key={social.alt}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.alt}
+              >
+                <img
+                  src={social.icon}
+                  alt={social.alt}
+                  className="h-12 w-12 rounded-full border border-white/25 bg-white/5 p-2.5 transition duration-200 hover:scale-105 hover:border-red-500 hover:bg-red-600"
+                />
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-8 rounded-lg border border-white/10 bg-white/[0.03] p-4">
+            <p className="font-display text-lg uppercase text-white">
+              Move With Confidence
+            </p>
+            <p className="mt-2 text-sm leading-6 text-white/65">
+              Clear guidance, strong strategy, and a local expert who knows how
+              to get homes sold.
+            </p>
+          </div>
+
+          <p className="mt-6 text-xs text-white/45">
+            Privacy Policy | Terms of Use
+          </p>
         </div>
       </div>
     </footer>
@@ -725,20 +841,187 @@ function AboutPage({ setPage }) {
 }
 
 function SellersPage({ setPage }) {
+  const sellerIcons = [
+    [
+      ASSETS.marketingIcon,
+      "Strategic Pricing",
+      "Data-driven pricing that positions your home to sell for the best possible price.",
+    ],
+    [
+      ASSETS.processMarket,
+      "Marketing That Stands Out",
+      "Professional photography, digital marketing, and maximum exposure where buyers are looking.",
+    ],
+    [
+      ASSETS.localExpertIcon,
+      "Local Expertise",
+      "Knowledge of Mobile's neighborhoods, market conditions, and buyer demand.",
+    ],
+    [
+      ASSETS.processNegotiate,
+      "Strong Negotiation",
+      "Experienced negotiation focused on protecting your bottom line.",
+    ],
+    [
+      ASSETS.fullServiceIcon,
+      "Full Service",
+      "Clear communication and hands-on guidance every step of the way.",
+    ],
+    [
+      ASSETS.marketIcon,
+      "Proven Results",
+      "A proven strategy built to help homes sell faster and for more money.",
+    ],
+  ];
+
   return (
     <>
-      <Hero title="Your Home Didn't Sell — Or You're Thinking About Listing?" redTitle="Let's Make Sure It Sells This Time." text="Most homes that fail to sell come down to pricing, exposure, or strategy. I fix all three — so you walk away with top dollar." button="Find Out What Your Home Should Sell For" />
+      <section className="relative overflow-hidden bg-black text-white">
+        <img
+          src={ASSETS.skyline}
+          alt="Mobile skyline"
+          className="absolute inset-0 h-full w-full object-cover opacity-85"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/40" />
+
+        <div className="relative mx-auto grid min-h-[560px] max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[.75fr_1fr_.78fr] lg:items-center">
+          <div className="hidden self-end lg:block">
+            <img
+              src={ASSETS.tina}
+              alt="Tina Rowe"
+              className="h-[560px] w-auto object-contain object-bottom"
+            />
+          </div>
+
+          <div>
+            <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
+              Your Home Didn't Sell?<br />
+              <span className="text-red-600">There's A Reason.</span>
+            </h1>
+
+            <p className="mt-6 max-w-xl text-lg leading-8">
+              Most homes that don't sell come down to pricing, exposure, or
+              strategy. I fix all three so you don't leave money on the table.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <CTA>Find Out Why Your Home Didn't Sell</CTA>
+              <CTA outline onClick={() => setPage("resources")}>
+                Get Your Free Rowe Report
+              </CTA>
+            </div>
+
+            <a
+              href="tel:2518959322"
+              className="mt-8 block text-3xl font-semibold"
+            >
+              ☎ {phone}
+            </a>
+          </div>
+
+          <FormPanel
+            title="Get Your Home Value"
+            button="Send Me My Home Value"
+          />
+        </div>
+      </section>
+
       <section className="bg-white py-14">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-center font-display text-4xl font-semibold uppercase">What Actually Gets Homes <span className="text-red-600">Sold</span></h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-6">
-            {["Strategic Pricing", "Marketing That Stands Out", "Local Expertise", "Strong Negotiation", "Full Service", "Proven Results"].map((title, index) => (
-              <IconBlock key={title} icon={["🎯", "📸", "📍", "🤝", "🏠", "🛡️"][index]} title={title} text="A better strategy from start to finish." />
+          <h2 className="text-center font-display text-4xl font-semibold uppercase">
+            What Actually Gets Homes <span className="text-red-600">Sold</span>
+          </h2>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {sellerIcons.map(([icon, title, text]) => (
+              <IconBlock
+                key={title}
+                icon={
+                  <img
+                    src={icon}
+                    alt={title}
+                    className="h-16 w-16 object-contain"
+                  />
+                }
+                title={title}
+                text={text}
+              />
             ))}
           </div>
         </div>
       </section>
+
       <ProcessSection />
+
+      <section className="bg-white py-14">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <h2 className="font-display text-4xl font-semibold uppercase">
+            Why Sellers Choose <span className="text-red-600">Tina</span>
+          </h2>
+
+          <p className="mx-auto mt-4 max-w-3xl text-lg text-neutral-700">
+            Selling a home is more than putting a sign in the yard. It takes the
+            right pricing strategy, marketing plan, communication, and
+            negotiation to help you achieve the best possible outcome.
+          </p>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="rounded-lg border p-6 shadow-sm">
+              <h3 className="font-display text-2xl font-semibold uppercase">
+                Honest Advice
+              </h3>
+              <p className="mt-3 text-neutral-600">
+                Clear guidance and realistic expectations so you can make
+                confident decisions.
+              </p>
+            </div>
+
+            <div className="rounded-lg border p-6 shadow-sm">
+              <h3 className="font-display text-2xl font-semibold uppercase">
+                Consistent Communication
+              </h3>
+              <p className="mt-3 text-neutral-600">
+                You'll always know what's happening and what comes next.
+              </p>
+            </div>
+
+            <div className="rounded-lg border p-6 shadow-sm">
+              <h3 className="font-display text-2xl font-semibold uppercase">
+                Proven Strategy
+              </h3>
+              <p className="mt-3 text-neutral-600">
+                A systematic approach designed to attract buyers and create
+                strong offers.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <TestimonialsSection title="What Sellers Say After Working With Me" />
+
+      <section className="bg-red-600 py-6 text-white">
+        <div className="mx-auto grid max-w-7xl items-center gap-4 px-6 text-center lg:grid-cols-[1fr_auto_auto_auto]">
+          <h2 className="font-display text-3xl font-semibold uppercase">
+            Thinking About Selling?<br />
+            Let's Talk About Your Options.
+          </h2>
+
+          <CTA outline onClick={() => window.dispatchEvent(new CustomEvent("openLeadPopup"))}>
+            Find Out What My Home Is Worth
+          </CTA>
+
+          <CTA outline onClick={() => setPage("contact")}>
+            Schedule A Call
+          </CTA>
+
+          <a href="tel:2518959322" className="text-2xl font-semibold">
+            Call or Text<br />
+            {phone}
+          </a>
+        </div>
+      </section>
+
       <Footer setPage={setPage} />
     </>
   );
