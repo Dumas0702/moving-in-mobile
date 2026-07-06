@@ -40,10 +40,34 @@ const ASSETS = {
   fullServiceIcon: `${BASE}full-service.png`,
   realtorEOL: `${BASE}REALTOREOL.PNG`,
   realtorEOLWhite: `${BASE}REALTOREOL-white.png`,
+  downtownMobile: `${BASE}downtown-mobile.jpg`,
+  midtownMobile: `${BASE}midtown-mobile.jpg`,
+  springHill: `${BASE}spring-hill.jpg`,
+  westMobile: `${BASE}west-mobile.jpg`,
+  saraland: `${BASE}saraland.jpg`,
+  semmes: `${BASE}semmes.jpg`,
+  spanishFort: `${BASE}spanish-fort.jpg`,
+  daphne: `${BASE}daphne.jpg`,
+  fairhope: `${BASE}fairhope.jpg`,
 };
 
 const phone = "(251) 895-9322";
-const navItems = ["Home", "About", "Sellers", "Buyers", "Neighborhoods", "Resources", "Contact"];
+const LEAD_CAPTURE_ENDPOINT = "https://formspree.io/f/xrewjodz";
+
+function getRequestLabel(value) {
+  if (typeof value === "string") return value;
+  return "General Inquiry";
+}
+
+function openLeadRequest(requestType = "General Inquiry") {
+  window.dispatchEvent(new CustomEvent("openLeadPopup", { detail: requestType }));
+}
+
+function openHomesSearch(area) {
+  window.dispatchEvent(new CustomEvent("openHomesPopup", { detail: area }));
+}
+
+const navItems = ["Home", "About", "Sellers", "Buyers", "Neighborhoods", "Rowe Report", "Resources", "Contact"];
 const socials = [
   {
     icon: ASSETS.facebook,
@@ -72,7 +96,8 @@ function cx(...classes) {
 }
 
 function CTA({ children, outline = false, onClick, className = "" }) {
-  const handleClick = onClick || (() => window.dispatchEvent(new CustomEvent("openLeadPopup")));
+  const requestType = getRequestLabel(children);
+  const handleClick = onClick || (() => openLeadRequest(requestType));
 
   return (
     <button
@@ -155,7 +180,7 @@ function Header({ page, setPage }) {
 
         <nav className="hidden items-center gap-8 font-display text-[17px] uppercase tracking-[0.08em] xl:flex 2xl:gap-10">
           {navItems.map((item) => {
-            const key = item.toLowerCase();
+           const key = item.toLowerCase().replace(/\s+/g, "");
             const active = page === key;
             return (
               <button
@@ -174,7 +199,7 @@ function Header({ page, setPage }) {
         </nav>
 
         <div className="hidden shrink-0 xl:ml-10 xl:block 2xl:ml-16">
-          <CTA onClick={() => goToPage("resources")} className="px-4 py-2 text-[11px] xl:px-6 xl:py-3 xl:text-sm">
+          <CTA className="px-4 py-2 text-[11px] xl:px-6 xl:py-3 xl:text-sm">
             Get Your Rowe Report
           </CTA>
         </div>
@@ -193,7 +218,7 @@ function Header({ page, setPage }) {
         <div className="border-t border-white/10 bg-black px-4 pb-4 xl:hidden">
           <div className="mx-auto grid max-w-7xl gap-2">
             {navItems.map((item) => {
-              const key = item.toLowerCase();
+              const key = item.toLowerCase().replace(/\s+/g, "");
               return (
                 <button
                   key={item}
@@ -208,7 +233,7 @@ function Header({ page, setPage }) {
                 </button>
               );
             })}
-            <CTA onClick={() => goToPage("resources")} className="mt-2 w-full">
+            <CTA className="mt-2 w-full">
               Get Your Rowe Report
             </CTA>
           </div>
@@ -246,33 +271,121 @@ function IconBlock({ icon, title, text, dark = false }) {
 
 function FormPanel({ title, button = "Get My Free Report", dark = true }) {
   const words = title.split(" ");
-  const fields = ["Name", "Phone Number", "Email Address", "Property Address"];
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const fields = [
+    ["name", "Name", "text", true],
+    ["phone", "Phone Number", "tel", false],
+    ["email", "Email Address", "email", true],
+    ["address", "Property Address", "text", false],
+  ];
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setSubmitError("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(LEAD_CAPTURE_ENDPOINT, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      setSubmitted(true);
+      form.reset();
+    } catch (error) {
+      setSubmitError("Something went wrong. Please try again or call Tina directly.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className={cx("rounded-lg p-7 shadow-2xl", dark ? "bg-black text-white" : "bg-white text-black")}>
-      <h3 className="font-display text-3xl font-semibold uppercase leading-tight">
-        {words.map((word, idx) => (
-          <React.Fragment key={`${word}-${idx}`}>
-            <span className={word.toLowerCase().includes("free") || word.toLowerCase().includes("rowe") ? "text-red-600" : ""}>{word}</span>{" "}
-          </React.Fragment>
-        ))}
-      </h3>
-      <div className="mt-5 grid gap-3">
-        {fields.map((field) => (
-          <input
-            key={field}
-            className="rounded border border-neutral-300 bg-white px-4 py-3 text-sm text-black outline-none"
-            placeholder={field}
-          />
-        ))}
-        <textarea
-          className="min-h-28 rounded border border-neutral-300 bg-white px-4 py-3 text-sm text-black outline-none"
-          placeholder="How can Tina help?"
-        />
-        <CTA className="w-full" onClick={() => window.dispatchEvent(new CustomEvent("submitLeadForm"))}>{button}</CTA>
-        <button type="button" className={cx("text-center text-sm underline", dark ? "text-white/75" : "text-neutral-500")}>No thanks, continue browsing</button>
-        <p className={cx("text-center text-xs", dark ? "text-white/70" : "text-neutral-500")}>🔒 We respect your privacy. No spam, ever.</p>
-      </div>
+      {submitted ? (
+        <div className="py-8 text-center">
+          <h3 className="font-display text-3xl font-semibold uppercase">
+            Thank You!
+          </h3>
+          <p className={cx("mt-3 text-sm leading-6", dark ? "text-white/75" : "text-neutral-600")}>
+            Your information was sent successfully. Tina will be in touch soon.
+          </p>
+          <button
+            type="button"
+            onClick={() => setSubmitted(false)}
+            className="mt-6 rounded-md bg-red-600 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-red-950/25 transition hover:bg-red-700"
+          >
+            Submit Another Request
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <input type="hidden" name="requestType" value={title} />
+          <input type="hidden" name="source" value="Moving in Mobile website embedded form" />
+
+          <h3 className="font-display text-3xl font-semibold uppercase leading-tight">
+            {words.map((word, idx) => (
+              <React.Fragment key={`${word}-${idx}`}>
+                <span className={word.toLowerCase().includes("free") || word.toLowerCase().includes("rowe") ? "text-red-600" : ""}>{word}</span>{" "}
+              </React.Fragment>
+            ))}
+          </h3>
+
+          <div className="mt-5 grid gap-3">
+            {fields.map(([name, placeholder, type, required]) => (
+              <input
+                key={name}
+                name={name}
+                type={type}
+                required={required}
+                className="rounded border border-neutral-300 bg-white px-4 py-3 text-sm text-black outline-none"
+                placeholder={placeholder}
+              />
+            ))}
+            <textarea
+              name="need"
+              className="min-h-28 rounded border border-neutral-300 bg-white px-4 py-3 text-sm text-black outline-none"
+              placeholder="How can Tina help?"
+            />
+
+            {submitError ? (
+              <p className="rounded bg-red-50 px-3 py-2 text-center text-sm text-red-700">
+                {submitError}
+              </p>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full rounded-md bg-red-600 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-red-950/25 transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {submitting ? "Submitting..." : button}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => openLeadRequest(title)}
+              className={cx("text-center text-sm underline", dark ? "text-white/75" : "text-neutral-500")}
+            >
+              Open larger form instead
+            </button>
+
+            <p className={cx("text-center text-xs", dark ? "text-white/70" : "text-neutral-500")}>🔒 We respect your privacy. No spam, ever.</p>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
@@ -316,7 +429,7 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
           ) : null}
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <CTA>{button}</CTA>
-            <CTA outline onClick={() => window.dispatchEvent(new CustomEvent("navigatePage", { detail: "resources" }))}>Get Your Free Rowe Report</CTA>
+            <CTA outline>Get Your Free Rowe Report</CTA>
           </div>
           <p className="mt-5 text-sm text-white/80">Or call/text me directly</p>
           <p className="text-3xl font-semibold tracking-tight"><a href="tel:2518959322">☎ {phone}</a></p>
@@ -387,20 +500,81 @@ function ProcessSection() {
 }
 
 function TestimonialsSection({ title }) {
-  const words = title.split(" ");
-  const lastWord = words[words.length - 1];
-  const firstWords = words.slice(0, -1).join(" ");
+  const reviews = [
+    {
+      name: "nikkistruth",
+      text: "Working with Tina Rowe from Keller Williams was an absolute pleasure! Her knowledgeable agent insights into the real estate market gave us confidence in our investment. She went above and beyond, making the real estate process smooth and as stress-free as the process of buying a new home can be. If you’re looking for a phenomenal agent who understands the local market, we highly recommend her!",
+    },
+    {
+      name: "Jansyn Wiggins",
+      text: "Tina goes above and beyond to get a deal closed! Such a great agent :)",
+    },
+    {
+      name: "Sandie Leonard",
+      text: "Tina has been great to work with. She is very responsive and has exceeded all of our expectations. You will not be disappointed.",
+    },
+    {
+      name: "Lauren Williams",
+      text: "If you’re looking for a trustworthy, hardworking, and truly exceptional real estate professional, I cannot recommend Tina Rowe enough! Her attention to detail and commitment to doing what’s right for her clients set her apart in every way!",
+    },
+    {
+      name: "Scharlene Taylor",
+      text: "From the very beginning Tina was not only very knowledgeable and professional but treated us as though we were family not just clients. Our property was sold in 22 days… she went above and beyond what we expected. She was recommended to us and we would HIGHLY recommend her to anyone. Thank you Tina for everything.",
+    },
+    {
+      name: "Carolyn Brockmiller",
+      text: "We re very impressed with Tina. She’s a real go getter. She has been a wonderful agent for us!!!! Highly recommend!!!!!!!!",
+    },
+    {
+      name: "Sarah McGallagher",
+      text: "Tina was fantastic to work with, I appreciate her cooperation with this transaction… it meant the world to my buyers and we are so thankful!",
+    },
+  ];
+
+  const scrollingReviews = [...reviews, ...reviews];
 
   return (
-    <section className="bg-[#06101a] py-14 text-white">
+    <section className="overflow-hidden bg-[#06101a] py-14 text-white">
+      <style>{`
+        @keyframes testimonialScroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+
+        .testimonial-track {
+          animation: testimonialScroll 55s linear infinite;
+        }
+
+        .testimonial-wrapper:hover .testimonial-track {
+          animation-play-state: paused;
+        }
+      `}</style>
+
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-center font-display text-4xl font-semibold uppercase">
-          {firstWords} <span className="text-red-600">{lastWord}</span>
+          {title}
         </h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          <ReviewCard name="Michael T." text="Our home sat on the market with another agent. Tina stepped in and had it under contract in weeks." />
-          <ReviewCard name="Jennifer R." text="She told us exactly what was wrong, fixed it, and got it SOLD for more than we expected." />
-          <ReviewCard name="David K." text="If your home didn’t sell, call Tina before you do anything else." />
+
+        <div className="testimonial-wrapper mt-8 overflow-hidden">
+          <div className="testimonial-track flex w-max gap-6">
+            {scrollingReviews.map((review, index) => (
+              <div
+                key={`${review.name}-${index}`}
+                className="w-[340px] shrink-0 rounded-lg border border-white/10 bg-white p-6 text-center text-black shadow-md"
+              >
+                <div className="text-lg tracking-[0.15em] text-red-600">
+                  ★★★★★
+                </div>
+
+                <p className="mt-4 text-sm leading-6 text-neutral-700">
+                  “{review.text}”
+                </p>
+
+                <p className="mt-4 font-semibold">— {review.name}</p>
+                <p className="text-sm text-neutral-600">Google Review</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -423,7 +597,7 @@ function Footer({ setPage }) {
 
           <button
             type="button"
-            onClick={() => setPage("contact")}
+            onClick={() => openLeadRequest("Schedule a Call")}
             className="font-semibold uppercase text-red-600 transition hover:text-red-700"
           >
             📅 Schedule a Call
@@ -435,7 +609,7 @@ function Footer({ setPage }) {
 
           <button
             type="button"
-            onClick={() => setPage("resources")}
+            onClick={() => openLeadRequest("Get Your Free Report")}
             className="font-semibold uppercase text-red-600 transition hover:text-red-700"
           >
             📄 Get Your Free Report
@@ -493,7 +667,7 @@ function Footer({ setPage }) {
               <button
                 key={item}
                 type="button"
-                onClick={() => setPage(item.toLowerCase())}
+                onClick={() => setPage(item.toLowerCase().replace(/\s+/g, ""))}
                 className="text-left transition hover:text-red-500"
               >
                 {item}
@@ -686,7 +860,7 @@ function HomePage({ setPage }) {
           </div>
           <div className="flex flex-col gap-3">
             <CTA>Schedule a Call With Tina</CTA>
-            <CTA outline onClick={() => setPage("resources")}>Get The Rowe Report First</CTA>
+            <CTA outline>Get The Rowe Report First</CTA>
             <p className="text-3xl font-semibold"><a href="tel:2518959322">☎ {phone}</a></p>
           </div>
         </div>
@@ -906,7 +1080,7 @@ function SellersPage({ setPage }) {
 
             <div className="mt-8 flex flex-wrap gap-4">
               <CTA>Find Out Why Your Home Didn't Sell</CTA>
-              <CTA outline onClick={() => setPage("resources")}>
+              <CTA outline>
                 Get Your Free Rowe Report
               </CTA>
             </div>
@@ -1007,12 +1181,12 @@ function SellersPage({ setPage }) {
             Let's Talk About Your Options.
           </h2>
 
-          <CTA outline onClick={() => window.dispatchEvent(new CustomEvent("openLeadPopup"))}>
+          <CTA outline>
             Find Out What My Home Is Worth
           </CTA>
 
-          <CTA outline onClick={() => setPage("contact")}>
-            Schedule A Call
+          <CTA outline>
+            Get Your Free Rowe Report
           </CTA>
 
           <a href="tel:2518959322" className="text-2xl font-semibold">
@@ -1268,11 +1442,11 @@ function BuyersPage({ setPage }) {
             If You Have The Right Agent
           </h2>
 
-          <CTA outline onClick={() => window.dispatchEvent(new CustomEvent("openLeadPopup"))}>
+          <CTA outline>
             Start My Home Search
           </CTA>
 
-          <CTA outline onClick={() => setPage("contact")}>
+          <CTA outline>
             Talk To Tina First
           </CTA>
 
@@ -1288,48 +1462,183 @@ function BuyersPage({ setPage }) {
   );
 }
 function NeighborhoodsPage({ setPage }) {
-  const areas = ["Downtown Mobile", "Midtown", "The Spring Hill Area", "West Mobile", "Point Clear"];
+  const neighborhoods = [
+    {
+      name: "Downtown Mobile",
+      image: ASSETS.downtownMobile,
+      bestFor: "Historic charm, restaurants, events, nightlife",
+      description:
+        "Downtown Mobile is the heart of the city, with historic architecture, restaurants, entertainment, Mardi Gras culture, and walkable access to Dauphin Street, Bienville Square, and the waterfront.",
+      homeStyle: "Historic condos, renovated homes, lofts, townhomes",
+      lifestyle: "Walkable, energetic, cultural, historic",
+      homesUrl: "https://www.homes.com/mobile-al/downtown-mobile-neighborhood/",
+    },
+    {
+      name: "Midtown Mobile",
+      image: ASSETS.midtownMobile,
+      bestFor: "Historic homes, oak-lined streets, classic Mobile character",
+      description:
+        "Midtown is one of Mobile’s most recognizable residential areas, known for tree-lined streets, older homes, front porches, and convenient access to downtown, hospitals, restaurants, and local parks.",
+      homeStyle: "Craftsman homes, cottages, bungalows, historic renovations",
+      lifestyle: "Charming, established, walkable, community-oriented",
+      homesUrl: "https://www.homes.com/mobile-al/midtown-mobile-neighborhood/",
+    },
+    {
+      name: "Spring Hill",
+      image: ASSETS.springHill,
+      bestFor: "Established neighborhoods, shopping, schools, convenience",
+      description:
+        "Spring Hill offers a refined residential feel with established homes, shopping, restaurants, medical access, and landmarks like Spring Hill College. It is one of Mobile’s most desirable long-term areas.",
+      homeStyle: "Traditional homes, estate-style properties, updated ranch homes",
+      lifestyle: "Established, convenient, polished, residential",
+      homesUrl: "https://www.homes.com/mobile-al/spring-hill-neighborhood/",
+    },
+    {
+      name: "West Mobile",
+      image: ASSETS.westMobile,
+      bestFor: "More space, newer homes, schools, suburban convenience",
+      description:
+        "West Mobile is popular with buyers who want suburban neighborhoods, larger lots, newer construction options, shopping, parks, and convenient access to major roads while staying within the Mobile area.",
+      homeStyle: "Newer subdivisions, brick homes, larger lots, family homes",
+      lifestyle: "Suburban, practical, growing, family-friendly",
+      homesUrl: "https://www.homes.com/mobile-al/",
+    },
+    {
+      name: "Saraland",
+      image: ASSETS.saraland,
+      bestFor: "Schools, community feel, North Mobile convenience",
+      description:
+        "Saraland is a growing North Mobile community known for its strong local identity, neighborhood feel, and convenient access to Mobile, I-65, and industrial/employment corridors.",
+      homeStyle: "Brick homes, subdivisions, traditional single-family homes",
+      lifestyle: "Community-focused, convenient, suburban, family-oriented",
+      homesUrl: "https://www.homes.com/saraland-al/",
+    },
+    {
+      name: "Semmes",
+      image: ASSETS.semmes,
+      bestFor: "Space, quieter living, rural-suburban feel",
+      description:
+        "Semmes offers a slower pace with more room to spread out, local parks, community events, and a mix of established homes and newer construction while still staying connected to the Mobile metro area.",
+      homeStyle: "Larger lots, brick homes, rural properties, newer builds",
+      lifestyle: "Quiet, spacious, relaxed, outdoorsy",
+      homesUrl: "https://www.homes.com/semmes-al/",
+    },
+    {
+      name: "Spanish Fort",
+      image: ASSETS.spanishFort,
+      bestFor: "Eastern Shore access, schools, shopping, commute convenience",
+      description:
+        "Spanish Fort combines Eastern Shore living with quick access to Mobile, shopping at the Eastern Shore Centre, outdoor recreation, and neighborhoods that appeal to buyers wanting convenience and space.",
+      homeStyle: "Subdivisions, newer homes, traditional brick homes",
+      lifestyle: "Convenient, active, suburban, commuter-friendly",
+      homesUrl: "https://www.homes.com/spanish-fort-al/",
+    },
+    {
+      name: "Daphne",
+      image: ASSETS.daphne,
+      bestFor: "Bay access, Eastern Shore lifestyle, convenience",
+      description:
+        "Daphne offers a central Eastern Shore location with Mobile Bay views, established neighborhoods, parks, restaurants, shopping, and an easy commute to Mobile or other Baldwin County communities.",
+      homeStyle: "Traditional homes, bay-area properties, subdivisions, townhomes",
+      lifestyle: "Coastal, convenient, active, established",
+      homesUrl: "https://www.homes.com/daphne-al/",
+    },
+    {
+      name: "Fairhope",
+      image: ASSETS.fairhope,
+      bestFor: "Downtown charm, bayfront parks, boutiques, coastal lifestyle",
+      description:
+        "Fairhope is known for its walkable downtown, flower-lined streets, bayfront parks, independent shops, restaurants, galleries, and the Fairhope Municipal Pier. It is one of the most sought-after communities on the Eastern Shore.",
+      homeStyle: "Cottages, custom homes, historic homes, bay-area properties",
+      lifestyle: "Charming, walkable, coastal, artsy",
+      homesUrl: "https://www.homes.com/fairhope-al/",
+    },
+  ];
 
   return (
     <>
       <Hero
         title="Find Your Perfect Neighborhood"
-        redTitle="In Mobile, AL"
-        text="Every neighborhood has its own style and story. I’ll help you find the one that fits your lifestyle and goals."
+        redTitle="In Mobile & Baldwin County"
+        text="Every community has its own personality, pace, and lifestyle. Explore a few of the most popular areas Tina serves, then reach out when you're ready to talk through the best fit for your move."
         button="Search Neighborhoods"
       />
 
-      <section className="bg-white py-10">
+      <section className="bg-white py-14">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="font-display text-4xl font-semibold uppercase">
-            Popular Neighborhoods in <span className="text-red-600">Mobile</span>
-          </h2>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Local Area Guide
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-semibold uppercase">
+              Popular Neighborhoods & Communities
+            </h2>
+            <p className="mt-4 text-neutral-600">
+              Use this guide as a starting point. When IDX search is available,
+              each button can connect directly to homes for sale in that specific area.
+            </p>
+          </div>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-5">
-            {areas.map((area, index) => (
-              <div key={area} className="overflow-hidden rounded-lg border bg-white shadow-lg">
-                <img
-                  src={
-                    index === 0
-                      ? ASSETS.skyline
-                      : "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=700&q=80"
-                  }
-                  alt={area}
-                  className="h-40 w-full object-cover"
-                />
+          <div className="mt-10 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+            {neighborhoods.map((area) => (
+              <div
+                key={area.name}
+                className="flex overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <div className="flex w-full flex-col">
+                  <img
+                    src={area.image}
+                    alt={`${area.name} neighborhood`}
+                    className="h-56 w-full object-cover"
+                  />
 
-                <div className="p-5 text-center">
-                  <h3 className="font-display text-xl font-semibold uppercase">{area}</h3>
-                  <p className="mt-2 text-sm text-neutral-700">
-                    Homes, lifestyle, market insight, and local guidance.
-                  </p>
-                  <button className="mt-5 w-full rounded border py-2 font-bold uppercase hover:bg-red-600 hover:text-white">
-                    View Homes
-                  </button>
+                  <div className="flex flex-1 flex-col p-6">
+                    <div className="mb-4 inline-flex w-fit rounded-full bg-red-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-600">
+                      Best For: {area.bestFor}
+                    </div>
+
+                    <h3 className="font-display text-3xl font-semibold uppercase">
+                      {area.name}
+                    </h3>
+
+                    <p className="mt-3 text-sm leading-6 text-neutral-700">
+                      {area.description}
+                    </p>
+
+                    <div className="mt-5 grid gap-3 text-sm">
+                      <div>
+                        <p className="font-bold uppercase text-neutral-900">
+                          Common Home Styles
+                        </p>
+                        <p className="mt-1 text-neutral-600">{area.homeStyle}</p>
+                      </div>
+
+                      <div>
+                        <p className="font-bold uppercase text-neutral-900">
+                          Lifestyle Feel
+                        </p>
+                        <p className="mt-1 text-neutral-600">{area.lifestyle}</p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => openHomesSearch(area)}
+                      className="mt-6 w-full rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+                    >
+                      View Homes in {area.name}
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+
+          <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-6 text-neutral-500">
+            Neighborhood information is provided as a helpful overview. Buyers should verify schools,
+            commute times, zoning, HOA details, insurance, and property-specific information before
+            making a purchase decision.
+          </p>
         </div>
       </section>
 
@@ -1337,9 +1646,135 @@ function NeighborhoodsPage({ setPage }) {
     </>
   );
 }
-function ResourcesPage({ setPage }) {
-  const resources = ["Market Overview", "Pricing Trends", "Sales Activity", "Seller's Advantage", "Neighborhood Breakdown", "Local Insights"];
+function RoweReportPage({ setPage }) {
+  const videos = [
+    {
+      title: "The Rowe Report",
+      id: "DWIVXuEWUf0",
+    },
+    {
+      title: "The Rowe Report",
+      id: "w-kBKuvxwZs",
+    },
+    {
+      title: "The Rowe Report",
+      id: "4EBHmQ5RsY8",
+    },
+    {
+      title: "The Rowe Report",
+      id: "cUr9FBQ1Dog",
+    },
+    {
+      title: "The Rowe Report",
+      id: "0HcOGSsuv-E",
+    },
+  ];
 
+  return (
+    <>
+      <section className="relative overflow-hidden bg-black text-white">
+        <img
+          src={ASSETS.skyline}
+          alt="Mobile Alabama"
+          className="absolute inset-0 h-full w-full object-cover opacity-50"
+        />
+
+        <div className="absolute inset-0 bg-black/70" />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-24 text-center">
+          <img
+            src={ASSETS.logo}
+            alt="The Rowe Report"
+            className="mx-auto h-48 w-auto object-contain"
+          />
+
+          <h1 className="mt-6 font-display text-5xl font-semibold uppercase">
+            The <span className="text-red-600">Rowe Report</span>
+          </h1>
+
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/80">
+            Real estate advice, market updates, homeowner tips, and local insight
+            from Tina Rowe and Keller Williams Mobile.
+          </p>
+
+          <a
+            href="https://www.youtube.com/@TheRoweReportMobile"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase tracking-wide transition hover:bg-red-700"
+          >
+            Visit YouTube Channel
+          </a>
+        </div>
+      </section>
+
+
+      <section className="bg-white py-14">
+        <div className="mx-auto max-w-7xl px-6">
+
+          <h2 className="text-center font-display text-4xl font-semibold uppercase">
+            Latest Episodes
+          </h2>
+
+          <div className="mt-10 grid gap-8 md:grid-cols-2">
+            {videos.map((video) => (
+              <div
+                key={video.id}
+                className="overflow-hidden rounded-xl border bg-white shadow-lg"
+              >
+                <div className="aspect-video">
+                  <iframe
+                    className="h-full w-full"
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+
+                <div className="p-5">
+                  <h3 className="font-display text-xl font-semibold uppercase">
+                    The Rowe Report
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-6 text-neutral-600">
+                    Tips, strategies, and conversations to help Mobile area
+                    buyers and sellers make confident decisions.
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+
+      <section className="bg-black py-12 text-center text-white">
+        <h2 className="font-display text-4xl font-semibold uppercase">
+          Stay Updated With Tina
+        </h2>
+
+        <p className="mx-auto mt-4 max-w-xl text-white/70">
+          Subscribe to The Rowe Report for new episodes, market updates,
+          and local real estate advice.
+        </p>
+
+        <a
+          href="https://www.youtube.com/@TheRoweReportMobile"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase"
+        >
+          Subscribe On YouTube
+        </a>
+      </section>
+
+      <Footer setPage={setPage} />
+    </>
+  );
+}
+function ResourcesPage({ setPage }) {
   const vendorGroups = [
     ["Appliance Repair", [["ASAP Appliance Repair", "(251) 510-0088"], ["Appliance Tech of Mobile", "(251) 525-3496"], ["Coastal Repair Solutions", "(251) 721-6177"]]],
     ["Appraisers", [["Chad Anderson", "(251) 510-5296"], ["Michael Holifield", "(251) 554-2668"], ["Stacey Wade", "(251) 661-8440"], ["Tripp Baldwin", "(251) 550-5390"]]],
@@ -1365,35 +1800,23 @@ function ResourcesPage({ setPage }) {
   return (
     <>
       <Hero
-        title="The Rowe Report"
-        redTitle="Real Results."
-        text="The Rowe Report gives you local market data, neighborhood breakdowns, pricing trends, and expert insights you need to make a smart move."
-        button="Get Your Rowe Report"
+        title="Resources You Can Use"
+        redTitle="Before, During, And After Your Move."
+        text="From trusted local vendors to helpful guidance, this page is designed to give Mobile and Baldwin County buyers and sellers a practical place to start."
+        button="Ask Tina For A Recommendation"
       />
-
-      <section className="bg-white py-16">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_.9fr]">
-          <div>
-            <h2 className="font-display text-4xl font-semibold uppercase">
-              What's Inside The <span className="text-red-600">Rowe Report</span>
-            </h2>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              {resources.map((item) => (
-                <IconBlock key={item} icon="●" title={item} text="Helpful insight to make a confident decision." />
-              ))}
-            </div>
-          </div>
-          <FormPanel title="Get Your Free Rowe Report" button="Get My Home Value + Report" />
-        </div>
-      </section>
 
       <section className="bg-neutral-50 py-16">
         <div className="mx-auto max-w-5xl px-6">
           <div className="mb-10 text-center">
-            <p className="font-semibold uppercase tracking-widest text-red-600">Local Resources</p>
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Local Resources
+            </p>
+
             <h2 className="font-display text-4xl font-semibold uppercase">
               Tina's <span className="text-red-600">Vendor List</span>
             </h2>
+
             <p className="mx-auto mt-4 max-w-2xl text-neutral-600">
               Browse local vendors by category. Tap a phone number to call directly.
             </p>
@@ -1401,17 +1824,31 @@ function ResourcesPage({ setPage }) {
 
           <div className="space-y-4">
             {vendorGroups.map(([category, vendors]) => (
-              <details key={category} className="group overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
+              <details
+                key={category}
+                className="group overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm"
+              >
                 <summary className="flex cursor-pointer list-none items-center justify-between bg-black px-6 py-4 font-display text-xl font-semibold uppercase tracking-wide text-white transition hover:bg-red-600">
                   {category}
-                  <span className="ml-4 text-2xl transition group-open:rotate-45">+</span>
+                  <span className="ml-4 text-2xl transition group-open:rotate-45">
+                    +
+                  </span>
                 </summary>
 
                 <div className="divide-y divide-neutral-100 px-6">
                   {vendors.map(([name, vendorPhone]) => (
-                    <div key={`${category}-${name}`} className="grid gap-2 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
-                      <span className="font-semibold text-neutral-900">{name}</span>
-                      <a href={phoneLink(vendorPhone)} className="font-semibold text-red-600 hover:text-black hover:underline">
+                    <div
+                      key={`${category}-${name}`}
+                      className="grid gap-2 py-4 sm:grid-cols-[1fr_auto] sm:items-center"
+                    >
+                      <span className="font-semibold text-neutral-900">
+                        {name}
+                      </span>
+
+                      <a
+                        href={phoneLink(vendorPhone)}
+                        className="font-semibold text-red-600 hover:text-black hover:underline"
+                      >
                         {vendorPhone}
                       </a>
                     </div>
@@ -1422,70 +1859,113 @@ function ResourcesPage({ setPage }) {
           </div>
 
           <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-6 text-neutral-500">
-            Vendor list is provided as a helpful resource only. Clients should independently verify licensing, insurance, availability, pricing, and suitability before hiring any vendor.
+            Vendor list is provided as a helpful resource only. Clients should independently
+            verify licensing, insurance, availability, pricing, and suitability before hiring
+            any vendor.
           </p>
         </div>
       </section>
 
-      <section className="bg-neutral-50 py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 md:grid-cols-2">
-          <div>
-            <h2 className="font-display text-3xl font-semibold uppercase">
-              Recent <span className="text-red-600">Rowe Report</span> Topics
-            </h2>
-            {[
-              "Why Homes in Mobile Aren't Selling Right Now",
-              "What Homes Are Actually Selling For",
-              "The #1 Mistake That Keeps Homes From Selling",
-              "Is Now Still A Good Time To Sell in Mobile?",
-            ].map((topic) => (
-              <div key={topic} className="mt-3 rounded border bg-white p-4 font-semibold shadow-sm">
-                {topic} →
-              </div>
-            ))}
-          </div>
-          <img src={ASSETS.van} alt="The Rowe Report Van" className="rounded-lg shadow-xl" />
-        </div>
-      </section>
-
       <Footer setPage={setPage} />
     </>
   );
 }
-
 function ContactPage({ setPage }) {
   return (
     <>
-      <Hero title="Let's Talk About Your Next Move —" redTitle="And Get It Right." text="Whether your home didn't sell, you're thinking about buying, or just have questions — I'll give you clear, honest answers so you can move forward with confidence." button="Get My Plan" />
+      <Hero
+        title="Let's Talk About Your Next Move —"
+        redTitle="And Get It Right."
+        text="Whether your home didn't sell, you're thinking about buying, or just have questions — I'll give you clear, honest answers so you can move forward with confidence."
+        button="Get My Plan"
+      />
+
       <section className="bg-white py-16">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_.9fr]">
           <div>
-            <h2 className="font-display text-4xl font-semibold uppercase">Tell Me What You Need— <span className="text-red-600">I'll Take It From There.</span></h2>
-            <div className="mt-6 grid gap-3">
-              <input className="rounded border p-3" placeholder="First Name" />
-              <input className="rounded border p-3" placeholder="Email Address" />
-              <input className="rounded border p-3" placeholder="Phone Number" />
-              <textarea className="h-36 rounded border p-3" placeholder="How can I help you?" />
-              <CTA>Get My Plan</CTA>
+            <h2 className="font-display text-4xl font-semibold uppercase">
+              Tell Me What You Need—{" "}
+              <span className="text-red-600">I'll Take It From There.</span>
+            </h2>
+
+            <div className="mt-6">
+              <FormPanel
+                title="Tell Me What You Need"
+                button="Get My Plan"
+                dark={false}
+              />
             </div>
           </div>
+
           <div className="rounded-lg bg-neutral-50 p-8 shadow-xl">
-            <h2 className="font-display text-3xl font-semibold uppercase">Prefer To Reach Me <span className="text-red-600">Directly?</span></h2>
-            <p className="mt-6 text-lg leading-9">☎ <a href="tel:2518959322"><b>{phone}</b></a><br />✉ <a href="mailto:tinarowe@kw.com" className="font-bold text-red-600 hover:text-red-700">tinarowe@kw.com</a><br />📍 <a href="https://maps.apple.com/?address=1210%20Hillcrest%20Road,%20Mobile,%20AL%2036695" target="_blank" rel="noreferrer" className="font-bold hover:text-red-500">1210 Hillcrest Road<br />Mobile, AL 36695</a><br />⏰ <b>24/7</b></p>
+            <h2 className="font-display text-3xl font-semibold uppercase">
+              Prefer To Reach Me <span className="text-red-600">Directly?</span>
+            </h2>
+
+            <p className="mt-6 text-lg leading-9">
+              ☎{" "}
+              <a href="tel:2518959322">
+                <b>{phone}</b>
+              </a>
+              <br />
+              ✉{" "}
+              <a
+                href="mailto:tinarowe@kw.com"
+                className="font-bold text-red-600 hover:text-red-700"
+              >
+                tinarowe@kw.com
+              </a>
+              <br />
+              📍{" "}
+              <a
+                href="https://maps.apple.com/?address=1210%20Hillcrest%20Road,%20Mobile,%20AL%2036695"
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold text-red-600 hover:text-red-700"
+              >
+                1210 Hillcrest Road
+                <br />
+                Mobile, AL 36695
+              </a>
+            </p>
+
+            <div className="mt-8 rounded-lg bg-black p-6 text-white">
+              <h3 className="font-display text-2xl font-semibold uppercase">
+                Not Sure Where To Start?
+              </h3>
+
+              <p className="mt-3 text-sm leading-6 text-white/75">
+                Send Tina a quick message with what you're trying to do — selling,
+                buying, relocating, or just exploring your options — and she’ll help
+                you figure out the next best step.
+              </p>
+
+              <CTA className="mt-5 w-full">
+                Schedule A Call With Tina
+              </CTA>
+            </div>
           </div>
         </div>
       </section>
+
       <Footer setPage={setPage} />
     </>
   );
 }
-
 export default function MovingInMobileMockup() {
   const [page, setPage] = useState("home");
   const [showPopup, setShowPopup] = useState(false);
+  const [leadRequestType, setLeadRequestType] = useState("General Inquiry");
+  const [popupSubmitted, setPopupSubmitted] = useState(false);
+  const [popupSubmitting, setPopupSubmitting] = useState(false);
+  const [popupSubmitError, setPopupSubmitError] = useState("");
+  const [homesPopup, setHomesPopup] = useState(null);
   const popupDismissedRef = useRef(false);
 
-  const openLeadPopup = () => {
+  const openLeadPopup = (requestType = "General Inquiry") => {
+    setLeadRequestType(getRequestLabel(requestType));
+    setPopupSubmitted(false);
+    setPopupSubmitError("");
     setShowPopup(true);
   };
 
@@ -1494,10 +1974,42 @@ export default function MovingInMobileMockup() {
     setShowPopup(false);
   };
 
+  const handlePopupSubmit = async (event) => {
+    event.preventDefault();
+    setPopupSubmitting(true);
+    setPopupSubmitError("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(LEAD_CAPTURE_ENDPOINT, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      setPopupSubmitted(true);
+      form.reset();
+    } catch (error) {
+      setPopupSubmitError("Something went wrong. Please try again or call Tina directly.");
+    } finally {
+      setPopupSubmitting(false);
+    }
+  };
+
   useEffect(() => {
     setShowPopup(false);
+    setPopupSubmitted(false);
+    setPopupSubmitError("");
 
-    const handleOpenLeadPopup = () => openLeadPopup();
+    const handleOpenLeadPopup = (event) => openLeadPopup(event.detail || "General Inquiry");
     window.addEventListener("openLeadPopup", handleOpenLeadPopup);
 
     const handleNavigatePage = (event) => {
@@ -1508,15 +2020,17 @@ export default function MovingInMobileMockup() {
     };
     window.addEventListener("navigatePage", handleNavigatePage);
 
-    const handleSubmitLeadForm = () => {
-      alert("Thank you! Tina will reach out soon.");
+    const handleOpenHomesPopup = (event) => {
+      if (event.detail) {
+        setHomesPopup(event.detail);
+      }
     };
-    window.addEventListener("submitLeadForm", handleSubmitLeadForm);
+    window.addEventListener("openHomesPopup", handleOpenHomesPopup);
 
     const delay = 6500;
     const timer = window.setTimeout(() => {
       if (!popupDismissedRef.current) {
-        setShowPopup(true);
+        openLeadPopup("Initial Website Visit");
       }
     }, delay);
 
@@ -1524,7 +2038,7 @@ export default function MovingInMobileMockup() {
       window.clearTimeout(timer);
       window.removeEventListener("openLeadPopup", handleOpenLeadPopup);
       window.removeEventListener("navigatePage", handleNavigatePage);
-      window.removeEventListener("submitLeadForm", handleSubmitLeadForm);
+      window.removeEventListener("openHomesPopup", handleOpenHomesPopup);
     };
   }, [page]);
 
@@ -1535,6 +2049,7 @@ export default function MovingInMobileMockup() {
     buyers: <BuyersPage setPage={setPage} />,
     neighborhoods: <NeighborhoodsPage setPage={setPage} />,
     resources: <ResourcesPage setPage={setPage} />,
+    rowereport: <RoweReportPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
   };
 
@@ -1547,27 +2062,136 @@ export default function MovingInMobileMockup() {
         .font-hand { font-family: Caveat, "Comic Sans MS", cursive; }
       `}</style>
 
+      {homesPopup ? (
+        <div className="fixed inset-0 z-[105] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+          <div className="relative max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-xl bg-white p-5 text-center shadow-2xl sm:p-8">
+            <button
+              type="button"
+              onClick={() => setHomesPopup(null)}
+              className="absolute right-4 top-3 text-3xl leading-none text-neutral-500 transition hover:text-black"
+              aria-label="Close homes search popup"
+            >
+              ×
+            </button>
+
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Homes.com Search
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-semibold uppercase leading-tight sm:text-4xl">
+              View Homes in <span className="text-red-600">{homesPopup.name}</span>
+            </h2>
+
+            <div className="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 shadow-inner">
+              <div className="flex min-h-[300px] flex-col items-center justify-center gap-4 p-6 sm:min-h-[380px]">
+                <div className="text-6xl">⌂</div>
+                <p className="max-w-2xl text-neutral-700">
+                  Homes.com search results will open in a new tab so visitors can explore the active map and listings for this area. Once Tina’s IDX feed is available, this same button can be replaced with an embedded MLS search.
+                </p>
+
+                <a
+                  href={homesPopup.homesUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+                >
+                  Open Homes.com Map
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setHomesPopup(null);
+                  openLeadRequest(`Have Tina send me homes in ${homesPopup.name}`);
+                }}
+                className="rounded border border-red-600 px-6 py-3 text-sm font-bold uppercase tracking-wide text-red-600 transition hover:bg-red-600 hover:text-white"
+              >
+                Have Tina Send Me Homes Here
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setHomesPopup(null)}
+                className="rounded border border-neutral-300 px-6 py-3 text-sm font-bold uppercase tracking-wide text-neutral-700 transition hover:bg-neutral-100"
+              >
+                Continue Browsing
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       {showPopup ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 px-4 backdrop-blur-[1px]">
           <div className="relative max-h-[88vh] w-full max-w-xl overflow-y-auto rounded-lg bg-white p-4 text-center shadow-2xl sm:p-8">
             <button type="button" onClick={closeLeadPopup} className="absolute right-4 top-3 text-2xl">×</button>
-            <h2 className="font-display text-2xl uppercase leading-tight sm:text-4xl">Let Tina Help With <span className="text-red-600">Your Next Move</span></h2>
-            <p className="mt-2 text-sm text-neutral-600 sm:mt-3 sm:text-base">Tell Tina what you need — home value, Rowe Report, listings, selling strategy, or general questions.</p>
-            <div className="mt-4 grid gap-2 text-left sm:mt-5 sm:gap-3">
-              <input className="rounded border p-3" placeholder="Name" />
-              <input className="rounded border p-3" placeholder="Phone Number" />
-              <input className="rounded border p-3" placeholder="Email Address" />
-              <input className="rounded border p-3" placeholder="Property Address" />
-              <textarea className="min-h-20 rounded border p-3 sm:min-h-28" placeholder="Additional details / How can Tina help?" />
-              <CTA className="w-full">Submit My Information</CTA>
-            </div>
-            <button type="button" onClick={closeLeadPopup} className="mt-4 text-sm underline">No thanks, continue browsing</button>
+
+            {popupSubmitted ? (
+              <div className="py-10">
+                <h2 className="font-display text-3xl uppercase leading-tight sm:text-4xl">
+                  Thank <span className="text-red-600">You!</span>
+                </h2>
+                <p className="mx-auto mt-4 max-w-md text-neutral-600">
+                  Your information was sent successfully. Tina will be in touch soon.
+                </p>
+                <button
+                  type="button"
+                  onClick={closeLeadPopup}
+                  className="mt-8 rounded-md bg-red-600 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-red-950/25 transition hover:bg-red-700"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <>
+                <h2 className="font-display text-2xl uppercase leading-tight sm:text-4xl">
+                  Let Tina Help With <span className="text-red-600">Your Next Move</span>
+                </h2>
+                <p className="mt-2 text-sm text-neutral-600 sm:mt-3 sm:text-base">
+                  Tell Tina what you need — home value, Rowe Report, listings, selling strategy, or general questions.
+                </p>
+
+                <form
+                  onSubmit={handlePopupSubmit}
+                  className="mt-4 grid gap-2 text-left sm:mt-5 sm:gap-3"
+                >
+                  <input type="hidden" name="requestType" value={leadRequestType} />
+                  <input type="hidden" name="source" value="Moving in Mobile lead popup" />
+
+                  <input name="name" className="rounded border p-3" placeholder="Name" required />
+                  <input name="phone" type="tel" className="rounded border p-3" placeholder="Phone Number" />
+                  <input name="email" type="email" className="rounded border p-3" placeholder="Email Address" required />
+                  <input name="address" className="rounded border p-3" placeholder="Property Address" />
+                  <textarea name="need" className="min-h-20 rounded border p-3 sm:min-h-28" placeholder="Additional details / How can Tina help?" />
+
+                  {popupSubmitError ? (
+                    <p className="rounded bg-red-50 px-3 py-2 text-center text-sm text-red-700">
+                      {popupSubmitError}
+                    </p>
+                  ) : null}
+
+                  <button
+                    type="submit"
+                    disabled={popupSubmitting}
+                    className="w-full rounded-md bg-red-600 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-red-950/25 transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {popupSubmitting ? "Submitting..." : "Submit My Information"}
+                  </button>
+                </form>
+
+                <button type="button" onClick={closeLeadPopup} className="mt-4 text-sm underline">
+                  No thanks, continue browsing
+                </button>
+              </>
+            )}
           </div>
         </div>
       ) : null}
 
       <SocialSidebar />
-      <TopBar onOpen={openLeadPopup} />
+      <TopBar onOpen={() => openLeadPopup("What Is My Home Worth?")} />
       <Header page={page} setPage={setPage} />
       {pages[page] || pages.home}
     </div>
