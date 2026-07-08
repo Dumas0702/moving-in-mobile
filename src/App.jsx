@@ -52,7 +52,7 @@ const ASSETS = {
 };
 
 const phone = "(251) 895-9322";
-const LEAD_CAPTURE_ENDPOINT = "https://formspree.io/f/xrewjodz";
+const LEAD_CAPTURE_ENDPOINT = "https://formspree.io/f/xbdvekgw";
 
 function getRequestLabel(value) {
   if (typeof value === "string") return value;
