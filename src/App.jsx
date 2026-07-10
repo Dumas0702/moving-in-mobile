@@ -49,6 +49,9 @@ const ASSETS = {
   spanishFort: `${BASE}spanish-fort.jpg`,
   daphne: `${BASE}daphne.jpg`,
   fairhope: `${BASE}fairhope.jpg`,
+  dauphinIsland: `${BASE}dauphin-island.jpg`,
+  gulfShores: `${BASE}gulf-shores.jpg`,
+  orangeBeach: `${BASE}orange-beach.jpg`,
 };
 
 const phone = "(251) 895-9322";
@@ -172,13 +175,13 @@ function Header({ page, setPage }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black text-white shadow-xl">
-      <div className="mx-auto flex min-h-[92px] max-w-7xl items-center justify-between gap-4 px-4 py-2 xl:h-[120px] xl:gap-10 xl:px-5 xl:py-0">
-        <button type="button" onClick={() => goToPage("home")} className="flex shrink-0 items-center gap-2 xl:gap-4">
-          <img src={ASSETS.logo} alt="The Rowe Report" className="h-[92px] w-auto object-contain sm:h-[115px] md:h-[140px] xl:h-[300px]" />
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-6 py-3">
+        <button type="button" onClick={() => goToPage("home")} className="flex min-w-0 shrink-0 items-center gap-2">
+          <img src={ASSETS.logo} alt="The Rowe Report" className="h-[58px] w-auto max-w-[180px] object-contain sm:h-[68px] sm:max-w-[210px] md:h-[76px] md:max-w-[230px] xl:h-[88px] xl:max-w-[260px]" />
           <img src={ASSETS.kw} alt="Keller Williams Mobile" className="h-[28px] w-auto object-contain sm:h-[34px] md:h-[40px] xl:h-[75px]" />
         </button>
 
-        <nav className="hidden items-center gap-8 font-display text-[17px] uppercase tracking-[0.08em] xl:flex 2xl:gap-10">
+        <nav className="hidden flex-1 items-center justify-center gap-4 xl:gap-6 lg:flex">
           {navItems.map((item) => {
            const key = item.toLowerCase().replace(/\s+/g, "");
             const active = page === key;
@@ -199,8 +202,11 @@ function Header({ page, setPage }) {
         </nav>
 
         <div className="hidden shrink-0 xl:ml-10 xl:block 2xl:ml-16">
-          <CTA className="px-4 py-2 text-[11px] xl:px-6 xl:py-3 xl:text-sm">
-            Get Your Rowe Report
+           <CTA
+              onClick={() => goToPage("rowereport")}
+              className="shrink-0 whitespace-nowrap px-3 py-2 text-[11px] xl:px-5 xl:text-sm"
+            >
+              Get Your Rowe Report
           </CTA>
         </div>
 
@@ -429,7 +435,7 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
           ) : null}
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <CTA>{button}</CTA>
-            <CTA outline>Get Your Free Rowe Report</CTA>
+            <CTA outline>Have Questions About Real Estate?</CTA>
           </div>
           <p className="mt-5 text-sm text-white/80">Or call/text me directly</p>
           <p className="text-3xl font-semibold tracking-tight"><a href="tel:2518959322">☎ {phone}</a></p>
@@ -499,37 +505,82 @@ function ProcessSection() {
   );
 }
 
-function TestimonialsSection({ title }) {
-  const reviews = [
+function TestimonialsSection({ type }) {
+  const buyerReviews = [
     {
       name: "nikkistruth",
-      text: "Working with Tina Rowe from Keller Williams was an absolute pleasure! Her knowledgeable agent insights into the real estate market gave us confidence in our investment. She went above and beyond, making the real estate process smooth and as stress-free as the process of buying a new home can be. If you’re looking for a phenomenal agent who understands the local market, we highly recommend her!",
-    },
-    {
-      name: "Jansyn Wiggins",
-      text: "Tina goes above and beyond to get a deal closed! Such a great agent :)",
+      source: "Google Review",
+      text:
+        "Working with Tina Rowe from Keller Williams was an absolute pleasure! Her knowledgeable agent insights into the real estate market gave us confidence in our investment. She went above and beyond, making the real estate process smooth and as stress-free as the process of buying a new home can be. If you’re looking for a phenomenal agent who understands the local market, we highly recommend her!",
     },
     {
       name: "Sandie Leonard",
-      text: "Tina has been great to work with. She is very responsive and has exceeded all of our expectations. You will not be disappointed.",
+      source: "Google Review",
+      text:
+        "Tina has been great to work with. She is very responsive and has exceeded all of our expectations. You will not be disappointed.",
     },
     {
-      name: "Lauren Williams",
-      text: "If you’re looking for a trustworthy, hardworking, and truly exceptional real estate professional, I cannot recommend Tina Rowe enough! Her attention to detail and commitment to doing what’s right for her clients set her apart in every way!",
+      name: "Jansyn Wiggins",
+      source: "Google Review",
+      text:
+        "Tina goes above and beyond to get a deal closed! Such a great agent :)",
     },
+    {
+      name: "Nichole Bedgood",
+      source: "Zillow Review",
+      text:
+        "Working with Tina Rowe from Keller Williams was an absolute pleasure! Her knowledgeable agent insights into the real estate market gave us confidence in our investment. She went above and beyond, making the real estate process smooth and as stress-free as the process of buying a new home can be. If you’re looking for a phenomenal agent who understands the local market, we highly recommend her!",
+    },
+  ];
+
+  const sellerReviews = [
     {
       name: "Scharlene Taylor",
-      text: "From the very beginning Tina was not only very knowledgeable and professional but treated us as though we were family not just clients. Our property was sold in 22 days… she went above and beyond what we expected. She was recommended to us and we would HIGHLY recommend her to anyone. Thank you Tina for everything.",
+      source: "Google Review",
+      text:
+        "From the very beginning Tina was not only very knowledgeable and professional but treated us as though we were family not just clients. Our property was sold in 22 days… she went above and beyond what we expected. She was recommended to us and we would HIGHLY recommend her to anyone. Thank you Tina for everything.",
     },
     {
       name: "Carolyn Brockmiller",
-      text: "We re very impressed with Tina. She’s a real go getter. She has been a wonderful agent for us!!!! Highly recommend!!!!!!!!",
+      source: "Google Review",
+      text:
+        "We re very impressed with Tina. She’s a real go getter. She has been a wonderful agent for us!!!! Highly recommend!!!!!!!!",
     },
     {
       name: "Sarah McGallagher",
-      text: "Tina was fantastic to work with, I appreciate her cooperation with this transaction… it meant the world to my buyers and we are so thankful!",
+      source: "Google Review",
+      text:
+        "Tina was fantastic to work with, I appreciate her cooperation with this transaction… it meant the world to my buyers and we are so thankful!",
+    },
+    {
+      name: "Lauren Williams",
+      source: "Google Review",
+      text:
+        "If you’re looking for a trustworthy, hardworking, and truly exceptional real estate professional, I cannot recommend Tina Rowe enough! Her attention to detail and commitment to doing what’s right for her clients set her apart in every way!",
+    },
+    {
+      name: "cruisnrider",
+      source: "Zillow Review",
+      text:
+        "Tina did an awesome job on getting our family home sold. Thirty two days from start to closing. Tina was very knowledgeable with the process and spot on on great advice, both with recommendations and watch outs. I would highly recommend Tina Rowe, as a matter of fact, I just shared her contact information with a friend that has a property that they want to sell. Always quick to answer any questions and most importantly, she got the home place sold very timely.",
+    },
+    {
+      name: "Amy Barker",
+      source: "Zillow Review",
+      text:
+        "Tina was incredibly thorough and helpful with our house sale. She worked hard to get us the best deal possible. She kept us informed at every stage and was extremely supportive throughout. She held our hand through each step and we are so grateful. I would highly recommend Tina!",
     },
   ];
+
+  const reviews =
+    type === "buyer"
+      ? buyerReviews
+      : sellerReviews;
+
+  const title =
+    type === "buyer"
+      ? "What Buyers Say After Working With Me"
+      : "What Sellers Say After Working With Me";
 
   const scrollingReviews = [...reviews, ...reviews];
 
@@ -542,7 +593,7 @@ function TestimonialsSection({ title }) {
         }
 
         .testimonial-track {
-          animation: testimonialScroll 55s linear infinite;
+          animation: testimonialScroll 65s linear infinite;
         }
 
         .testimonial-wrapper:hover .testimonial-track {
@@ -555,25 +606,35 @@ function TestimonialsSection({ title }) {
           {title}
         </h2>
 
-        <div className="testimonial-wrapper mt-8 overflow-hidden">
+        <div className="testimonial-wrapper mt-10 overflow-hidden">
           <div className="testimonial-track flex w-max gap-6">
+
             {scrollingReviews.map((review, index) => (
               <div
                 key={`${review.name}-${index}`}
-                className="w-[340px] shrink-0 rounded-lg border border-white/10 bg-white p-6 text-center text-black shadow-md"
+                className="flex w-[380px] shrink-0 flex-col justify-between rounded-xl bg-white p-6 text-black shadow-lg"
               >
-                <div className="text-lg tracking-[0.15em] text-red-600">
-                  ★★★★★
+                <div>
+                  <p className="text-xl tracking-widest text-red-600">
+                    ★★★★★
+                  </p>
+
+                  <p className="mt-4 text-sm leading-7 text-neutral-700">
+                    “{review.text}”
+                  </p>
                 </div>
 
-                <p className="mt-4 text-sm leading-6 text-neutral-700">
-                  “{review.text}”
-                </p>
-
-                <p className="mt-4 font-semibold">— {review.name}</p>
-                <p className="text-sm text-neutral-600">Google Review</p>
+                <div className="mt-5 border-t pt-4">
+                  <p className="font-bold">
+                    — {review.name}
+                  </p>
+                  <p className="text-sm text-neutral-500">
+                    {review.source}
+                  </p>
+                </div>
               </div>
             ))}
+
           </div>
         </div>
       </div>
@@ -621,36 +682,31 @@ function Footer({ setPage }) {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-10 lg:grid-cols-[1.75fr_0.85fr_1.1fr_0.9fr] lg:items-start">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-6 shadow-2xl">
-          <div className="grid gap-6 md:grid-cols-[1fr_1fr] md:items-center">
-            <div className="flex flex-col items-center md:items-start">
+      <div className="mx-auto grid max-w-[1500px] gap-10 px-6 py-12 lg:grid-cols-[2.5fr_0.7fr_0.95fr_0.85fr] lg:items-start">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 shadow-2xl sm:p-10">
+          <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+            <div className="flex items-center justify-center">
               <img
                 src={ASSETS.logo}
                 alt="The Rowe Report"
-                className="h-44 w-auto max-w-full object-contain"
-              />
-
-              <img
-                src={ASSETS.kw}
-                alt="kw Keller Williams Mobile"
-                className="mt-4 h-20 w-auto max-w-full object-contain"
+                className="h-[300px] w-auto max-w-full object-contain sm:h-[340px] lg:h-[380px]"
               />
             </div>
 
-            <div className="flex flex-col items-center md:items-start">
+            <div className="flex flex-col items-center justify-center gap-10 border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+              <img
+                src={ASSETS.kw}
+                alt="kw Keller Williams Mobile"
+                className="h-[130px] w-auto max-w-full object-contain sm:h-[150px]"
+              />
+
               <img
                 src={ASSETS.realtorEOLWhite}
                 alt="REALTOR® and Equal Housing Opportunity"
-                className="h-20 w-auto max-w-full object-contain"
+                className="h-[115px] w-auto max-w-full object-contain sm:h-[135px]"
               />
 
-              <p className="mt-5 max-w-sm text-center text-sm leading-6 text-white/75 md:text-left">
-                Helping homeowners and buyers throughout Mobile and Baldwin County
-                with honest advice, proven strategies, and exceptional service.
-              </p>
-
-              <p className="mt-3 text-center text-xs leading-5 text-white/45 md:text-left">
+              <p className="text-center text-xs leading-5 text-white/45">
                 Each office is independently owned and operated.
               </p>
             </div>
@@ -667,7 +723,10 @@ function Footer({ setPage }) {
               <button
                 key={item}
                 type="button"
-                onClick={() => setPage(item.toLowerCase().replace(/\s+/g, ""))}
+                onClick={() => {
+                  setPage(item.toLowerCase().replace(/\s+/g, ""));
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
                 className="text-left transition hover:text-red-500"
               >
                 {item}
@@ -682,13 +741,16 @@ function Footer({ setPage }) {
           </h4>
 
           <div className="mt-5 space-y-3 text-sm leading-7 text-white/80">
-            <a href="tel:2518959322" className="block hover:text-red-500">
+            <a
+              href="tel:2518959322"
+              className="block transition hover:text-red-500"
+            >
               ☎ {phone}
             </a>
 
             <a
               href="mailto:tinarowe@kw.com"
-              className="block hover:text-red-500"
+              className="block transition hover:text-red-500"
             >
               ✉ tinarowe@kw.com
             </a>
@@ -696,8 +758,8 @@ function Footer({ setPage }) {
             <a
               href="https://maps.apple.com/?address=1210%20Hillcrest%20Road,%20Mobile,%20AL%2036695"
               target="_blank"
-              rel="noreferrer"
-              className="block hover:text-red-500"
+              rel="noopener noreferrer"
+              className="block transition hover:text-red-500"
             >
               📍 1210 Hillcrest Road
               <br />
@@ -711,7 +773,7 @@ function Footer({ setPage }) {
             Follow Me
           </h4>
 
-          <div className="mt-5 flex gap-4">
+          <div className="mt-5 flex flex-wrap gap-4">
             {socials.map((social) => (
               <a
                 key={social.alt}
@@ -719,11 +781,12 @@ function Footer({ setPage }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.alt}
+                className="group"
               >
                 <img
                   src={social.icon}
                   alt={social.alt}
-                  className="h-12 w-12 rounded-full border border-white/25 bg-white/5 p-2.5 transition duration-200 hover:scale-105 hover:border-red-500 hover:bg-red-600"
+                  className="h-12 w-12 rounded-full border border-white/25 bg-white/5 p-2.5 transition duration-200 group-hover:scale-105 group-hover:border-red-500 group-hover:bg-red-600"
                 />
               </a>
             ))}
@@ -733,6 +796,7 @@ function Footer({ setPage }) {
             <p className="font-display text-lg uppercase text-white">
               Move With Confidence
             </p>
+
             <p className="mt-2 text-sm leading-6 text-white/65">
               Clear guidance, strong strategy, and a local expert who knows how
               to get homes sold.
@@ -848,8 +912,6 @@ function HomePage({ setPage }) {
       </section>
 
       <ProcessSection />
-      <TestimonialsSection title="What Homeowners Are Saying" />
-
       <section className="relative overflow-hidden bg-black py-8 text-white">
         <img src={ASSETS.skyline} alt="homes" className="absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-6 md:grid-cols-[.5fr_1.2fr_.9fr]"> <div>
@@ -1006,9 +1068,6 @@ function AboutPage({ setPage }) {
           </div>
         </div>
       </section>
-
-      <TestimonialsSection title="What Sellers Say After Working With Me" />
-
       <Footer setPage={setPage} />
     </>
   );
@@ -1081,7 +1140,7 @@ function SellersPage({ setPage }) {
             <div className="mt-8 flex flex-wrap gap-4">
               <CTA>Find Out Why Your Home Didn't Sell</CTA>
               <CTA outline>
-                Get Your Free Rowe Report
+                Have Questions About Real Estate?
               </CTA>
             </div>
 
@@ -1094,8 +1153,8 @@ function SellersPage({ setPage }) {
           </div>
 
           <FormPanel
-            title="Get Your Home Value"
-            button="Send Me My Home Value"
+            title="Get Monthly Market Updates"
+            button="Send Me Monthly Market Updates"
           />
         </div>
       </section>
@@ -1172,7 +1231,7 @@ function SellersPage({ setPage }) {
         </div>
       </section>
 
-      <TestimonialsSection title="What Sellers Say After Working With Me" />
+      <TestimonialsSection title="What Sellers Say After Working With Me" type="seller"/>
 
       <section className="bg-red-600 py-6 text-white">
         <div className="mx-auto grid max-w-7xl items-center gap-4 px-6 text-center lg:grid-cols-[1fr_auto_auto_auto]">
@@ -1433,7 +1492,7 @@ function BuyersPage({ setPage }) {
         </div>
       </section>
 
-      <TestimonialsSection title="What Buyers Say After Working With Me" />
+      <TestimonialsSection title="What Buyers Say After Working With Me" type="buyer"/>
 
       <section className="bg-red-600 py-6 text-white">
         <div className="mx-auto grid max-w-7xl items-center gap-4 px-6 text-center lg:grid-cols-[1fr_auto_auto_auto]">
@@ -1464,103 +1523,147 @@ function BuyersPage({ setPage }) {
 function NeighborhoodsPage({ setPage }) {
   const neighborhoods = [
     {
-      name: "Downtown Mobile",
-      image: ASSETS.downtownMobile,
-      bestFor: "Historic charm, restaurants, events, nightlife",
-      description:
-        "Downtown Mobile is the heart of the city, with historic architecture, restaurants, entertainment, Mardi Gras culture, and walkable access to Dauphin Street, Bienville Square, and the waterfront.",
-      homeStyle: "Historic condos, renovated homes, lofts, townhomes",
-      lifestyle: "Walkable, energetic, cultural, historic",
-      homesUrl: "https://www.homes.com/mobile-al/downtown-mobile-neighborhood/",
-    },
-    {
-      name: "Midtown Mobile",
-      image: ASSETS.midtownMobile,
-      bestFor: "Historic homes, oak-lined streets, classic Mobile character",
-      description:
-        "Midtown is one of Mobile’s most recognizable residential areas, known for tree-lined streets, older homes, front porches, and convenient access to downtown, hospitals, restaurants, and local parks.",
-      homeStyle: "Craftsman homes, cottages, bungalows, historic renovations",
-      lifestyle: "Charming, established, walkable, community-oriented",
-      homesUrl: "https://www.homes.com/mobile-al/midtown-mobile-neighborhood/",
-    },
-    {
-      name: "Spring Hill",
-      image: ASSETS.springHill,
-      bestFor: "Established neighborhoods, shopping, schools, convenience",
-      description:
-        "Spring Hill offers a refined residential feel with established homes, shopping, restaurants, medical access, and landmarks like Spring Hill College. It is one of Mobile’s most desirable long-term areas.",
-      homeStyle: "Traditional homes, estate-style properties, updated ranch homes",
-      lifestyle: "Established, convenient, polished, residential",
-      homesUrl: "https://www.homes.com/mobile-al/spring-hill-neighborhood/",
-    },
-    {
-      name: "West Mobile",
-      image: ASSETS.westMobile,
-      bestFor: "More space, newer homes, schools, suburban convenience",
-      description:
-        "West Mobile is popular with buyers who want suburban neighborhoods, larger lots, newer construction options, shopping, parks, and convenient access to major roads while staying within the Mobile area.",
-      homeStyle: "Newer subdivisions, brick homes, larger lots, family homes",
-      lifestyle: "Suburban, practical, growing, family-friendly",
-      homesUrl: "https://www.homes.com/mobile-al/",
-    },
-    {
-      name: "Saraland",
-      image: ASSETS.saraland,
-      bestFor: "Schools, community feel, North Mobile convenience",
-      description:
-        "Saraland is a growing North Mobile community known for its strong local identity, neighborhood feel, and convenient access to Mobile, I-65, and industrial/employment corridors.",
-      homeStyle: "Brick homes, subdivisions, traditional single-family homes",
-      lifestyle: "Community-focused, convenient, suburban, family-oriented",
-      homesUrl: "https://www.homes.com/saraland-al/",
-    },
-    {
-      name: "Semmes",
-      image: ASSETS.semmes,
-      bestFor: "Space, quieter living, rural-suburban feel",
-      description:
-        "Semmes offers a slower pace with more room to spread out, local parks, community events, and a mix of established homes and newer construction while still staying connected to the Mobile metro area.",
-      homeStyle: "Larger lots, brick homes, rural properties, newer builds",
-      lifestyle: "Quiet, spacious, relaxed, outdoorsy",
-      homesUrl: "https://www.homes.com/semmes-al/",
-    },
-    {
-      name: "Spanish Fort",
-      image: ASSETS.spanishFort,
-      bestFor: "Eastern Shore access, schools, shopping, commute convenience",
-      description:
-        "Spanish Fort combines Eastern Shore living with quick access to Mobile, shopping at the Eastern Shore Centre, outdoor recreation, and neighborhoods that appeal to buyers wanting convenience and space.",
-      homeStyle: "Subdivisions, newer homes, traditional brick homes",
-      lifestyle: "Convenient, active, suburban, commuter-friendly",
-      homesUrl: "https://www.homes.com/spanish-fort-al/",
-    },
-    {
       name: "Daphne",
       image: ASSETS.daphne,
+      homesUrl: "https://www.homes.com/daphne-al/",
       bestFor: "Bay access, Eastern Shore lifestyle, convenience",
       description:
-        "Daphne offers a central Eastern Shore location with Mobile Bay views, established neighborhoods, parks, restaurants, shopping, and an easy commute to Mobile or other Baldwin County communities.",
-      homeStyle: "Traditional homes, bay-area properties, subdivisions, townhomes",
+        "Daphne offers a central Eastern Shore location with access to Mobile Bay, established neighborhoods, parks, restaurants, shopping, and convenient travel to Mobile and other Baldwin County communities.",
+      homeStyle:
+        "Traditional homes, bay-area properties, subdivisions, townhomes",
       lifestyle: "Coastal, convenient, active, established",
-      homesUrl: "https://www.homes.com/daphne-al/",
+    },
+    {
+      name: "Dauphin Island",
+      image: ASSETS.dauphinIsland,
+      homesUrl: "https://www.homes.com/dauphin-island-al/",
+      bestFor: "Quiet island living, beaches, fishing, boating, nature",
+      description:
+        "Dauphin Island is a laid-back barrier-island community with public beaches, fishing and boating access, historic Fort Gaines, the Alabama Aquarium, and extensive protected bird and wildlife habitat. It appeals to buyers seeking a slower coastal pace, second-home opportunities, or waterfront and water-access living.",
+      homeStyle:
+        "Elevated beach houses, waterfront homes, cottages, condos, vacation properties",
+      lifestyle: "Relaxed, coastal, outdoorsy, nature-focused",
+    },
+    {
+      name: "Downtown Mobile",
+      image: ASSETS.downtownMobile,
+      homesUrl:
+        "https://www.homes.com/mobile-al/downtown-mobile-neighborhood/",
+      bestFor: "Historic charm, restaurants, events, nightlife",
+      description:
+        "Downtown Mobile is the cultural and historic center of the city, with architecture, restaurants, entertainment, Mardi Gras traditions, and walkable access to Dauphin Street, Bienville Square, museums, and the waterfront.",
+      homeStyle: "Historic condos, renovated homes, lofts, townhomes",
+      lifestyle: "Walkable, energetic, cultural, historic",
     },
     {
       name: "Fairhope",
       image: ASSETS.fairhope,
+      homesUrl: "https://www.homes.com/fairhope-al/",
       bestFor: "Downtown charm, bayfront parks, boutiques, coastal lifestyle",
       description:
-        "Fairhope is known for its walkable downtown, flower-lined streets, bayfront parks, independent shops, restaurants, galleries, and the Fairhope Municipal Pier. It is one of the most sought-after communities on the Eastern Shore.",
-      homeStyle: "Cottages, custom homes, historic homes, bay-area properties",
+        "Fairhope is known for its walkable downtown, flower-lined streets, bayfront parks, independent shops, restaurants, galleries, and the Fairhope Municipal Pier. The area offers a broad mix of historic homes, established neighborhoods, and newer development.",
+      homeStyle:
+        "Cottages, custom homes, historic homes, bay-area properties",
       lifestyle: "Charming, walkable, coastal, artsy",
-      homesUrl: "https://www.homes.com/fairhope-al/",
+    },
+    {
+      name: "Gulf Shores",
+      image: ASSETS.gulfShores,
+      homesUrl: "https://www.homes.com/gulf-shores-al/",
+      bestFor: "Beach access, outdoor recreation, tourism, coastal investment",
+      description:
+        "Gulf Shores offers sugar-white Gulf beaches, restaurants, entertainment, and direct access to Gulf State Park, including trails, lakes, fishing, paddling, and other outdoor recreation. Housing ranges from established residential neighborhoods to condos, vacation homes, and investment properties near the beach.",
+      homeStyle:
+        "Beach condos, coastal cottages, newer subdivisions, vacation homes",
+      lifestyle: "Beach-oriented, recreational, active, tourism-driven",
+    },
+    {
+      name: "Midtown Mobile",
+      image: ASSETS.midtownMobile,
+      homesUrl:
+        "https://www.homes.com/mobile-al/midtown-mobile-neighborhood/",
+      bestFor: "Historic homes, oak-lined streets, classic Mobile character",
+      description:
+        "Midtown Mobile is known for mature trees, historic architecture, front porches, neighborhood parks, and convenient access to downtown, hospitals, restaurants, and local businesses.",
+      homeStyle:
+        "Craftsman homes, cottages, bungalows, historic renovations",
+      lifestyle: "Charming, established, walkable, community-oriented",
+    },
+    {
+      name: "Orange Beach",
+      image: ASSETS.orangeBeach,
+      homesUrl: "https://www.homes.com/orange-beach-al/",
+      bestFor: "Boating, fishing, beaches, waterfront living, entertainment",
+      description:
+        "Orange Beach combines Gulf beaches with bays, canals, marinas, fishing, and boating access. The community also offers Waterfront Park, the Hugh S. Branyon Backcountry Trail system, restaurants, and The Wharf’s shopping, dining, events, and entertainment.",
+      homeStyle:
+        "Waterfront homes, beach condos, canal-front properties, coastal communities",
+      lifestyle: "Boating-focused, coastal, active, entertainment-oriented",
+    },
+    {
+      name: "Saraland",
+      image: ASSETS.saraland,
+      homesUrl: "https://www.homes.com/saraland-al/",
+      bestFor: "Community feel, North Mobile convenience, suburban living",
+      description:
+        "Saraland is a growing community north of Mobile with convenient access to I-65, shopping, services, employment corridors, and established residential neighborhoods.",
+      homeStyle:
+        "Brick homes, subdivisions, newer construction, traditional single-family homes",
+      lifestyle: "Community-focused, convenient, suburban, growing",
+    },
+    {
+      name: "Semmes",
+      image: ASSETS.semmes,
+      homesUrl: "https://www.homes.com/semmes-al/",
+      bestFor: "Space, quieter living, larger lots, rural-suburban feel",
+      description:
+        "Semmes offers a more relaxed setting with larger lots, established homes, newer construction, local parks, and convenient access to West Mobile and the broader Mobile metropolitan area.",
+      homeStyle:
+        "Larger lots, brick homes, rural properties, newer builds",
+      lifestyle: "Quiet, spacious, relaxed, outdoorsy",
+    },
+    {
+      name: "Spanish Fort",
+      image: ASSETS.spanishFort,
+      homesUrl: "https://www.homes.com/spanish-fort-al/",
+      bestFor: "Eastern Shore access, shopping, recreation, Mobile commute",
+      description:
+        "Spanish Fort combines Eastern Shore living with convenient access to Mobile, major highways, shopping, restaurants, outdoor recreation, and a variety of established and newer residential communities.",
+      homeStyle:
+        "Subdivisions, newer homes, traditional brick homes, larger residential communities",
+      lifestyle: "Convenient, active, suburban, commuter-friendly",
+    },
+    {
+      name: "Spring Hill",
+      image: ASSETS.springHill,
+      homesUrl:
+        "https://www.homes.com/mobile-al/spring-hill-neighborhood/",
+      bestFor: "Established neighborhoods, shopping, schools, convenience",
+      description:
+        "Spring Hill offers an established residential setting with mature landscaping, shopping, restaurants, medical access, and landmarks such as Spring Hill College. The area includes both older homes and carefully updated properties.",
+      homeStyle:
+        "Traditional homes, estate-style properties, updated ranch homes",
+      lifestyle: "Established, convenient, polished, residential",
+    },
+    {
+      name: "West Mobile",
+      image: ASSETS.westMobile,
+      homesUrl: "https://www.homes.com/mobile-al/",
+      bestFor: "More space, newer homes, suburban convenience",
+      description:
+        "West Mobile appeals to buyers seeking suburban neighborhoods, larger lots, newer construction, shopping, parks, and convenient access to major roads while remaining within the Mobile area.",
+      homeStyle:
+        "Newer subdivisions, brick homes, larger lots, single-family homes",
+      lifestyle: "Suburban, practical, growing, spacious",
     },
   ];
 
   return (
     <>
       <Hero
-        title="Find Your Perfect Neighborhood"
-        redTitle="In Mobile & Baldwin County"
-        text="Every community has its own personality, pace, and lifestyle. Explore a few of the most popular areas Tina serves, then reach out when you're ready to talk through the best fit for your move."
+        title="Find Your Perfect Community"
+        redTitle="Across Mobile & Baldwin County"
+        text="Every community has its own personality, housing options, and lifestyle. Explore several of the areas Tina serves, then connect with her when you're ready to narrow down the best fit for your move."
         button="Search Neighborhoods"
       />
 
@@ -1570,12 +1673,15 @@ function NeighborhoodsPage({ setPage }) {
             <p className="font-semibold uppercase tracking-widest text-red-600">
               Local Area Guide
             </p>
+
             <h2 className="mt-3 font-display text-4xl font-semibold uppercase">
               Popular Neighborhoods & Communities
             </h2>
+
             <p className="mt-4 text-neutral-600">
-              Use this guide as a starting point. When IDX search is available,
-              each button can connect directly to homes for sale in that specific area.
+              Explore communities throughout Mobile County and Baldwin County.
+              Select an area to view its current Homes.com listings, or ask Tina
+              to create a more focused home search for you.
             </p>
           </div>
 
@@ -1588,7 +1694,7 @@ function NeighborhoodsPage({ setPage }) {
                 <div className="flex w-full flex-col">
                   <img
                     src={area.image}
-                    alt={`${area.name} neighborhood`}
+                    alt={`${area.name} area`}
                     className="h-56 w-full object-cover"
                   />
 
@@ -1610,23 +1716,38 @@ function NeighborhoodsPage({ setPage }) {
                         <p className="font-bold uppercase text-neutral-900">
                           Common Home Styles
                         </p>
-                        <p className="mt-1 text-neutral-600">{area.homeStyle}</p>
+                        <p className="mt-1 text-neutral-600">
+                          {area.homeStyle}
+                        </p>
                       </div>
 
                       <div>
                         <p className="font-bold uppercase text-neutral-900">
                           Lifestyle Feel
                         </p>
-                        <p className="mt-1 text-neutral-600">{area.lifestyle}</p>
+                        <p className="mt-1 text-neutral-600">
+                          {area.lifestyle}
+                        </p>
                       </div>
                     </div>
 
                     <button
                       type="button"
-                      onClick={() => openHomesSearch(area)}
-                      className="mt-6 w-full rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+                      onClick={() =>
+                        window.dispatchEvent(
+                          new CustomEvent("openHomesPopup", {
+                            detail: {
+                              name: area.name,
+                              url: area.homesUrl,
+                            },
+                          })
+                        )
+                      }
+                      className="mt-auto pt-6"
                     >
-                      View Homes in {area.name}
+                      <span className="block w-full rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700">
+                        View Homes in {area.name}
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -1635,9 +1756,10 @@ function NeighborhoodsPage({ setPage }) {
           </div>
 
           <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-6 text-neutral-500">
-            Neighborhood information is provided as a helpful overview. Buyers should verify schools,
-            commute times, zoning, HOA details, insurance, and property-specific information before
-            making a purchase decision.
+            Area information is provided as a general overview. Buyers should
+            independently verify schools, zoning, flood zones, insurance
+            requirements, HOA restrictions, rental rules, commute times, and
+            property-specific information before making a purchase decision.
           </p>
         </div>
       </section>
@@ -1685,7 +1807,7 @@ function RoweReportPage({ setPage }) {
           <img
             src={ASSETS.logo}
             alt="The Rowe Report"
-            className="mx-auto h-48 w-auto object-contain"
+            className="mx-auto h-148 w-auto object-contain"
           />
 
           <h1 className="mt-6 font-display text-5xl font-semibold uppercase">
@@ -1789,8 +1911,9 @@ function ResourcesPage({ setPage }) {
     ["Insurance Company", [["Goosehead", "(251) 263-7924"]]],
     ["Mortgage Company", [["Ashley Darst", "(952) 715-7295"], ["Jesse Robinson", "(251) 599-4385"]]],
     ["Moving Services", [["Azalea City Moving Co.", "(251) 633-8889"], ["Pink Zebra Moving", "(251) 999-7222"]]],
+    ["Pest Control", [["Arrow Exterminators", "(251) 243-0072"], ["Boss Pest Solutions - Ashley McNorton", "(251) 648-8125"], ["Cook's Pest Control - Daniel Sewatt", "(251) 422-0317"], ["J&M Exterminators - Marlin", "(251) 591-7226"], ["Knox Pest", "(251) 478-9829"], ["Wayne's Pest Control", "(251) 639-3481"]]],
     ["Plumbers", [["Rod Deberry", "(251) 721-0688"], ["Jeff Byrd", "(251) 232-2813"], ["Nathan Herring", "(251) 675-6757"]]],
-    ["Renovations", [["Coery Williams", "(251) 525-7039"]]],
+    ["Renovations", [["Coery Williams", "(251) 525-7039"], ["Rainwaters Contracting LLC - Braxton Rainwaaters", "(251) 725-7226"]]],
     ["Roofers", [["Frank Reusser", "(251) 610-0812"], ["Jason Impson", "(251) 401-1158"]]],
     ["Surveyors", [["Joe Stewart", "(251) 554-8449"]]],
   ];
@@ -1876,7 +1999,7 @@ function ContactPage({ setPage }) {
       <Hero
         title="Let's Talk About Your Next Move —"
         redTitle="And Get It Right."
-        text="Whether your home didn't sell, you're thinking about buying, or just have questions — I'll give you clear, honest answers so you can move forward with confidence."
+        text="Whether you're considering selling, you're home didn't sell the first time, you're considering  buying, or just have questions — I'll give you clear, honest answers so you can move forward with confidence."
         button="Get My Plan"
       />
 
