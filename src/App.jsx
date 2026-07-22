@@ -1913,9 +1913,9 @@ function ResourcesPage({ setPage }) {
     ["Moving Services", [["Azalea City Moving Co.", "(251) 633-8889"], ["Pink Zebra Moving", "(251) 999-7222"]]],
     ["Pest Control", [["Arrow Exterminators", "(251) 243-0072"], ["Boss Pest Solutions - Ashley McNorton", "(251) 648-8125"], ["Cook's Pest Control - Daniel Sewatt", "(251) 422-0317"], ["J&M Exterminators - Marlin", "(251) 591-7226"], ["Knox Pest", "(251) 478-9829"], ["Wayne's Pest Control", "(251) 639-3481"]]],
     ["Plumbers", [["Rod Deberry", "(251) 721-0688"], ["Jeff Byrd", "(251) 232-2813"], ["Nathan Herring", "(251) 675-6757"]]],
-    ["Renovations", [["Coery Williams", "(251) 525-7039"], ["Rainwaters Contracting LLC - Braxton Rainwaaters", "(251) 725-7226"]]],
+    ["Renovations", [["Corey Williams", "(251) 525-7039"], ["Rainwaters Contracting LLC - Braxton Rainwaaters", "(251) 725-7226"]]],
     ["Roofers", [["Frank Reusser", "(251) 610-0812"], ["Jason Impson", "(251) 401-1158"]]],
-    ["Surveyors", [["Joe Stewart", "(251) 554-8449"]]],
+    ["Surveyors", [["Joe Stewart", "(251) 554-8449"], ["Erdman Surveying - Craig Erdman", "(251) 422-6510"]]],
   ];
 
   const phoneLink = (phoneNumber) => `tel:${phoneNumber.replace(/\D/g, "")}`;
