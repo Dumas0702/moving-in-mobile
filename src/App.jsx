@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 
 import StagingIndicators from "./components/StagingIndicators";
 
+import "./floating-contact.css";
+
 const BASE = window.location.pathname.startsWith("/moving-in-mobile/") ? "/moving-in-mobile/" : "/";
 
 const ASSETS = {
   skyline: `${BASE}mobile-hero.png`,
   tina: `${BASE}TinaRoweHalf.png`,
   tinaAlt: `${BASE}TinaRoweSignature.png`,
+  tinaFloatingContact: `${BASE}TinaRoweSignatureLowRez.png`,
   logo: `${BASE}TheRoweReportTransparentLogo.png`,
   kw: `${BASE}KW-MOBILE.png`,
   guide: `${BASE}og-image.png`,
@@ -57,7 +60,7 @@ const ASSETS = {
 };
 
 const phone = "(251) 895-9322";
-const LEAD_CAPTURE_ENDPOINT = "https://formspree.io/f/xbdvekgw";
+const LEAD_CAPTURE_ENDPOINT = "https://formspree.io/f/mgogbvkq";
 
 function getRequestLabel(value) {
   if (typeof value === "string") return value;
@@ -140,6 +143,113 @@ function SocialSidebar() {
           />
         </a>
       ))}
+    </div>
+  );
+}
+
+function FloatingTinaContact() {
+  return (
+    <div className="fixed right-3 top-[155px] z-[85] sm:right-5 sm:top-[170px]">
+      <button
+        type="button"
+        onClick={() => openLeadRequest("Send Tina a Message")}
+        aria-label="Send Tina Rowe a message"
+        title="Send Tina a message"
+        className="
+          group relative block rounded-full
+          transition-all duration-200
+          hover:-translate-y-1
+          focus-visible:outline-none
+          focus-visible:ring-4
+          focus-visible:ring-red-300
+        "
+      >
+        {/* Tina Headshot */}
+        <span
+          className="
+            tina-pulse
+            flex h-[58px] w-[58px]
+            items-center justify-center
+            overflow-hidden
+            rounded-full
+            border border-red-600
+            bg-white
+            transition-all duration-200
+            group-hover:scale-105
+            group-hover:border-red-700
+            group-hover:shadow-[0_12px_24px_rgba(0,0,0,.35)]
+            sm:h-[70px] sm:w-[70px]
+          "
+        >
+          <img
+            src={ASSETS.tinaFloatingContact}
+            alt="Tina Rowe"
+            className="h-full w-full object-cover object-top"
+          />
+        </span>
+
+        {/* Chat Bubble */}
+        <span
+          className="
+            absolute
+            -bottom-1
+            -left-1
+            flex
+            h-7
+            w-7
+            items-center
+            justify-center
+            rounded-full
+            border-2
+            border-white
+            bg-red-600
+            text-white
+            shadow-lg
+            transition-colors duration-200
+            group-hover:bg-red-700
+            sm:h-8 sm:w-8
+          "
+          aria-hidden="true"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="h-3.5 w-3.5 fill-none stroke-current sm:h-4 sm:w-4"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.7-5.1A7 7 0 0 1 3 12V8a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+            <path d="M8 10h.01" />
+            <path d="M12 10h.01" />
+            <path d="M16 10h.01" />
+          </svg>
+        </span>
+
+        {/* Tooltip */}
+        <span
+          className="
+            pointer-events-none
+            absolute
+            right-full
+            top-1/2
+            mr-3
+            hidden
+            -translate-y-1/2
+            whitespace-nowrap
+            rounded-md
+            bg-black
+            px-3
+            py-2
+            text-xs
+            font-semibold
+            text-white
+            shadow-lg
+            group-hover:block
+          "
+        >
+          Message Tina
+        </span>
+      </button>
     </div>
   );
 }
@@ -427,9 +537,9 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
             <div className="absolute right-8 top-40 hidden max-w-[240px] rotate-[-2deg] xl:block">
               <p className="font-hand text-[35px] leading-[1.15] text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
                 I don’t just<br />
-                list homes...<br />
-                I get them<br />
-                <span className="text-[43px]">SOLD.</span>
+                sell homes...<br />
+                I help people<br />
+                <span className="text-[43px]">MOVE.</span>
               </p>
               <div className="mt-1 h-1.5 w-40 rotate-[-2deg] rounded-full bg-red-600" />
               <p className="mt-4 font-hand text-[31px] leading-tight text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">— Tina Rowe</p>
@@ -701,16 +811,19 @@ function Footer({ setPage }) {
                 alt="kw Keller Williams Mobile"
                 className="h-[130px] w-auto max-w-full object-contain sm:h-[150px]"
               />
+              <p className="text-sm text-neutral-300">
+                Tina Rowe, REALTOR®
+              </p>
 
+              <p className="text-sm text-neutral-400">
+                Alabama License #169048
+              </p>
               <img
                 src={ASSETS.realtorEOLWhite}
                 alt="REALTOR® and Equal Housing Opportunity"
                 className="h-[115px] w-auto max-w-full object-contain sm:h-[135px]"
               />
 
-              <p className="text-center text-xs leading-5 text-white/45">
-                Each office is independently owned and operated.
-              </p>
             </div>
           </div>
         </div>
@@ -826,11 +939,11 @@ function HomePage({ setPage }) {
   return (
     <>
       <Hero
-        title="Your Home Didn't Sell?"
-        redTitle="There's a Reason."
-        text="Most homes that don't sell come down to pricing, exposure, or strategy. I fix all three — so you don't leave money on the table again."
-        quote="I don't just list homes... I get them SOLD."
-        button="Find Out Why Your Home Didn't Sell"
+        title="Selling in Mobile?"
+        redTitle="Moving in Mobile?"
+        text="I'm Tina Rowe, your local, Mobile home selling and relocation expert.  Get neighborhood guides, market updates, and a personalized strategy for your move."
+        quote="I don't just sell homes... I help people move."
+        button="Schedule Your 15 Minute Strategy Session"
       />
 
       <section className="bg-[#07111b] py-4 text-white">
@@ -1130,17 +1243,16 @@ function SellersPage({ setPage }) {
 
           <div>
             <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
-              Your Home Didn't Sell?<br />
-              <span className="text-red-600">There's A Reason.</span>
+              Selling in Mobile?<br />
+              <span className="text-red-600">Moving in Mobile?</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8">
-              Most homes that don't sell come down to pricing, exposure, or
-              strategy. I fix all three so you don't leave money on the table.
+              I'm Tina Rowe, your local, Mobile home selling and relocation expert. Get neighborhood guides, market updates, and a personalized strategy for your move.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
-              <CTA>Find Out Why Your Home Didn't Sell</CTA>
+              <CTA>Schedule your 15 minute strategy session</CTA>
               <CTA outline>
                 Have Questions About Real Estate?
               </CTA>
@@ -1243,7 +1355,7 @@ function SellersPage({ setPage }) {
           </h2>
 
           <CTA outline>
-            Find Out What My Home Is Worth
+            Request Your Rowe Report Seller's Guide Now
           </CTA>
 
           <CTA outline>
@@ -1504,7 +1616,7 @@ function BuyersPage({ setPage }) {
           </h2>
 
           <CTA outline>
-            Start My Home Search
+            Request Your Rowe Report Buyer's Guide Now
           </CTA>
 
           <CTA outline>
@@ -2318,6 +2430,7 @@ export default function MovingInMobileMockup() {
       ) : null}
 
       <SocialSidebar />
+      <FloatingTinaContact />
       <TopBar onOpen={() => openLeadPopup("What Is My Home Worth?")} />
       <Header page={page} setPage={setPage} />
       {pages[page] || pages.home}
