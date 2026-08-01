@@ -1847,16 +1847,7 @@ function NeighborhoodsPage({ setPage }) {
 
                     <button
                       type="button"
-                      onClick={() =>
-                        window.dispatchEvent(
-                          new CustomEvent("openHomesPopup", {
-                            detail: {
-                              name: area.name,
-                              url: area.homesUrl,
-                            },
-                          })
-                        )
-                      }
+                      onClick={() => openHomesSearch(area)}
                       className="mt-auto pt-6"
                     >
                       <span className="block w-full rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700">
@@ -2328,9 +2319,18 @@ export default function MovingInMobileMockup() {
                 </p>
 
                 <a
-                  href={homesPopup.homesUrl}
+                  href={homesPopup.homesUrl || homesPopup.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(event) => {
+                    if (!homesPopup.homesUrl && !homesPopup.url) {
+                      event.preventDefault();
+                      console.error(
+                        "No homes search URL was provided for:",
+                        homesPopup
+                      );
+                    }
+                  }}
                   className="inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
                 >
                   Open Homes.com Map
