@@ -62,6 +62,43 @@ const ASSETS = {
 const phone = "(251) 895-9322";
 const LEAD_CAPTURE_ENDPOINT = "https://formspree.io/f/mgogbvkq";
 
+const GA_MEASUREMENT_ID = "G-3DL4PQGHQC";
+
+const ANALYTICS_PAGES = {
+  home: {
+    title: "Moving in Mobile | Tina Rowe",
+    path: "/",
+  },
+  about: {
+    title: "About Tina Rowe | Moving in Mobile",
+    path: "/about",
+  },
+  sellers: {
+    title: "Sell Your Home in Mobile, Alabama | Tina Rowe",
+    path: "/sellers",
+  },
+  buyers: {
+    title: "Buy a Home in Mobile, Alabama | Tina Rowe",
+    path: "/buyers",
+  },
+  neighborhoods: {
+    title: "Mobile & Baldwin County Neighborhoods | Tina Rowe",
+    path: "/neighborhoods",
+  },
+  rowereport: {
+    title: "The Rowe Report | Mobile Alabama Real Estate",
+    path: "/rowe-report",
+  },
+  resources: {
+    title: "Mobile Alabama Real Estate Resources | Tina Rowe",
+    path: "/resources",
+  },
+  contact: {
+    title: "Contact Tina Rowe | Moving in Mobile",
+    path: "/contact",
+  },
+};
+
 function getRequestLabel(value) {
   if (typeof value === "string") return value;
   return "General Inquiry";
@@ -2338,6 +2375,24 @@ export default function MovingInMobileMockup() {
   const [popupSubmitError, setPopupSubmitError] = useState("");
   const [homesPopup, setHomesPopup] = useState(null);
   const popupDismissedRef = useRef(false);
+  
+  useEffect(() => {
+  const analyticsPage =
+    ANALYTICS_PAGES[page] || ANALYTICS_PAGES.home;
+
+  document.title = analyticsPage.title;
+
+  if (typeof window.gtag !== "function") {
+    return;
+  }
+
+  window.gtag("event", "page_view", {
+    send_to: GA_MEASUREMENT_ID,
+    page_title: analyticsPage.title,
+    page_location: `${window.location.origin}${analyticsPage.path}`,
+    page_path: analyticsPage.path,
+  });
+}, [page]);
 
   const openLeadPopup = (requestType = "General Inquiry") => {
     setLeadRequestType(getRequestLabel(requestType));
