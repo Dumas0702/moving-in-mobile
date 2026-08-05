@@ -978,7 +978,7 @@ function HomePage({ setPage }) {
       <Hero
         title="Selling in Mobile?"
         redTitle="Moving in Mobile?"
-        text="I'm Tina Rowe, your local, Mobile home selling and relocation expert.  Get neighborhood guides, market updates, and a personalized strategy for your move."
+        text="I'm Tina Rowe, your local, Mobile, Alabama home selling and relocation expert.  Get neighborhood guides, market updates, and a personalized strategy for your move."
         quote="I don't just sell homes... I help people move."
         button="Schedule Your 15 Minute Strategy Session"
       />
@@ -1285,7 +1285,7 @@ function SellersPage({ setPage }) {
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8">
-              I’m Tina Rowe. a Mobile, Alabama Realtor specializing in helping homeowners sell for the best possible price and helping buyers confidently relocate to Mobile. Whether you’re selling, buying, or moving, I’ll help you create a strategy that fits your goals.
+              I’m Tina Rowe, a Mobile, Alabama Realtor specializing in helping homeowners sell for the best possible price and helping buyers confidently relocate to Mobile. Whether you’re selling, buying, or moving, I’ll help you create a strategy that fits your goals.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
