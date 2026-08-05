@@ -186,7 +186,7 @@ function SocialSidebar() {
 
 function FloatingTinaContact() {
   return (
-    <div className="fixed right-3 top-[155px] z-[85] sm:right-5 sm:top-[170px]">
+    <div className="fixed bottom-6 right-4 z-[85] sm:bottom-auto sm:right-5 sm:top-[170px]">
       <button
         type="button"
         onClick={() => openLeadRequest("Send Tina a Message")}
@@ -2375,7 +2375,7 @@ export default function MovingInMobileMockup() {
   const [popupSubmitError, setPopupSubmitError] = useState("");
   const [homesPopup, setHomesPopup] = useState(null);
   const popupDismissedRef = useRef(false);
-  
+
   useEffect(() => {
   const analyticsPage =
     ANALYTICS_PAGES[page] || ANALYTICS_PAGES.home;
