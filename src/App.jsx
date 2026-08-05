@@ -980,17 +980,17 @@ function HomePage({ setPage }) {
           <img src={ASSETS.van} alt="The Rowe Report Van" className="max-h-[380px] justify-self-center rounded-lg object-contain" />
           <div>
             <h2 className="font-display text-[2.65rem] font-semibold uppercase leading-[0.97]">
-              Before You List Again... <br />
-              <span className="text-red-600">See What Your Home Should Have Sold For</span>
+              Before You List... <br />
+              <span className="text-red-600">See What Your Home Could Sell For</span>
             </h2>
-            <p className="mt-4 text-[17px] leading-7 text-neutral-700">Most sellers never see the real numbers. The Rowe Report shows exactly what buyers are paying in your neighborhood right now.</p>
+            <p className="mt-4 text-[17px] leading-7 text-neutral-700">Most homeowners don’t know what buyers are actually willing to pay today.  The Rowe Report gives you the data, strategy, and local market insights you need before putting your home on the market.</p>
             <ul className="mt-5 space-y-2 text-[15px] font-bold">
-              <li>✅ Real recent sales (not guesses)</li>
-              <li>✅ Neighborhood-specific breakdowns</li>
-              <li>✅ Pricing trends that impact your home</li>
-              <li>✅ What likely caused your home not to sell</li>
+              <li>✅ Recent neighborhood sales</li>
+              <li>✅ Pricing trends</li>
+              <li>✅ Buyer demand in your area</li>
+              <li>✅ A customized pricing strategy</li>
             </ul>
-            <p className="mt-4 font-script text-2xl italic text-neutral-700">100% FREE. No pressure. Just real answers.</p>
+            <p className="mt-4 font-script text-2xl italic text-neutral-700">100% Free. No obligation. Just real information.</p>
           </div>
           <FormPanel title="Get Your Free Rowe Report" button="Send Me My Rowe Report" />
         </div>
@@ -999,27 +999,27 @@ function HomePage({ setPage }) {
       <section className="bg-neutral-100 py-10">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h2 className="font-display text-4xl font-semibold uppercase leading-tight">
-            Why Most Homes Don't Sell <span className="text-red-600">(And Why Yours Didn't Either)</span>
+            WHY SOME HOMES SELL FAST… <span className="text-red-600">(WHILE OTHERS SIT ON THE MARKET)</span>
           </h2>
           <div className="mx-auto mt-8 grid max-w-5xl items-center gap-8 md:grid-cols-[1fr_auto_1fr]">
             <div className="rounded-lg bg-white p-6 text-left shadow-md">
               <ul className="space-y-3 text-[16px] font-medium">
-                <li>❌ Priced wrong for today's market</li>
-                <li>❌ Not enough exposure to serious buyers</li>
-                <li>❌ Weak marketing that didn't stand out</li>
-                <li>❌ Poor negotiation strategy</li>
-                <li>❌ No clear plan from the start</li>
+                <li>❌ Incorrect Pricing</li>
+                <li>❌ Limited Exposure</li>
+                <li>❌ Weak marketing</li>
+                <li>❌ Poor negotiation</li>
+                <li>❌ No clear selling strategy</li>
               </ul>
             </div>
             <div className="text-6xl font-semibold text-red-600">→</div>
             <div className="rounded-lg bg-white p-6 text-left shadow-md">
-              <h3 className="font-display text-3xl font-semibold uppercase text-green-600">How I Fix It</h3>
+              <h3 className="font-display text-3xl font-semibold uppercase text-green-600">HOW I HELP YOU SELL FOR MORE</h3>
               <ul className="mt-4 space-y-3 text-[16px] font-medium">
-                <li>✅ Data-driven pricing strategy</li>
-                <li>✅ High-impact marketing that gets attention</li>
-                <li>✅ Professional presentation & positioning</li>
-                <li>✅ Strong negotiation to protect your equity</li>
-                <li>✅ A clear, proven plan from day one</li>
+                <li>✅ Strategic pricing based on today’s market</li>
+                <li>✅ Professional marketing that attracts buyers</li>
+                <li>✅ Maximum exposure online</li>
+                <li>✅ Skilled negotiation to protect your equity</li>
+                <li>✅ A proven plan from day one</li>
               </ul>
             </div>
           </div>
@@ -1031,12 +1031,12 @@ function HomePage({ setPage }) {
         <img src={ASSETS.skyline} alt="homes" className="absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-6 md:grid-cols-[.5fr_1.2fr_.9fr]"> <div>
             <h2 className="font-display text-4xl font-semibold uppercase leading-tight">
-              Don’t Relist Your Home Without a <span className="text-red-600">Better Strategy.</span>
+              READY TO <span className="text-red-600">SELL YOUR HOME?</span>
             </h2>
-            <p className="mt-2 text-lg text-white/80">You already tried once. Let’s make sure the next time... it actually sells.</p>
+            <p className="mt-2 text-lg text-white/80">Let’s build the right strategy from the beginning and maximize your home’s value.</p>
           </div>
           <div className="flex flex-col gap-3">
-            <CTA>Schedule a Call With Tina</CTA>
+            <CTA>SCHEDULE YOUR SELLER STRATEGY SESSION</CTA>
             <CTA outline>Get The Rowe Report First</CTA>
             <p className="text-3xl font-semibold"><a href="tel:2518959322">☎ {phone}</a></p>
           </div>
@@ -1053,8 +1053,8 @@ function AboutPage({ setPage }) {
     <>
       <Hero
         title="Hi, I'm Tina Rowe"
-        redTitle="Focused On Getting Homes Sold."
-        text="I believe every homeowner deserves an agent who will truly fight for their best outcome. Whether your home didn't sell or you're thinking about making a move, I have the strategy, experience, and determination to get you top dollar."
+        redTitle="YOUR MOBILE, ALABAMA HOME SELLING EXPERT. Focused on getting you where you want to be."
+        text="I believe every homeowner deserves an agent who will truly fight for their best outcome. I combine local market knowledge with a proven marketing strategy designed to help sellers maximize their home’s value. "
       />
 
       <section className="bg-white py-12">
@@ -1081,18 +1081,18 @@ function AboutPage({ setPage }) {
             <div className="mt-8">
               <h2 className="font-hand text-4xl text-red-600">Why Sellers Choose Me</h2>
               <p className="mt-4 leading-7">
-                I’m a lifelong Mobile local, and I know this market inside and out — not just the neighborhoods, but what actually makes homes sell.
+                As a lifelong Mobile, Alabama resident and Realtor, I know the Mobile real estate market inside and out—from the neighborhoods and schools to the pricing, marketing, and negotiation strategies that help homes sell for top dollar.
               </p>
               <p className="mt-4 leading-7">
-                I don’t approach real estate like most agents. Too many homes sit on the market because of the wrong pricing, weak marketing, or no real strategy. That costs sellers time, money, and frustration.
+                I love helping homeowners navigate one of the biggest financial decisions they’ll ever make with confidence and a clear plan.
               </p>
               <p className="mt-4 font-semibold">I do things differently.</p>
               <p className="mt-4 leading-7">
-                I focus on positioning your home to stand out, attract the right buyers, and create the kind of demand that leads to strong offers.
+                I don’t believe in simply listing homes—I believe in building a strategy. Every home deserves the right pricing, positioning, marketing, and negotiation plan to attract qualified buyers and maximize its value. 
               </p>
               <p className="mt-4 leading-7">
-                Whether your home didn’t sell the first time or you’re thinking about listing, my goal is simple:
-                <span className="font-semibold text-red-600"> Get you the best possible outcome — with a clear plan from day one.</span>
+                Whether you’re preparing to sell or looking for a fresh approach after your home didn’t sell, my goal is simple:
+                <span className="font-semibold text-red-600"> help you achieve the best possible outcome with a clear strategy from day one.</span>
               </p>
             </div>
           </div>
@@ -1248,7 +1248,7 @@ function SellersPage({ setPage }) {
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8">
-              I'm Tina Rowe, your local, Mobile home selling and relocation expert. Get neighborhood guides, market updates, and a personalized strategy for your move.
+              I’m Tina Rowe. a Mobile, Alabama Realtor specializing in helping homeowners sell for the best possible price and helping buyers confidently relocate to Mobile. Whether you’re selling, buying, or moving, I’ll help you create a strategy that fits your goals.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -1293,6 +1293,81 @@ function SellersPage({ setPage }) {
                 title={title}
                 text={text}
               />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-8 flex flex-col items-center">
+              <div className="h-px w-24 bg-red-600 opacity-60"></div>
+
+              <h2 className="mt-5 font-display text-5xl font-bold uppercase tracking-[0.22em] text-red-600 sm:text-6xl">
+                THE ROWE
+              </h2>
+
+              <h3 className="mt-1 font-display text-3xl font-semibold uppercase tracking-[0.45em] text-neutral-900 sm:text-4xl">
+                SELLING SYSTEM
+              </h3>
+
+              <div className="mt-5 h-px w-24 bg-red-600 opacity-60"></div>
+            </div>
+
+            <h2 className="font-display text-3xl font-semibold leading-tight text-neutral-900 sm:text-3xl">
+              Why Homeowners Choose Tina to Sell Their Home in Mobile, Alabama
+            </h2>
+
+            <p className="mt-6 text-lg leading-8 text-neutral-600">
+              When you list your home with Tina Rowe, you get more than an agent—you
+              get{" "}
+              <span className="font-semibold text-neutral-900">
+                The Rowe Selling System
+              </span>
+              , a strategic, step-by-step approach designed to maximize your home’s
+              exposure, attract qualified buyers, negotiate the strongest terms, and
+              guide you confidently from listing to closing.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-4 md:grid-cols-2">
+            {[
+              "Professional Pricing Strategy",
+              "Professional Photography",
+              "Drone Photography (if applicable)",
+              "Professional Property Description",
+              "Maximum MLS Exposure",
+              "Social Media Marketing",
+              "Digital Advertising",
+              "Reverse Prospecting",
+              "Email Marketing to Agents",
+              "Open House Strategy (if applicable)",
+              "Showing Feedback",
+              "Weekly Communication",
+              "Expert Negotiation",
+              "Contract-to-Closing Management",
+            ].map((item) => (
+              <div
+                key={item}
+                className="
+                  flex min-h-[68px] items-center gap-4
+                  rounded-lg border border-neutral-200
+                  bg-white px-5 py-3 shadow-sm
+                  transition duration-200
+                  hover:-translate-y-0.5
+                  hover:border-red-200
+                  hover:shadow-md
+                "
+              >
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">
+                  ✓
+                </div>
+
+                <p className="text-[15px] font-semibold leading-6 text-neutral-800">
+                  {item}
+                </p>
+              </div>
             ))}
           </div>
         </div>
@@ -1459,19 +1534,19 @@ function BuyersPage({ setPage }) {
 
           <div>
             <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
-              Find The Right Home—<br />
+              Find The Right Home in Mobile Alabama—<br />
               Without Overpaying<br />
               <span className="text-red-600">Or Missing Out</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8">
-              In today’s market, the right strategy matters. I help you find, win,
-              and secure the right home — without the stress.
+              Helping buyers navigate the Mobile, Alabama real estate market 
+              with smart strategy, expert negotiation, and local knowledge.
             </p>
 
-            <p className="mt-6 font-hand text-4xl">Tina Rowe</p>
+            <p className="mt-6 font-hand text-4xl">Hi I'm Tina Rowe</p>
             <p className="mt-3 max-w-sm text-lg">
-              I help buyers win in competitive markets — without overpaying.
+              Your Mobile, Alabama Buyer and Relocation Specialist.
             </p>
           </div>
 
@@ -1485,7 +1560,7 @@ function BuyersPage({ setPage }) {
       <section className="bg-white py-12">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h2 className="font-display text-4xl font-semibold uppercase">
-            How I Help You <span className="text-red-600">Win</span> The Right Home
+            The <span className="text-red-600">Rowe</span> Buying System
           </h2>
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
@@ -1507,6 +1582,80 @@ function BuyersPage({ setPage }) {
         </div>
       </section>
 
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-7xl px-6">
+
+          <div className="mx-auto max-w-4xl text-center">
+
+            <div className="mb-8 flex flex-col items-center">
+              <div className="h-px w-24 bg-red-600 opacity-60"></div>
+
+              <h2 className="mt-5 font-display text-5xl font-bold uppercase tracking-[0.22em] text-red-600 sm:text-6xl">
+                WHY WORK
+              </h2>
+
+              <h3 className="mt-1 font-display text-3xl font-semibold uppercase tracking-[0.45em] text-neutral-900 sm:text-4xl">
+                WITH TINA?
+              </h3>
+
+              <div className="mt-5 h-px w-24 bg-red-600 opacity-60"></div>
+            </div>
+
+            <p className="text-lg leading-8 text-neutral-600">
+              Buying a home is one of the biggest financial decisions you'll ever make.
+              Having the right agent means having someone who knows the market,
+              protects your interests, negotiates aggressively, and guides you every
+              step of the way.
+            </p>
+
+          </div>
+
+          <div className="mt-14 rounded-2xl border border-red-100 bg-red-50 p-8 shadow-sm">
+
+            <h3 className="text-center font-display text-3xl font-bold uppercase tracking-[0.28em] text-red-600">
+              THE ROWE ADVANTAGE
+            </h3>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+
+              {[
+                "Local Market Knowledge",
+                "Strategic Negotiation",
+                "Fast Communication",
+                "Trusted Vendor Network",
+                "Guidance From Search to Closing",
+                "Relocation Expertise",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="
+                    flex min-h-[68px] items-center gap-4
+                    rounded-lg border border-neutral-200
+                    bg-white px-5 py-3 shadow-sm
+                    transition duration-200
+                    hover:-translate-y-0.5
+                    hover:border-red-200
+                    hover:shadow-md
+                  "
+                >
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">
+                    ✓
+                  </div>
+
+                  <p className="text-[15px] font-semibold leading-6 text-neutral-800">
+                    {item}
+                  </p>
+
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
       <section className="bg-white pb-10">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-2">
           <div className="overflow-hidden rounded-lg border bg-white shadow-lg">
@@ -1518,7 +1667,7 @@ function BuyersPage({ setPage }) {
 
             <div className="p-8">
               <h2 className="font-display text-3xl font-semibold uppercase">
-                Why Buyers Love <span className="text-red-600">Mobile, AL</span>
+                Why Buyers Love Living in <span className="text-red-600">Mobile, AL</span>
               </h2>
 
               <ul className="mt-6 space-y-6">
@@ -1583,7 +1732,7 @@ function BuyersPage({ setPage }) {
       <section className="bg-white py-10 text-center">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="font-display text-4xl font-semibold uppercase">
-            No Matter Where You Are,{" "}
+            Moving to Mobile, Alabama? {" "}
             <span className="text-red-600">I’ve Got You Covered</span>
           </h2>
 
@@ -1751,7 +1900,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Spring Hill",
       image: ASSETS.springHill,
       homesUrl:
-        "https://www.homes.com/mobile-al/spring-hill-neighborhood/",
+        "https://www.homes.com/local-guide/mobile-al/parkhill-neighborhood/",
       bestFor: "Established neighborhoods, shopping, schools, convenience",
       description:
         "Spring Hill offers an established residential setting with mature landscaping, shopping, restaurants, medical access, and landmarks such as Spring Hill College. The area includes both older homes and carefully updated properties.",
