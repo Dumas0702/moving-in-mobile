@@ -4,6 +4,8 @@ import StagingIndicators from "./components/StagingIndicators";
 
 import "./floating-contact.css";
 
+import StructuredData from "./components/StructuredData";
+
 const BASE = window.location.pathname.startsWith("/moving-in-mobile/") ? "/moving-in-mobile/" : "/";
 
 const ASSETS = {
@@ -2486,8 +2488,9 @@ export default function MovingInMobileMockup() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-neutral-950">
-      <StagingIndicators />
+  <div className="min-h-screen bg-white font-sans text-neutral-950">
+    <StructuredData />
+    <StagingIndicators />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap');
