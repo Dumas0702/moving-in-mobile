@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import { NavLink, useLocation, useNavigate } from "react-router";
+
 import StagingIndicators from "./components/StagingIndicators";
 
 import "./floating-contact.css";
@@ -100,6 +102,37 @@ const ANALYTICS_PAGES = {
     path: "/contact",
   },
 };
+
+const PAGE_ROUTES = {
+  home: "/",
+  about: "/about",
+  sellers: "/sellers",
+  buyers: "/buyers",
+  neighborhoods: "/neighborhoods",
+  rowereport: "/rowe-report",
+  resources: "/resources",
+  contact: "/contact",
+};
+
+const ROUTE_PAGES = Object.fromEntries(
+  Object.entries(PAGE_ROUTES).map(([page, path]) => [path, page])
+);
+
+function getPageFromPath(pathname) {
+  let path = pathname;
+
+  // Preserve compatibility with the historical GitHub Pages deployment.
+  if (path.startsWith("/moving-in-mobile")) {
+    path = path.replace(/^\/moving-in-mobile/, "") || "/";
+  }
+
+  // Normalize trailing slashes.
+  if (path.length > 1 && path.endsWith("/")) {
+    path = path.slice(0, -1);
+  }
+
+  return ROUTE_PAGES[path] || "home";
+}
 
 function getRequestLabel(value) {
   if (typeof value === "string") return value;
@@ -318,8 +351,17 @@ function TopBar({ onOpen }) {
 function Header({ page, setPage }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const goToPage = (key) => {
-    setPage(key);
+  const headerNavItems = [
+    { label: "Home", to: "/" },
+    { label: "About", to: "/about" },
+    { label: "Sellers", to: "/sellers" },
+    { label: "Buyers", to: "/buyers" },
+    { label: "Neighborhoods", to: "/neighborhoods" },
+    { label: "Resources", to: "/resources" },
+    { label: "Contact", to: "/contact" },
+  ];
+
+  const handleNavigation = () => {
     setMobileOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -327,38 +369,51 @@ function Header({ page, setPage }) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black text-white shadow-xl">
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-6 py-3">
-        <button type="button" onClick={() => goToPage("home")} className="flex min-w-0 shrink-0 items-center gap-2">
-          <img src={ASSETS.logo} alt="The Rowe Report" className="h-[58px] w-auto max-w-[180px] object-contain sm:h-[68px] sm:max-w-[210px] md:h-[76px] md:max-w-[230px] xl:h-[88px] xl:max-w-[260px]" />
-          <img src={ASSETS.kw} alt="Keller Williams Mobile" className="h-[28px] w-auto object-contain sm:h-[34px] md:h-[40px] xl:h-[75px]" />
-        </button>
+        <NavLink
+          to="/"
+          onClick={handleNavigation}
+          className="flex min-w-0 shrink-0 items-center gap-2"
+          aria-label="Moving in Mobile home"
+        >
+          <img
+            src={ASSETS.logo}
+            alt="The Rowe Report"
+            className="h-[58px] w-auto max-w-[180px] object-contain sm:h-[68px] sm:max-w-[210px] md:h-[76px] md:max-w-[230px] xl:h-[88px] xl:max-w-[260px]"
+          />
+          <img
+            src={ASSETS.kw}
+            alt="Keller Williams Mobile"
+            className="h-[28px] w-auto object-contain sm:h-[34px] md:h-[40px] xl:h-[75px]"
+          />
+        </NavLink>
 
         <nav className="hidden flex-1 items-center justify-center gap-4 xl:gap-6 lg:flex">
-          {navItems.map((item) => {
-           const key = item.toLowerCase().replace(/\s+/g, "");
-            const active = page === key;
-            return (
-              <button
-                key={item}
-                type="button"
-                onClick={() => goToPage(key)}
-                className={cx(
+          {headerNavItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              onClick={handleNavigation}
+              className={({ isActive }) =>
+                cx(
                   "relative py-3 transition hover:text-red-500",
-                  active && "after:absolute after:inset-x-0 after:-bottom-1 after:h-1 after:bg-red-600"
-                )}
-              >
-                {item}
-              </button>
-            );
-          })}
+                  isActive &&
+                    "after:absolute after:inset-x-0 after:-bottom-1 after:h-1 after:bg-red-600"
+                )
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
         <div className="hidden shrink-0 xl:ml-10 xl:block 2xl:ml-16">
-           <CTA
-              onClick={() => goToPage("rowereport")}
-              className="shrink-0 whitespace-nowrap px-3 py-2 text-[11px] xl:px-5 xl:text-sm"
-            >
-              Get Your Rowe Report
-          </CTA>
+          <NavLink
+            to="/rowe-report"
+            onClick={handleNavigation}
+            className="inline-flex shrink-0 whitespace-nowrap rounded bg-red-600 px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-white transition hover:bg-red-700 xl:px-5 xl:text-sm"
+          >
+            Get Your Rowe Report
+          </NavLink>
         </div>
 
         <button
@@ -366,33 +421,41 @@ function Header({ page, setPage }) {
           onClick={() => setMobileOpen((open) => !open)}
           className="ml-auto rounded border border-white/25 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white xl:hidden"
           aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
         >
           Menu
         </button>
       </div>
 
       {mobileOpen ? (
-        <div className="border-t border-white/10 bg-black px-4 pb-4 xl:hidden">
+        <div
+          id="mobile-navigation"
+          className="border-t border-white/10 bg-black px-4 pb-4 xl:hidden"
+        >
           <div className="mx-auto grid max-w-7xl gap-2">
-            {navItems.map((item) => {
-              const key = item.toLowerCase().replace(/\s+/g, "");
-              return (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => goToPage(key)}
-                  className={cx(
+            {headerNavItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={handleNavigation}
+                className={({ isActive }) =>
+                  cx(
                     "rounded px-4 py-3 text-left font-display text-lg uppercase tracking-wide hover:bg-white/10",
-                    page === key && "bg-red-600 text-white"
-                  )}
-                >
-                  {item}
-                </button>
-              );
-            })}
-            <CTA className="mt-2 w-full">
+                    isActive && "bg-red-600 text-white"
+                  )
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+
+            <NavLink
+              to="/rowe-report"
+              onClick={handleNavigation}
+              className="mt-2 inline-flex w-full items-center justify-center rounded bg-red-600 px-5 py-3 font-semibold uppercase tracking-wide text-white transition hover:bg-red-700"
+            >
               Get Your Rowe Report
-            </CTA>
+            </NavLink>
           </div>
         </div>
       ) : null}
@@ -2369,7 +2432,16 @@ function ContactPage({ setPage }) {
   );
 }
 export default function MovingInMobileMockup() {
-  const [page, setPage] = useState("home");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const page = getPageFromPath(location.pathname);
+
+  const setPage = (pageKey) => {
+    const path = PAGE_ROUTES[pageKey] || "/";
+    navigate(path);
+  };
+
   const [showPopup, setShowPopup] = useState(false);
   const [leadRequestType, setLeadRequestType] = useState("General Inquiry");
   const [popupSubmitted, setPopupSubmitted] = useState(false);
@@ -2378,11 +2450,22 @@ export default function MovingInMobileMockup() {
   const [homesPopup, setHomesPopup] = useState(null);
   const popupDismissedRef = useRef(false);
 
-  useEffect(() => {
+ useEffect(() => {
   const analyticsPage =
     ANALYTICS_PAGES[page] || ANALYTICS_PAGES.home;
 
   document.title = analyticsPage.title;
+
+  const canonicalUrl = `${window.location.origin}${analyticsPage.path}`;
+  let canonical = document.querySelector('link[rel="canonical"]');
+
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.setAttribute("rel", "canonical");
+    document.head.appendChild(canonical);
+  }
+
+  canonical.setAttribute("href", canonicalUrl);
 
   if (typeof window.gtag !== "function") {
     return;
@@ -2391,7 +2474,7 @@ export default function MovingInMobileMockup() {
   window.gtag("event", "page_view", {
     send_to: GA_MEASUREMENT_ID,
     page_title: analyticsPage.title,
-    page_location: `${window.location.origin}${analyticsPage.path}`,
+    page_location: canonicalUrl,
     page_path: analyticsPage.path,
   });
 }, [page]);
