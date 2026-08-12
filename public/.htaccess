@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Preserve Hostinger's internal builds protection
+RewriteRule ^\.builds - [F,L]
+
+# Serve existing files and directories normally
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# React Router SPA fallback
+RewriteRule ^ index.html [L]
