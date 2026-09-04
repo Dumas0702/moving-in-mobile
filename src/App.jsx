@@ -143,10 +143,6 @@ function openLeadRequest(requestType = "General Inquiry") {
   window.dispatchEvent(new CustomEvent("openLeadPopup", { detail: requestType }));
 }
 
-function openHomesSearch(area) {
-  window.dispatchEvent(new CustomEvent("openHomesPopup", { detail: area }));
-}
-
 const navItems = ["Home", "About", "Sellers", "Buyers", "Neighborhoods", "Rowe Report", "Resources", "Contact"];
 const socials = [
   {
@@ -1890,7 +1886,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Daphne",
       image: ASSETS.daphne,
-      homesUrl: "https://www.homes.com/daphne-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/daphne-homes-for-sale",
       bestFor: "Bay access, Eastern Shore lifestyle, convenience",
       description:
         "Daphne offers a central Eastern Shore location with access to Mobile Bay, established neighborhoods, parks, restaurants, shopping, and convenient travel to Mobile and other Baldwin County communities.",
@@ -1901,7 +1898,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Dauphin Island",
       image: ASSETS.dauphinIsland,
-      homesUrl: "https://www.homes.com/dauphin-island-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/dauphin-island-homes-for-sale",
       bestFor: "Quiet island living, beaches, fishing, boating, nature",
       description:
         "Dauphin Island is a laid-back barrier-island community with public beaches, fishing and boating access, historic Fort Gaines, the Alabama Aquarium, and extensive protected bird and wildlife habitat. It appeals to buyers seeking a slower coastal pace, second-home opportunities, or waterfront and water-access living.",
@@ -1913,7 +1911,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Downtown Mobile",
       image: ASSETS.downtownMobile,
       homesUrl:
-        "https://www.homes.com/mobile-al/downtown-mobile-neighborhood/",
+        "https://movinginmobile.idxbroker.com/m/downtown-mobile-homes-for-sale",
       bestFor: "Historic charm, restaurants, events, nightlife",
       description:
         "Downtown Mobile is the cultural and historic center of the city, with architecture, restaurants, entertainment, Mardi Gras traditions, and walkable access to Dauphin Street, Bienville Square, museums, and the waterfront.",
@@ -1923,7 +1921,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Fairhope",
       image: ASSETS.fairhope,
-      homesUrl: "https://www.homes.com/fairhope-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/fairhope-homes-for-sale",
       bestFor: "Downtown charm, bayfront parks, boutiques, coastal lifestyle",
       description:
         "Fairhope is known for its walkable downtown, flower-lined streets, bayfront parks, independent shops, restaurants, galleries, and the Fairhope Municipal Pier. The area offers a broad mix of historic homes, established neighborhoods, and newer development.",
@@ -1934,7 +1933,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Gulf Shores",
       image: ASSETS.gulfShores,
-      homesUrl: "https://www.homes.com/gulf-shores-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/gulf-shores-homes-for-sale",
       bestFor: "Beach access, outdoor recreation, tourism, coastal investment",
       description:
         "Gulf Shores offers sugar-white Gulf beaches, restaurants, entertainment, and direct access to Gulf State Park, including trails, lakes, fishing, paddling, and other outdoor recreation. Housing ranges from established residential neighborhoods to condos, vacation homes, and investment properties near the beach.",
@@ -1946,7 +1946,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Midtown Mobile",
       image: ASSETS.midtownMobile,
       homesUrl:
-        "https://www.homes.com/mobile-al/midtown-mobile-neighborhood/",
+        "https://movinginmobile.idxbroker.com/m/midtown-mobile-homes-for-sale",
       bestFor: "Historic homes, oak-lined streets, classic Mobile character",
       description:
         "Midtown Mobile is known for mature trees, historic architecture, front porches, neighborhood parks, and convenient access to downtown, hospitals, restaurants, and local businesses.",
@@ -1957,7 +1957,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Orange Beach",
       image: ASSETS.orangeBeach,
-      homesUrl: "https://www.homes.com/orange-beach-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/orange-beach-homes-for-sale",
       bestFor: "Boating, fishing, beaches, waterfront living, entertainment",
       description:
         "Orange Beach combines Gulf beaches with bays, canals, marinas, fishing, and boating access. The community also offers Waterfront Park, the Hugh S. Branyon Backcountry Trail system, restaurants, and The Wharf’s shopping, dining, events, and entertainment.",
@@ -1968,7 +1969,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Saraland",
       image: ASSETS.saraland,
-      homesUrl: "https://www.homes.com/saraland-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/saraland-homes-for-sale",
       bestFor: "Community feel, North Mobile convenience, suburban living",
       description:
         "Saraland is a growing community north of Mobile with convenient access to I-65, shopping, services, employment corridors, and established residential neighborhoods.",
@@ -1979,7 +1981,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Semmes",
       image: ASSETS.semmes,
-      homesUrl: "https://www.homes.com/semmes-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/semmes-homes-for-sale",
       bestFor: "Space, quieter living, larger lots, rural-suburban feel",
       description:
         "Semmes offers a more relaxed setting with larger lots, established homes, newer construction, local parks, and convenient access to West Mobile and the broader Mobile metropolitan area.",
@@ -1990,7 +1993,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Spanish Fort",
       image: ASSETS.spanishFort,
-      homesUrl: "https://www.homes.com/spanish-fort-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/i/spanish-fort-homes-for-sale",
       bestFor: "Eastern Shore access, shopping, recreation, Mobile commute",
       description:
         "Spanish Fort combines Eastern Shore living with convenient access to Mobile, major highways, shopping, restaurants, outdoor recreation, and a variety of established and newer residential communities.",
@@ -2002,7 +2006,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Spring Hill",
       image: ASSETS.springHill,
       homesUrl:
-        "https://www.homes.com/local-guide/mobile-al/parkhill-neighborhood/",
+        "https://movinginmobile.idxbroker.com/m/spring-hill-mobile-homes-for-sale",
       bestFor: "Established neighborhoods, shopping, schools, convenience",
       description:
         "Spring Hill offers an established residential setting with mature landscaping, shopping, restaurants, medical access, and landmarks such as Spring Hill College. The area includes both older homes and carefully updated properties.",
@@ -2013,7 +2017,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "West Mobile",
       image: ASSETS.westMobile,
-      homesUrl: "https://www.homes.com/mobile-al/",
+      homesUrl:
+        "https://movinginmobile.idxbroker.com/m/west-mobile-homes-for-sale",
       bestFor: "More space, newer homes, suburban convenience",
       description:
         "West Mobile appeals to buyers seeking suburban neighborhoods, larger lots, newer construction, shopping, parks, and convenient access to major roads while remaining within the Mobile area.",
@@ -2045,8 +2050,8 @@ function NeighborhoodsPage({ setPage }) {
 
             <p className="mt-4 text-neutral-600">
               Explore communities throughout Mobile County and Baldwin County.
-              Select an area to view its current Homes.com listings, or ask Tina
-              to create a more focused home search for you.
+              Select an area to view current MLS listings, or ask Tina to create
+              a more focused home search for you.
             </p>
           </div>
 
@@ -2096,15 +2101,16 @@ function NeighborhoodsPage({ setPage }) {
                       </div>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => openHomesSearch(area)}
+                    <a
+                      href={area.homesUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="mt-auto pt-6"
                     >
-                      <span className="block w-full rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700">
+                      <span className="block w-full rounded bg-red-600 px-5 py-3 text-center text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700">
                         View Homes in {area.name}
                       </span>
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -2447,7 +2453,6 @@ export default function MovingInMobileMockup() {
   const [popupSubmitted, setPopupSubmitted] = useState(false);
   const [popupSubmitting, setPopupSubmitting] = useState(false);
   const [popupSubmitError, setPopupSubmitError] = useState("");
-  const [homesPopup, setHomesPopup] = useState(null);
   const popupDismissedRef = useRef(false);
 
  useEffect(() => {
@@ -2537,13 +2542,6 @@ export default function MovingInMobileMockup() {
     };
     window.addEventListener("navigatePage", handleNavigatePage);
 
-    const handleOpenHomesPopup = (event) => {
-      if (event.detail) {
-        setHomesPopup(event.detail);
-      }
-    };
-    window.addEventListener("openHomesPopup", handleOpenHomesPopup);
-
     const delay = 6500;
     const timer = window.setTimeout(() => {
       if (!popupDismissedRef.current) {
@@ -2555,7 +2553,6 @@ export default function MovingInMobileMockup() {
       window.clearTimeout(timer);
       window.removeEventListener("openLeadPopup", handleOpenLeadPopup);
       window.removeEventListener("navigatePage", handleNavigatePage);
-      window.removeEventListener("openHomesPopup", handleOpenHomesPopup);
     };
   }, [page]);
 
@@ -2581,76 +2578,6 @@ export default function MovingInMobileMockup() {
         .font-script { font-family: Georgia, serif; }
         .font-hand { font-family: Caveat, "Comic Sans MS", cursive; }
       `}</style>
-
-      {homesPopup ? (
-        <div className="fixed inset-0 z-[105] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
-          <div className="relative max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-xl bg-white p-5 text-center shadow-2xl sm:p-8">
-            <button
-              type="button"
-              onClick={() => setHomesPopup(null)}
-              className="absolute right-4 top-3 text-3xl leading-none text-neutral-500 transition hover:text-black"
-              aria-label="Close homes search popup"
-            >
-              ×
-            </button>
-
-            <p className="font-semibold uppercase tracking-widest text-red-600">
-              Homes.com Search
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-semibold uppercase leading-tight sm:text-4xl">
-              View Homes in <span className="text-red-600">{homesPopup.name}</span>
-            </h2>
-
-            <div className="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 shadow-inner">
-              <div className="flex min-h-[300px] flex-col items-center justify-center gap-4 p-6 sm:min-h-[380px]">
-                <div className="text-6xl">⌂</div>
-                <p className="max-w-2xl text-neutral-700">
-                  Homes.com search results will open in a new tab so visitors can explore the active map and listings for this area. Once Tina’s IDX feed is available, this same button can be replaced with an embedded MLS search.
-                </p>
-
-                <a
-                  href={homesPopup.homesUrl || homesPopup.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(event) => {
-                    if (!homesPopup.homesUrl && !homesPopup.url) {
-                      event.preventDefault();
-                      console.error(
-                        "No homes search URL was provided for:",
-                        homesPopup
-                      );
-                    }
-                  }}
-                  className="inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
-                >
-                  Open Homes.com Map
-                </a>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setHomesPopup(null);
-                  openLeadRequest(`Have Tina send me homes in ${homesPopup.name}`);
-                }}
-                className="rounded border border-red-600 px-6 py-3 text-sm font-bold uppercase tracking-wide text-red-600 transition hover:bg-red-600 hover:text-white"
-              >
-                Have Tina Send Me Homes Here
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setHomesPopup(null)}
-                className="rounded border border-neutral-300 px-6 py-3 text-sm font-bold uppercase tracking-wide text-neutral-700 transition hover:bg-neutral-100"
-              >
-                Continue Browsing
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
 
       {showPopup ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 px-4 backdrop-blur-[1px]">
