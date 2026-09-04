@@ -118,6 +118,8 @@ const ROUTE_PAGES = Object.fromEntries(
   Object.entries(PAGE_ROUTES).map(([page, path]) => [path, page])
 );
 
+const IDX_BASE_URL = "https://homes.movinginmobile.com";
+
 function getPageFromPath(pathname) {
   let path = pathname;
 
@@ -1887,7 +1889,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Daphne",
       image: ASSETS.daphne,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/daphne-homes-for-sale",
+        `${IDX_BASE_URL}/i/daphne-homes-for-sale`,
       bestFor: "Bay access, Eastern Shore lifestyle, convenience",
       description:
         "Daphne offers a central Eastern Shore location with access to Mobile Bay, established neighborhoods, parks, restaurants, shopping, and convenient travel to Mobile and other Baldwin County communities.",
@@ -1899,7 +1901,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Dauphin Island",
       image: ASSETS.dauphinIsland,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/dauphin-island-homes-for-sale",
+        `${IDX_BASE_URL}/i/dauphin-island-homes-for-sale`,
       bestFor: "Quiet island living, beaches, fishing, boating, nature",
       description:
         "Dauphin Island is a laid-back barrier-island community with public beaches, fishing and boating access, historic Fort Gaines, the Alabama Aquarium, and extensive protected bird and wildlife habitat. It appeals to buyers seeking a slower coastal pace, second-home opportunities, or waterfront and water-access living.",
@@ -1911,7 +1913,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Downtown Mobile",
       image: ASSETS.downtownMobile,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/m/downtown-mobile-homes-for-sale",
+        `${IDX_BASE_URL}/m/downtown-mobile-homes-for-sale`,
       bestFor: "Historic charm, restaurants, events, nightlife",
       description:
         "Downtown Mobile is the cultural and historic center of the city, with architecture, restaurants, entertainment, Mardi Gras traditions, and walkable access to Dauphin Street, Bienville Square, museums, and the waterfront.",
@@ -1922,7 +1924,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Fairhope",
       image: ASSETS.fairhope,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/fairhope-homes-for-sale",
+        `${IDX_BASE_URL}/i/fairhope-homes-for-sale`,
       bestFor: "Downtown charm, bayfront parks, boutiques, coastal lifestyle",
       description:
         "Fairhope is known for its walkable downtown, flower-lined streets, bayfront parks, independent shops, restaurants, galleries, and the Fairhope Municipal Pier. The area offers a broad mix of historic homes, established neighborhoods, and newer development.",
@@ -1934,7 +1936,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Gulf Shores",
       image: ASSETS.gulfShores,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/gulf-shores-homes-for-sale",
+        `${IDX_BASE_URL}/i/gulf-shores-homes-for-sale`,
       bestFor: "Beach access, outdoor recreation, tourism, coastal investment",
       description:
         "Gulf Shores offers sugar-white Gulf beaches, restaurants, entertainment, and direct access to Gulf State Park, including trails, lakes, fishing, paddling, and other outdoor recreation. Housing ranges from established residential neighborhoods to condos, vacation homes, and investment properties near the beach.",
@@ -1946,7 +1948,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Midtown Mobile",
       image: ASSETS.midtownMobile,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/m/midtown-mobile-homes-for-sale",
+        `${IDX_BASE_URL}/m/midtown-mobile-homes-for-sale`,
       bestFor: "Historic homes, oak-lined streets, classic Mobile character",
       description:
         "Midtown Mobile is known for mature trees, historic architecture, front porches, neighborhood parks, and convenient access to downtown, hospitals, restaurants, and local businesses.",
@@ -1958,7 +1960,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Orange Beach",
       image: ASSETS.orangeBeach,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/orange-beach-homes-for-sale",
+        `${IDX_BASE_URL}/i/orange-beach-homes-for-sale`,
       bestFor: "Boating, fishing, beaches, waterfront living, entertainment",
       description:
         "Orange Beach combines Gulf beaches with bays, canals, marinas, fishing, and boating access. The community also offers Waterfront Park, the Hugh S. Branyon Backcountry Trail system, restaurants, and The Wharf’s shopping, dining, events, and entertainment.",
@@ -1970,7 +1972,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Saraland",
       image: ASSETS.saraland,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/saraland-homes-for-sale",
+        `${IDX_BASE_URL}/i/saraland-homes-for-sale`,
       bestFor: "Community feel, North Mobile convenience, suburban living",
       description:
         "Saraland is a growing community north of Mobile with convenient access to I-65, shopping, services, employment corridors, and established residential neighborhoods.",
@@ -1982,7 +1984,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Semmes",
       image: ASSETS.semmes,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/semmes-homes-for-sale",
+        `${IDX_BASE_URL}/i/semmes-homes-for-sale`,
       bestFor: "Space, quieter living, larger lots, rural-suburban feel",
       description:
         "Semmes offers a more relaxed setting with larger lots, established homes, newer construction, local parks, and convenient access to West Mobile and the broader Mobile metropolitan area.",
@@ -1994,7 +1996,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Spanish Fort",
       image: ASSETS.spanishFort,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/i/spanish-fort-homes-for-sale",
+        `${IDX_BASE_URL}/i/spanish-fort-homes-for-sale`,
       bestFor: "Eastern Shore access, shopping, recreation, Mobile commute",
       description:
         "Spanish Fort combines Eastern Shore living with convenient access to Mobile, major highways, shopping, restaurants, outdoor recreation, and a variety of established and newer residential communities.",
@@ -2006,7 +2008,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Spring Hill",
       image: ASSETS.springHill,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/m/spring-hill-mobile-homes-for-sale",
+        `${IDX_BASE_URL}/m/spring-hill-mobile-homes-for-sale`,
       bestFor: "Established neighborhoods, shopping, schools, convenience",
       description:
         "Spring Hill offers an established residential setting with mature landscaping, shopping, restaurants, medical access, and landmarks such as Spring Hill College. The area includes both older homes and carefully updated properties.",
@@ -2018,7 +2020,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "West Mobile",
       image: ASSETS.westMobile,
       homesUrl:
-        "https://movinginmobile.idxbroker.com/m/west-mobile-homes-for-sale",
+        `${IDX_BASE_URL}/m/west-mobile-homes-for-sale`,
       bestFor: "More space, newer homes, suburban convenience",
       description:
         "West Mobile appeals to buyers seeking suburban neighborhoods, larger lots, newer construction, shopping, parks, and convenient access to major roads while remaining within the Mobile area.",
