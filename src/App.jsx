@@ -150,17 +150,17 @@ const socials = [
   {
     icon: ASSETS.facebook,
     alt: "Facebook",
-    href: "https://www.facebook.com/tina.rowe.484411",
+    href: "https://www.facebook.com/profile.php?id=615842234016458",
   },
   {
     icon: ASSETS.instagram,
     alt: "Instagram",
-    href: "https://www.instagram.com/therowereport",
+    href: "https://www.instagram.com/movinginmobile",
   },
   {
     icon: ASSETS.youtube,
     alt: "YouTube",
-    href: "https://www.youtube.com/@TheRoweReportMobile",
+    href: "https://www.youtube.com/@movinginmobile",
   },
   {
     icon: ASSETS.linkedin,
@@ -2184,7 +2184,7 @@ function RoweReportPage({ setPage }) {
           </p>
 
           <a
-            href="https://www.youtube.com/@TheRoweReportMobile"
+            href="https://www.youtube.com/@movinginmobile"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase tracking-wide transition hover:bg-red-700"
@@ -2247,7 +2247,7 @@ function RoweReportPage({ setPage }) {
         </p>
 
         <a
-          href="https://www.youtube.com/@TheRoweReportMobile"
+          href="https://www.youtube.com/@movinginmobile"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase"
