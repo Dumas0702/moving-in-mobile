@@ -64,7 +64,7 @@ export default function StructuredData() {
           "Baldwin County real estate",
         ],
         sameAs: [
-          "https://www.facebook.com/profile.php?id=615842234016458",
+          "https://www.facebook.com/profile.php?id=61584234016458",
           "https://www.instagram.com/movinginmobile",
           "https://www.youtube.com/@movinginmobile",
           "https://www.linkedin.com/in/tina-rowe-76368b353/",
@@ -168,7 +168,7 @@ export default function StructuredData() {
           },
         ],
         sameAs: [
-          "https://www.facebook.com/profile.php?id=615842234016458",
+          "https://www.facebook.com/profile.php?id=61584234016458",
           "https://www.instagram.com/movinginmobile",
           "https://www.youtube.com/@movinginmobile",
           "https://www.linkedin.com/in/tina-rowe-76368b353/",

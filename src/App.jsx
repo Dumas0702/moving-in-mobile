@@ -150,7 +150,7 @@ const socials = [
   {
     icon: ASSETS.facebook,
     alt: "Facebook",
-    href: "https://www.facebook.com/profile.php?id=615842234016458",
+    href: "https://www.facebook.com/profile.php?id=61584234016458",
   },
   {
     icon: ASSETS.instagram,
