@@ -8,6 +8,8 @@ import "./floating-contact.css";
 
 import StructuredData from "./components/StructuredData";
 
+import { FAQ_CATEGORIES } from "./data/faqData";
+
 const BASE = window.location.pathname.startsWith("/moving-in-mobile/") ? "/moving-in-mobile/" : "/";
 
 const ASSETS = {
@@ -97,6 +99,10 @@ const ANALYTICS_PAGES = {
     title: "Mobile Alabama Real Estate Resources | Tina Rowe",
     path: "/resources",
   },
+  faq: {
+    title: "Moving to Mobile Alabama FAQs | Tina Rowe",
+    path: "/faq",
+  },
   contact: {
     title: "Contact Tina Rowe | Moving in Mobile",
     path: "/contact",
@@ -112,6 +118,7 @@ const PAGE_ROUTES = {
   rowereport: "/rowe-report",
   resources: "/resources",
   contact: "/contact",
+  faq: "/faq",
 };
 
 const ROUTE_PAGES = Object.fromEntries(
@@ -934,6 +941,16 @@ function Footer({ setPage }) {
           </h4>
 
           <div className="mt-5 grid gap-2 text-sm text-white/75">
+          <button
+            type="button"
+            onClick={() => {
+              setPage("faq");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="text-left transition hover:text-red-500"
+          >
+            FAQ
+          </button>
             {navItems.slice(0, 6).map((item) => (
               <button
                 key={item}
@@ -1188,7 +1205,7 @@ function AboutPage({ setPage }) {
               </p>
               <p className="mt-4 font-semibold">I do things differently.</p>
               <p className="mt-4 leading-7">
-                I don’t believe in simply listing homes—I believe in building a strategy. Every home deserves the right pricing, positioning, marketing, and negotiation plan to attract qualified buyers and maximize its value. 
+                I don’t believe in simply listing homes—I believe in building a strategy. Every home deserves the right pricing, positioning, marketing, and negotiation plan to attract qualified buyers and maximize its value.
               </p>
               <p className="mt-4 leading-7">
                 Whether you’re preparing to sell or looking for a fresh approach after your home didn’t sell, my goal is simple:
@@ -1640,7 +1657,7 @@ function BuyersPage({ setPage }) {
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8">
-              Helping buyers navigate the Mobile, Alabama real estate market 
+              Helping buyers navigate the Mobile, Alabama real estate market
               with smart strategy, expert negotiation, and local knowledge.
             </p>
 
@@ -2132,6 +2149,146 @@ function NeighborhoodsPage({ setPage }) {
     </>
   );
 }
+
+function FAQPage({ setPage }) {
+  const handleCta = (cta) => {
+    if (!cta) return;
+
+    if (cta.type === "lead") {
+      openLeadRequest(cta.request);
+      return;
+    }
+
+    if (cta.type === "page") {
+      setPage(cta.page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  return (
+    <>
+      <Hero
+        title="Moving in Mobile, Alabama?"
+        redTitle="Moving to Mobile, Alabama? Start Here."
+        text=""
+      />
+
+      <section className="bg-white py-10 sm:py-12">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+
+            <p className="mt-6 text-lg leading-8 text-neutral-700">
+              Whether you're relocating to Mobile, buying your first home,
+              selling a property, downsizing, or simply trying to figure out
+              which Mobile-area community fits your lifestyle, you've come to
+              the right place. The Rowe Report is your inside look at moving,
+              living, buying and selling in Mobile, Alabama.
+            </p>
+
+            <p className="mt-4 leading-7 text-neutral-600">
+              Below you'll find answers to 50 of the questions people ask most
+              about Mobile real estate, neighborhoods, schools, cost of living,
+              flooding, insurance, buying and selling homes, and everyday life
+              in the Mobile area.
+            </p>
+          </div>
+
+          <div className="mt-10 space-y-12">
+            {FAQ_CATEGORIES.map((category, categoryIndex) => (
+              <section key={category.title}>
+                <div className="mb-5 border-b-2 border-red-600 pb-3">
+                  <h2 className="font-display text-3xl font-semibold uppercase">
+                    {category.title}
+                  </h2>
+                </div>
+
+                <div className="space-y-3">
+                  {category.questions.map((item, questionIndex) => {
+                    const priorQuestions = FAQ_CATEGORIES
+                      .slice(0, categoryIndex)
+                      .reduce(
+                        (total, priorCategory) =>
+                          total + priorCategory.questions.length,
+                        0
+                      );
+
+                    const questionNumber =
+                      priorQuestions + questionIndex + 1;
+
+                    return (
+                      <details
+                        key={item.question}
+                        className="group overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm"
+                      >
+                        <summary className="flex cursor-pointer list-none items-start justify-between gap-5 px-5 py-5 font-semibold text-neutral-900 transition hover:bg-neutral-50 sm:px-6">
+                          <span>
+                            <span className="mr-2 text-red-600">
+                              {questionNumber}.
+                            </span>
+                            {item.question}
+                          </span>
+
+                          <span className="mt-0.5 text-xl font-normal text-red-600 transition group-open:rotate-45">
+                            +
+                          </span>
+                        </summary>
+
+                        <div className="border-t border-neutral-100 px-5 py-5 sm:px-6">
+                          <p className="leading-7 text-neutral-700">
+                            {item.answer}
+                          </p>
+
+                          {item.cta ? (
+                            <button
+                              type="button"
+                              onClick={() => handleCta(item.cta)}
+                              className="mt-5 rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+                            >
+                              {item.cta.label}
+                            </button>
+                          ) : null}
+                        </div>
+                      </details>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-neutral-950 py-16 text-white">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <p className="font-semibold uppercase tracking-widest text-red-500">
+            Still Have Questions About Moving to Mobile?
+          </p>
+
+          <h2 className="mt-3 font-display text-4xl font-semibold uppercase sm:text-5xl">
+            You Don't Have to Figure It Out by Yourself
+          </h2>
+
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-neutral-300">
+            Tell Tina what you're looking for, where you're coming from, and
+            what matters most to you—and she'll help you find the Mobile-area
+            community that fits.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => openLeadRequest("Moving to Mobile Guide")}
+            className="mt-8 rounded bg-red-600 px-8 py-4 font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+          >
+            Get My Free Moving to Mobile Guide
+          </button>
+        </div>
+      </section>
+
+      <Footer setPage={setPage} />
+    </>
+  );
+}
+
 function RoweReportPage({ setPage }) {
   const videos = [
     {
@@ -2565,6 +2722,7 @@ export default function MovingInMobileMockup() {
     buyers: <BuyersPage setPage={setPage} />,
     neighborhoods: <NeighborhoodsPage setPage={setPage} />,
     resources: <ResourcesPage setPage={setPage} />,
+    faq: <FAQPage setPage={setPage} />,
     rowereport: <RoweReportPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
   };

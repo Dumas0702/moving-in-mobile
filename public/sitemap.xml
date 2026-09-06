@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<urlset
-    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
     <loc>https://movinginmobile.com/</loc>
     <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/about</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/buyers</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/sellers</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/neighborhoods</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/rowe-report</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/resources</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/faq</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://movinginmobile.com/contact</loc>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
