@@ -1390,6 +1390,30 @@ function SellersPage({ setPage }) {
         </div>
       </section>
 
+            <section className="bg-neutral-50 py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Local Market Search
+            </p>
+
+            <h2 className="mt-3 font-display text-4xl font-semibold uppercase">
+              See What Buyers Are Seeing
+            </h2>
+
+            <p className="mt-4 text-neutral-600">
+              Explore current MLS listings across Mobile and Baldwin County to
+              see how homes are positioned, priced, and competing in today’s
+              market.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <IDXMapSearchEmbed />
+          </div>
+        </div>
+      </section>
+
       <section className="bg-white py-14">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="text-center font-display text-4xl font-semibold uppercase">
@@ -1674,6 +1698,29 @@ function BuyersPage({ setPage }) {
         </div>
       </section>
 
+            <section className="bg-neutral-50 py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Home Search
+            </p>
+
+            <h2 className="mt-3 font-display text-4xl font-semibold uppercase">
+              Search Homes Across Mobile & Baldwin County
+            </h2>
+
+            <p className="mt-4 text-neutral-600">
+              Search current MLS listings by city, county, ZIP code, price,
+              beds, baths, property type, or directly on the map.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <IDXMapSearchEmbed />
+          </div>
+        </div>
+      </section>
+
       <section className="bg-white py-12">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h2 className="font-display text-4xl font-semibold uppercase">
@@ -1900,6 +1947,61 @@ function BuyersPage({ setPage }) {
     </>
   );
 }
+
+function IDXMapSearchEmbed() {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsActive(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isActive]);
+
+  return (
+    <div className="relative w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg">
+      <iframe
+        src="https://homes.movinginmobile.com/idx/map/mapsearch"
+        title="Search Homes Across Mobile and Baldwin County"
+        className={`block h-[900px] w-full border-0 ${
+          isActive ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        loading="lazy"
+      />
+
+      {!isActive ? (
+        <button
+          type="button"
+          onClick={() => setIsActive(true)}
+          className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-black/5"
+          aria-label="Activate home search"
+        >
+          <span className="rounded-lg bg-neutral-950 px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-xl">
+            Click to Explore the Map & Listings
+          </span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsActive(false)}
+          className="absolute right-4 top-4 z-20 rounded bg-neutral-950/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-white shadow-lg hover:bg-neutral-950"
+        >
+          Continue Page Scrolling
+        </button>
+      )}
+    </div>
+  );
+}
+
 function NeighborhoodsPage({ setPage }) {
   const neighborhoods = [
     {
@@ -2055,6 +2157,8 @@ function NeighborhoodsPage({ setPage }) {
         text="Every community has its own personality, housing options, and lifestyle. Explore several of the areas Tina serves, then connect with her when you're ready to narrow down the best fit for your move."
         button="Search Neighborhoods"
       />
+
+      <IDXMapSearchEmbed />
 
       <section className="bg-white py-14">
         <div className="mx-auto max-w-7xl px-6">
