@@ -2620,7 +2620,8 @@ export default function MovingInMobileMockup() {
 
   document.title = analyticsPage.title;
 
-  const canonicalUrl = `${window.location.origin}${analyticsPage.path}`;
+  const canonicalUrl = `https://movinginmobile.com${analyticsPage.path}`;
+  const pageLocation = `${window.location.origin}${analyticsPage.path}`;
   let canonical = document.querySelector('link[rel="canonical"]');
 
   if (!canonical) {
@@ -2631,6 +2632,22 @@ export default function MovingInMobileMockup() {
 
   canonical.setAttribute("href", canonicalUrl);
 
+  let robots = document.querySelector('meta[name="robots"]');
+
+if (!robots) {
+  robots = document.createElement("meta");
+  robots.setAttribute("name", "robots");
+  document.head.appendChild(robots);
+}
+
+const isStaging =
+  window.location.hostname === "staging.movinginmobile.com";
+
+robots.setAttribute(
+  "content",
+  isStaging ? "noindex, nofollow" : "index, follow"
+);
+
   if (typeof window.gtag !== "function") {
     return;
   }
@@ -2638,7 +2655,7 @@ export default function MovingInMobileMockup() {
   window.gtag("event", "page_view", {
     send_to: GA_MEASUREMENT_ID,
     page_title: analyticsPage.title,
-    page_location: canonicalUrl,
+    page_location: pageLocation,
     page_path: analyticsPage.path,
   });
 }, [page]);
