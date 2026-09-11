@@ -373,24 +373,27 @@ function Header({ page, setPage }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black text-white shadow-xl">
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-6 py-3">
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-1 px-6 py-0">
         <NavLink
-          to="/"
-          onClick={handleNavigation}
-          className="flex min-w-0 shrink-0 items-center gap-2"
-          aria-label="Moving in Mobile home"
-        >
-          <img
-            src={ASSETS.logo}
-            alt="The Rowe Report"
-            className="h-[58px] w-auto max-w-[180px] object-contain sm:h-[68px] sm:max-w-[210px] md:h-[76px] md:max-w-[230px] xl:h-[88px] xl:max-w-[260px]"
-          />
-          <img
-            src={ASSETS.kw}
-            alt="Keller Williams Mobile"
-            className="h-[28px] w-auto object-contain sm:h-[34px] md:h-[40px] xl:h-[75px]"
-          />
-        </NavLink>
+  to="/"
+  onClick={handleNavigation}
+  className="flex min-w-0 shrink-0 items-center gap-2"
+  aria-label="Moving in Mobile home"
+>
+  <img
+    src={ASSETS.logo}
+    alt="The Rowe Report"
+    className="h-[40px] w-auto max-w-[130px] object-contain sm:h-[44px] sm:max-w-[145px] md:h-[48px] md:max-w-[160px] xl:h-[52px] xl:max-w-[175px]"
+  />
+
+  <div className="flex h-[92px] items-center overflow-hidden 2xl:h-[105px]">
+    <img
+      src={ASSETS.kw}
+      alt="Keller Williams Mobile"
+      className="h-[120px] w-auto max-w-none object-contain sm:h-[135px] md:h-[150px] xl:h-[165px] 2xl:h-[180px]"
+    />
+  </div>
+</NavLink>
 
         <nav className="hidden flex-1 items-center justify-center gap-4 xl:gap-6 lg:flex">
           {headerNavItems.map((item) => (
@@ -634,7 +637,7 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
 
       <div className="relative mx-auto grid min-h-[535px] max-w-7xl items-center gap-8 px-6 py-7 lg:grid-cols-[1fr_.92fr]">
         <div className={cx("z-10", reverse && "lg:order-2")}>
-          <h1 className="font-display text-[3.2rem] font-semibold uppercase leading-[0.95] tracking-tight md:text-[4.2rem]">
+          <h1 className="font-display text-[3.2rem] font-medium uppercase leading-[0.95] tracking-tight md:text-[3rem]">
             {title}<br />
             <span className="text-red-600">{redTitle}</span>
           </h1>
@@ -1359,7 +1362,7 @@ function SellersPage({ setPage }) {
           </div>
 
           <div>
-            <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
+            <h1 className="font-display text-[3rem] font-medium uppercase leading-[.95] md:text-[3rem]">
               Selling in Mobile?<br />
               <span className="text-red-600">Moving in Mobile?</span>
             </h1>
@@ -1674,7 +1677,7 @@ function BuyersPage({ setPage }) {
           </div>
 
           <div>
-            <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
+            <h1 className="font-display text-[3rem] font-medium uppercase leading-[.95] md:text-[3rem]">
               Find The Right Home in Mobile Alabama—<br />
               Without Overpaying<br />
               <span className="text-red-600">Or Missing Out</span>
