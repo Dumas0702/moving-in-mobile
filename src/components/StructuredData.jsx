@@ -1,6 +1,41 @@
+import { FAQ_CATEGORIES } from "../data/faqData";
+
 const SITE_URL = "https://movinginmobile.com";
 
 export default function StructuredData() {
+  const currentPath =
+    typeof window !== "undefined"
+      ? window.location.pathname.replace(/\/$/, "") || "/"
+      : "/";
+
+  const isFaqPage = currentPath === "/faq";
+
+  const faqSchema = {
+    "@type": "FAQPage",
+    "@id": `${SITE_URL}/faq#faq`,
+    url: `${SITE_URL}/faq`,
+    name: "Moving to Mobile Alabama FAQs | Tina Rowe",
+    description:
+      "Answers to 50 frequently asked questions about moving to Mobile, Alabama, neighborhoods, buying and selling homes, flooding, insurance, schools, jobs, and everyday life.",
+    isPartOf: {
+      "@id": `${SITE_URL}/#website`,
+    },
+    about: {
+      "@id": `${SITE_URL}/#real-estate-business`,
+    },
+    mainEntity: FAQ_CATEGORIES.flatMap((category) =>
+      category.questions.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      }))
+    ),
+    inLanguage: "en-US",
+  };
+
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -64,9 +99,9 @@ export default function StructuredData() {
           "Baldwin County real estate",
         ],
         sameAs: [
-          "https://www.facebook.com/tina.rowe.484411",
-          "https://www.instagram.com/therowereport",
-          "https://www.youtube.com/@TheRoweReportMobile",
+          "https://www.facebook.com/profile.php?id=61584234016458",
+          "https://www.instagram.com/movinginmobile",
+          "https://www.youtube.com/@movinginmobile",
           "https://www.linkedin.com/in/tina-rowe-76368b353/",
         ],
       },
@@ -168,9 +203,9 @@ export default function StructuredData() {
           },
         ],
         sameAs: [
-          "https://www.facebook.com/tina.rowe.484411",
-          "https://www.instagram.com/therowereport",
-          "https://www.youtube.com/@TheRoweReportMobile",
+          "https://www.facebook.com/profile.php?id=61584234016458",
+          "https://www.instagram.com/movinginmobile",
+          "https://www.youtube.com/@movinginmobile",
           "https://www.linkedin.com/in/tina-rowe-76368b353/",
         ],
       },
@@ -212,6 +247,7 @@ export default function StructuredData() {
         },
         inLanguage: "en-US",
       },
+      ...(isFaqPage ? [faqSchema] : []),
     ],
   };
 

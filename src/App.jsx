@@ -8,6 +8,8 @@ import "./floating-contact.css";
 
 import StructuredData from "./components/StructuredData";
 
+import { FAQ_CATEGORIES } from "./data/faqData";
+
 const BASE = window.location.pathname.startsWith("/moving-in-mobile/") ? "/moving-in-mobile/" : "/";
 
 const ASSETS = {
@@ -97,6 +99,10 @@ const ANALYTICS_PAGES = {
     title: "Mobile Alabama Real Estate Resources | Tina Rowe",
     path: "/resources",
   },
+  faq: {
+    title: "Moving to Mobile Alabama FAQs | Tina Rowe",
+    path: "/faq",
+  },
   contact: {
     title: "Contact Tina Rowe | Moving in Mobile",
     path: "/contact",
@@ -112,11 +118,14 @@ const PAGE_ROUTES = {
   rowereport: "/rowe-report",
   resources: "/resources",
   contact: "/contact",
+  faq: "/faq",
 };
 
 const ROUTE_PAGES = Object.fromEntries(
   Object.entries(PAGE_ROUTES).map(([page, path]) => [path, page])
 );
+
+const IDX_BASE_URL = "https://homes.movinginmobile.com";
 
 function getPageFromPath(pathname) {
   let path = pathname;
@@ -143,26 +152,22 @@ function openLeadRequest(requestType = "General Inquiry") {
   window.dispatchEvent(new CustomEvent("openLeadPopup", { detail: requestType }));
 }
 
-function openHomesSearch(area) {
-  window.dispatchEvent(new CustomEvent("openHomesPopup", { detail: area }));
-}
-
 const navItems = ["Home", "About", "Sellers", "Buyers", "Neighborhoods", "Rowe Report", "Resources", "Contact"];
 const socials = [
   {
     icon: ASSETS.facebook,
     alt: "Facebook",
-    href: "https://www.facebook.com/tina.rowe.484411",
+    href: "https://www.facebook.com/profile.php?id=61584234016458",
   },
   {
     icon: ASSETS.instagram,
     alt: "Instagram",
-    href: "https://www.instagram.com/therowereport",
+    href: "https://www.instagram.com/movinginmobile",
   },
   {
     icon: ASSETS.youtube,
     alt: "YouTube",
-    href: "https://www.youtube.com/@TheRoweReportMobile",
+    href: "https://www.youtube.com/@movinginmobile",
   },
   {
     icon: ASSETS.linkedin,
@@ -368,24 +373,27 @@ function Header({ page, setPage }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black text-white shadow-xl">
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-6 py-3">
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-1 px-6 py-0">
         <NavLink
-          to="/"
-          onClick={handleNavigation}
-          className="flex min-w-0 shrink-0 items-center gap-2"
-          aria-label="Moving in Mobile home"
-        >
-          <img
-            src={ASSETS.logo}
-            alt="The Rowe Report"
-            className="h-[58px] w-auto max-w-[180px] object-contain sm:h-[68px] sm:max-w-[210px] md:h-[76px] md:max-w-[230px] xl:h-[88px] xl:max-w-[260px]"
-          />
-          <img
-            src={ASSETS.kw}
-            alt="Keller Williams Mobile"
-            className="h-[28px] w-auto object-contain sm:h-[34px] md:h-[40px] xl:h-[75px]"
-          />
-        </NavLink>
+  to="/"
+  onClick={handleNavigation}
+  className="flex min-w-0 shrink-0 items-center gap-2"
+  aria-label="Moving in Mobile home"
+>
+  <img
+    src={ASSETS.logo}
+    alt="The Rowe Report"
+    className="h-[40px] w-auto max-w-[130px] object-contain sm:h-[44px] sm:max-w-[145px] md:h-[48px] md:max-w-[160px] xl:h-[52px] xl:max-w-[175px]"
+  />
+
+  <div className="flex h-[92px] items-center overflow-hidden 2xl:h-[105px]">
+    <img
+      src={ASSETS.kw}
+      alt="Keller Williams Mobile"
+      className="h-[120px] w-auto max-w-none object-contain sm:h-[135px] md:h-[150px] xl:h-[165px] 2xl:h-[180px]"
+    />
+  </div>
+</NavLink>
 
         <nav className="hidden flex-1 items-center justify-center gap-4 xl:gap-6 lg:flex">
           {headerNavItems.map((item) => (
@@ -629,7 +637,7 @@ function Hero({ title, redTitle, text, quote, button = "Get Your Home Value", fo
 
       <div className="relative mx-auto grid min-h-[535px] max-w-7xl items-center gap-8 px-6 py-7 lg:grid-cols-[1fr_.92fr]">
         <div className={cx("z-10", reverse && "lg:order-2")}>
-          <h1 className="font-display text-[3.2rem] font-semibold uppercase leading-[0.95] tracking-tight md:text-[4.2rem]">
+          <h1 className="font-display text-[3.2rem] font-medium uppercase leading-[0.95] tracking-tight md:text-[3rem]">
             {title}<br />
             <span className="text-red-600">{redTitle}</span>
           </h1>
@@ -936,6 +944,16 @@ function Footer({ setPage }) {
           </h4>
 
           <div className="mt-5 grid gap-2 text-sm text-white/75">
+          <button
+            type="button"
+            onClick={() => {
+              setPage("faq");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="text-left transition hover:text-red-500"
+          >
+            FAQ
+          </button>
             {navItems.slice(0, 6).map((item) => (
               <button
                 key={item}
@@ -1190,7 +1208,7 @@ function AboutPage({ setPage }) {
               </p>
               <p className="mt-4 font-semibold">I do things differently.</p>
               <p className="mt-4 leading-7">
-                I don’t believe in simply listing homes—I believe in building a strategy. Every home deserves the right pricing, positioning, marketing, and negotiation plan to attract qualified buyers and maximize its value. 
+                I don’t believe in simply listing homes—I believe in building a strategy. Every home deserves the right pricing, positioning, marketing, and negotiation plan to attract qualified buyers and maximize its value.
               </p>
               <p className="mt-4 leading-7">
                 Whether you’re preparing to sell or looking for a fresh approach after your home didn’t sell, my goal is simple:
@@ -1344,7 +1362,7 @@ function SellersPage({ setPage }) {
           </div>
 
           <div>
-            <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
+            <h1 className="font-display text-[3rem] font-medium uppercase leading-[.95] md:text-[3rem]">
               Selling in Mobile?<br />
               <span className="text-red-600">Moving in Mobile?</span>
             </h1>
@@ -1372,6 +1390,30 @@ function SellersPage({ setPage }) {
             title="Get Monthly Market Updates"
             button="Send Me Monthly Market Updates"
           />
+        </div>
+      </section>
+
+            <section className="bg-neutral-50 py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Local Market Search
+            </p>
+
+            <h2 className="mt-3 font-display text-4xl font-semibold uppercase">
+              See What Buyers Are Seeing
+            </h2>
+
+            <p className="mt-4 text-neutral-600">
+              Explore current MLS listings across Mobile and Baldwin County to
+              see how homes are positioned, priced, and competing in today’s
+              market.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <IDXMapSearchEmbed />
+          </div>
         </div>
       </section>
 
@@ -1635,14 +1677,14 @@ function BuyersPage({ setPage }) {
           </div>
 
           <div>
-            <h1 className="font-display text-[3rem] font-semibold uppercase leading-[.95] md:text-[4.4rem]">
+            <h1 className="font-display text-[3rem] font-medium uppercase leading-[.95] md:text-[3rem]">
               Find The Right Home in Mobile Alabama—<br />
               Without Overpaying<br />
               <span className="text-red-600">Or Missing Out</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8">
-              Helping buyers navigate the Mobile, Alabama real estate market 
+              Helping buyers navigate the Mobile, Alabama real estate market
               with smart strategy, expert negotiation, and local knowledge.
             </p>
 
@@ -1656,6 +1698,29 @@ function BuyersPage({ setPage }) {
             title="Get Access To Homes Before Everyone Else"
             button="Send Me Homes That Match"
           />
+        </div>
+      </section>
+
+            <section className="bg-neutral-50 py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Home Search
+            </p>
+
+            <h2 className="mt-3 font-display text-4xl font-semibold uppercase">
+              Search Homes Across Mobile & Baldwin County
+            </h2>
+
+            <p className="mt-4 text-neutral-600">
+              Search current MLS listings by city, county, ZIP code, price,
+              beds, baths, property type, or directly on the map.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <IDXMapSearchEmbed />
+          </div>
         </div>
       </section>
 
@@ -1885,12 +1950,68 @@ function BuyersPage({ setPage }) {
     </>
   );
 }
+
+function IDXMapSearchEmbed() {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsActive(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isActive]);
+
+  return (
+    <div className="relative w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg">
+      <iframe
+        src="https://homes.movinginmobile.com/idx/map/mapsearch"
+        title="Search Homes Across Mobile and Baldwin County"
+        className={`block h-[900px] w-full border-0 ${
+          isActive ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        loading="lazy"
+      />
+
+      {!isActive ? (
+        <button
+          type="button"
+          onClick={() => setIsActive(true)}
+          className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-black/5"
+          aria-label="Activate home search"
+        >
+          <span className="rounded-lg bg-neutral-950 px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-xl">
+            Click to Explore the Map & Listings
+          </span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsActive(false)}
+          className="absolute right-4 top-4 z-20 rounded bg-neutral-950/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-white shadow-lg hover:bg-neutral-950"
+        >
+          Continue Page Scrolling
+        </button>
+      )}
+    </div>
+  );
+}
+
 function NeighborhoodsPage({ setPage }) {
   const neighborhoods = [
     {
       name: "Daphne",
       image: ASSETS.daphne,
-      homesUrl: "https://www.homes.com/daphne-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/daphne-homes-for-sale`,
       bestFor: "Bay access, Eastern Shore lifestyle, convenience",
       description:
         "Daphne offers a central Eastern Shore location with access to Mobile Bay, established neighborhoods, parks, restaurants, shopping, and convenient travel to Mobile and other Baldwin County communities.",
@@ -1901,7 +2022,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Dauphin Island",
       image: ASSETS.dauphinIsland,
-      homesUrl: "https://www.homes.com/dauphin-island-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/dauphin-island-homes-for-sale`,
       bestFor: "Quiet island living, beaches, fishing, boating, nature",
       description:
         "Dauphin Island is a laid-back barrier-island community with public beaches, fishing and boating access, historic Fort Gaines, the Alabama Aquarium, and extensive protected bird and wildlife habitat. It appeals to buyers seeking a slower coastal pace, second-home opportunities, or waterfront and water-access living.",
@@ -1913,7 +2035,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Downtown Mobile",
       image: ASSETS.downtownMobile,
       homesUrl:
-        "https://www.homes.com/mobile-al/downtown-mobile-neighborhood/",
+        `${IDX_BASE_URL}/m/downtown-mobile-homes-for-sale`,
       bestFor: "Historic charm, restaurants, events, nightlife",
       description:
         "Downtown Mobile is the cultural and historic center of the city, with architecture, restaurants, entertainment, Mardi Gras traditions, and walkable access to Dauphin Street, Bienville Square, museums, and the waterfront.",
@@ -1923,7 +2045,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Fairhope",
       image: ASSETS.fairhope,
-      homesUrl: "https://www.homes.com/fairhope-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/fairhope-homes-for-sale`,
       bestFor: "Downtown charm, bayfront parks, boutiques, coastal lifestyle",
       description:
         "Fairhope is known for its walkable downtown, flower-lined streets, bayfront parks, independent shops, restaurants, galleries, and the Fairhope Municipal Pier. The area offers a broad mix of historic homes, established neighborhoods, and newer development.",
@@ -1934,7 +2057,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Gulf Shores",
       image: ASSETS.gulfShores,
-      homesUrl: "https://www.homes.com/gulf-shores-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/gulf-shores-homes-for-sale`,
       bestFor: "Beach access, outdoor recreation, tourism, coastal investment",
       description:
         "Gulf Shores offers sugar-white Gulf beaches, restaurants, entertainment, and direct access to Gulf State Park, including trails, lakes, fishing, paddling, and other outdoor recreation. Housing ranges from established residential neighborhoods to condos, vacation homes, and investment properties near the beach.",
@@ -1946,7 +2070,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Midtown Mobile",
       image: ASSETS.midtownMobile,
       homesUrl:
-        "https://www.homes.com/mobile-al/midtown-mobile-neighborhood/",
+        `${IDX_BASE_URL}/m/midtown-mobile-homes-for-sale`,
       bestFor: "Historic homes, oak-lined streets, classic Mobile character",
       description:
         "Midtown Mobile is known for mature trees, historic architecture, front porches, neighborhood parks, and convenient access to downtown, hospitals, restaurants, and local businesses.",
@@ -1957,7 +2081,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Orange Beach",
       image: ASSETS.orangeBeach,
-      homesUrl: "https://www.homes.com/orange-beach-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/orange-beach-homes-for-sale`,
       bestFor: "Boating, fishing, beaches, waterfront living, entertainment",
       description:
         "Orange Beach combines Gulf beaches with bays, canals, marinas, fishing, and boating access. The community also offers Waterfront Park, the Hugh S. Branyon Backcountry Trail system, restaurants, and The Wharf’s shopping, dining, events, and entertainment.",
@@ -1968,7 +2093,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Saraland",
       image: ASSETS.saraland,
-      homesUrl: "https://www.homes.com/saraland-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/saraland-homes-for-sale`,
       bestFor: "Community feel, North Mobile convenience, suburban living",
       description:
         "Saraland is a growing community north of Mobile with convenient access to I-65, shopping, services, employment corridors, and established residential neighborhoods.",
@@ -1979,7 +2105,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Semmes",
       image: ASSETS.semmes,
-      homesUrl: "https://www.homes.com/semmes-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/semmes-homes-for-sale`,
       bestFor: "Space, quieter living, larger lots, rural-suburban feel",
       description:
         "Semmes offers a more relaxed setting with larger lots, established homes, newer construction, local parks, and convenient access to West Mobile and the broader Mobile metropolitan area.",
@@ -1990,7 +2117,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "Spanish Fort",
       image: ASSETS.spanishFort,
-      homesUrl: "https://www.homes.com/spanish-fort-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/i/spanish-fort-homes-for-sale`,
       bestFor: "Eastern Shore access, shopping, recreation, Mobile commute",
       description:
         "Spanish Fort combines Eastern Shore living with convenient access to Mobile, major highways, shopping, restaurants, outdoor recreation, and a variety of established and newer residential communities.",
@@ -2002,7 +2130,7 @@ function NeighborhoodsPage({ setPage }) {
       name: "Spring Hill",
       image: ASSETS.springHill,
       homesUrl:
-        "https://www.homes.com/local-guide/mobile-al/parkhill-neighborhood/",
+        `${IDX_BASE_URL}/m/spring-hill-mobile-homes-for-sale`,
       bestFor: "Established neighborhoods, shopping, schools, convenience",
       description:
         "Spring Hill offers an established residential setting with mature landscaping, shopping, restaurants, medical access, and landmarks such as Spring Hill College. The area includes both older homes and carefully updated properties.",
@@ -2013,7 +2141,8 @@ function NeighborhoodsPage({ setPage }) {
     {
       name: "West Mobile",
       image: ASSETS.westMobile,
-      homesUrl: "https://www.homes.com/mobile-al/",
+      homesUrl:
+        `${IDX_BASE_URL}/m/west-mobile-homes-for-sale`,
       bestFor: "More space, newer homes, suburban convenience",
       description:
         "West Mobile appeals to buyers seeking suburban neighborhoods, larger lots, newer construction, shopping, parks, and convenient access to major roads while remaining within the Mobile area.",
@@ -2032,6 +2161,8 @@ function NeighborhoodsPage({ setPage }) {
         button="Search Neighborhoods"
       />
 
+      <IDXMapSearchEmbed />
+
       <section className="bg-white py-14">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto max-w-3xl text-center">
@@ -2045,8 +2176,8 @@ function NeighborhoodsPage({ setPage }) {
 
             <p className="mt-4 text-neutral-600">
               Explore communities throughout Mobile County and Baldwin County.
-              Select an area to view its current Homes.com listings, or ask Tina
-              to create a more focused home search for you.
+              Select an area to view current MLS listings, or ask Tina to create
+              a more focused home search for you.
             </p>
           </div>
 
@@ -2096,15 +2227,16 @@ function NeighborhoodsPage({ setPage }) {
                       </div>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => openHomesSearch(area)}
+                    <a
+                      href={area.homesUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="mt-auto pt-6"
                     >
-                      <span className="block w-full rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700">
+                      <span className="block w-full rounded bg-red-600 px-5 py-3 text-center text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700">
                         View Homes in {area.name}
                       </span>
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -2124,6 +2256,146 @@ function NeighborhoodsPage({ setPage }) {
     </>
   );
 }
+
+function FAQPage({ setPage }) {
+  const handleCta = (cta) => {
+    if (!cta) return;
+
+    if (cta.type === "lead") {
+      openLeadRequest(cta.request);
+      return;
+    }
+
+    if (cta.type === "page") {
+      setPage(cta.page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  return (
+    <>
+      <Hero
+        title="Moving in Mobile, Alabama?"
+        redTitle="Moving to Mobile, Alabama? Start Here."
+        text=""
+      />
+
+      <section className="bg-white py-10 sm:py-12">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+
+            <p className="mt-6 text-lg leading-8 text-neutral-700">
+              Whether you're relocating to Mobile, buying your first home,
+              selling a property, downsizing, or simply trying to figure out
+              which Mobile-area community fits your lifestyle, you've come to
+              the right place. The Rowe Report is your inside look at moving,
+              living, buying and selling in Mobile, Alabama.
+            </p>
+
+            <p className="mt-4 leading-7 text-neutral-600">
+              Below you'll find answers to 50 of the questions people ask most
+              about Mobile real estate, neighborhoods, schools, cost of living,
+              flooding, insurance, buying and selling homes, and everyday life
+              in the Mobile area.
+            </p>
+          </div>
+
+          <div className="mt-10 space-y-12">
+            {FAQ_CATEGORIES.map((category, categoryIndex) => (
+              <section key={category.title}>
+                <div className="mb-5 border-b-2 border-red-600 pb-3">
+                  <h2 className="font-display text-3xl font-semibold uppercase">
+                    {category.title}
+                  </h2>
+                </div>
+
+                <div className="space-y-3">
+                  {category.questions.map((item, questionIndex) => {
+                    const priorQuestions = FAQ_CATEGORIES
+                      .slice(0, categoryIndex)
+                      .reduce(
+                        (total, priorCategory) =>
+                          total + priorCategory.questions.length,
+                        0
+                      );
+
+                    const questionNumber =
+                      priorQuestions + questionIndex + 1;
+
+                    return (
+                      <details
+                        key={item.question}
+                        className="group overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm"
+                      >
+                        <summary className="flex cursor-pointer list-none items-start justify-between gap-5 px-5 py-5 font-semibold text-neutral-900 transition hover:bg-neutral-50 sm:px-6">
+                          <span>
+                            <span className="mr-2 text-red-600">
+                              {questionNumber}.
+                            </span>
+                            {item.question}
+                          </span>
+
+                          <span className="mt-0.5 text-xl font-normal text-red-600 transition group-open:rotate-45">
+                            +
+                          </span>
+                        </summary>
+
+                        <div className="border-t border-neutral-100 px-5 py-5 sm:px-6">
+                          <p className="leading-7 text-neutral-700">
+                            {item.answer}
+                          </p>
+
+                          {item.cta ? (
+                            <button
+                              type="button"
+                              onClick={() => handleCta(item.cta)}
+                              className="mt-5 rounded bg-red-600 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+                            >
+                              {item.cta.label}
+                            </button>
+                          ) : null}
+                        </div>
+                      </details>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-neutral-950 py-16 text-white">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <p className="font-semibold uppercase tracking-widest text-red-500">
+            Still Have Questions About Moving to Mobile?
+          </p>
+
+          <h2 className="mt-3 font-display text-4xl font-semibold uppercase sm:text-5xl">
+            You Don't Have to Figure It Out by Yourself
+          </h2>
+
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-neutral-300">
+            Tell Tina what you're looking for, where you're coming from, and
+            what matters most to you—and she'll help you find the Mobile-area
+            community that fits.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => openLeadRequest("Moving to Mobile Guide")}
+            className="mt-8 rounded bg-red-600 px-8 py-4 font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
+          >
+            Get My Free Moving to Mobile Guide
+          </button>
+        </div>
+      </section>
+
+      <Footer setPage={setPage} />
+    </>
+  );
+}
+
 function RoweReportPage({ setPage }) {
   const videos = [
     {
@@ -2176,7 +2448,7 @@ function RoweReportPage({ setPage }) {
           </p>
 
           <a
-            href="https://www.youtube.com/@TheRoweReportMobile"
+            href="https://www.youtube.com/@movinginmobile"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase tracking-wide transition hover:bg-red-700"
@@ -2239,7 +2511,7 @@ function RoweReportPage({ setPage }) {
         </p>
 
         <a
-          href="https://www.youtube.com/@TheRoweReportMobile"
+          href="https://www.youtube.com/@movinginmobile"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase"
@@ -2447,7 +2719,6 @@ export default function MovingInMobileMockup() {
   const [popupSubmitted, setPopupSubmitted] = useState(false);
   const [popupSubmitting, setPopupSubmitting] = useState(false);
   const [popupSubmitError, setPopupSubmitError] = useState("");
-  const [homesPopup, setHomesPopup] = useState(null);
   const popupDismissedRef = useRef(false);
 
  useEffect(() => {
@@ -2456,7 +2727,8 @@ export default function MovingInMobileMockup() {
 
   document.title = analyticsPage.title;
 
-  const canonicalUrl = `${window.location.origin}${analyticsPage.path}`;
+  const canonicalUrl = `https://movinginmobile.com${analyticsPage.path}`;
+  const pageLocation = `${window.location.origin}${analyticsPage.path}`;
   let canonical = document.querySelector('link[rel="canonical"]');
 
   if (!canonical) {
@@ -2467,6 +2739,22 @@ export default function MovingInMobileMockup() {
 
   canonical.setAttribute("href", canonicalUrl);
 
+  let robots = document.querySelector('meta[name="robots"]');
+
+if (!robots) {
+  robots = document.createElement("meta");
+  robots.setAttribute("name", "robots");
+  document.head.appendChild(robots);
+}
+
+const isStaging =
+  window.location.hostname === "staging.movinginmobile.com";
+
+robots.setAttribute(
+  "content",
+  isStaging ? "noindex, nofollow" : "index, follow"
+);
+
   if (typeof window.gtag !== "function") {
     return;
   }
@@ -2474,7 +2762,7 @@ export default function MovingInMobileMockup() {
   window.gtag("event", "page_view", {
     send_to: GA_MEASUREMENT_ID,
     page_title: analyticsPage.title,
-    page_location: canonicalUrl,
+    page_location: pageLocation,
     page_path: analyticsPage.path,
   });
 }, [page]);
@@ -2537,13 +2825,6 @@ export default function MovingInMobileMockup() {
     };
     window.addEventListener("navigatePage", handleNavigatePage);
 
-    const handleOpenHomesPopup = (event) => {
-      if (event.detail) {
-        setHomesPopup(event.detail);
-      }
-    };
-    window.addEventListener("openHomesPopup", handleOpenHomesPopup);
-
     const delay = 6500;
     const timer = window.setTimeout(() => {
       if (!popupDismissedRef.current) {
@@ -2555,7 +2836,6 @@ export default function MovingInMobileMockup() {
       window.clearTimeout(timer);
       window.removeEventListener("openLeadPopup", handleOpenLeadPopup);
       window.removeEventListener("navigatePage", handleNavigatePage);
-      window.removeEventListener("openHomesPopup", handleOpenHomesPopup);
     };
   }, [page]);
 
@@ -2566,6 +2846,7 @@ export default function MovingInMobileMockup() {
     buyers: <BuyersPage setPage={setPage} />,
     neighborhoods: <NeighborhoodsPage setPage={setPage} />,
     resources: <ResourcesPage setPage={setPage} />,
+    faq: <FAQPage setPage={setPage} />,
     rowereport: <RoweReportPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
   };
@@ -2581,76 +2862,6 @@ export default function MovingInMobileMockup() {
         .font-script { font-family: Georgia, serif; }
         .font-hand { font-family: Caveat, "Comic Sans MS", cursive; }
       `}</style>
-
-      {homesPopup ? (
-        <div className="fixed inset-0 z-[105] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
-          <div className="relative max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-xl bg-white p-5 text-center shadow-2xl sm:p-8">
-            <button
-              type="button"
-              onClick={() => setHomesPopup(null)}
-              className="absolute right-4 top-3 text-3xl leading-none text-neutral-500 transition hover:text-black"
-              aria-label="Close homes search popup"
-            >
-              ×
-            </button>
-
-            <p className="font-semibold uppercase tracking-widest text-red-600">
-              Homes.com Search
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-semibold uppercase leading-tight sm:text-4xl">
-              View Homes in <span className="text-red-600">{homesPopup.name}</span>
-            </h2>
-
-            <div className="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 shadow-inner">
-              <div className="flex min-h-[300px] flex-col items-center justify-center gap-4 p-6 sm:min-h-[380px]">
-                <div className="text-6xl">⌂</div>
-                <p className="max-w-2xl text-neutral-700">
-                  Homes.com search results will open in a new tab so visitors can explore the active map and listings for this area. Once Tina’s IDX feed is available, this same button can be replaced with an embedded MLS search.
-                </p>
-
-                <a
-                  href={homesPopup.homesUrl || homesPopup.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(event) => {
-                    if (!homesPopup.homesUrl && !homesPopup.url) {
-                      event.preventDefault();
-                      console.error(
-                        "No homes search URL was provided for:",
-                        homesPopup
-                      );
-                    }
-                  }}
-                  className="inline-block rounded bg-red-600 px-8 py-3 font-bold uppercase tracking-wide text-white transition hover:bg-red-700"
-                >
-                  Open Homes.com Map
-                </a>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setHomesPopup(null);
-                  openLeadRequest(`Have Tina send me homes in ${homesPopup.name}`);
-                }}
-                className="rounded border border-red-600 px-6 py-3 text-sm font-bold uppercase tracking-wide text-red-600 transition hover:bg-red-600 hover:text-white"
-              >
-                Have Tina Send Me Homes Here
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setHomesPopup(null)}
-                className="rounded border border-neutral-300 px-6 py-3 text-sm font-bold uppercase tracking-wide text-neutral-700 transition hover:bg-neutral-100"
-              >
-                Continue Browsing
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
 
       {showPopup ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 px-4 backdrop-blur-[1px]">
