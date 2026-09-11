@@ -82,11 +82,11 @@
       .header-inner {
         max-width: 1500px;
         margin: 0 auto;
-        padding: 12px 24px;
+        padding: 0 24px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 24px;
+        gap: 12px;
       }
 
       .brand-group {
@@ -94,19 +94,29 @@
         flex-shrink: 0;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
       }
 
       .rowe-logo {
-        height: 76px;
+        height: 40px;
         width: auto;
-        max-width: 230px;
+        max-width: 130px;
         object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .kw-logo-wrap {
+        height: 92px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        flex-shrink: 0;
       }
 
       .kw-logo {
-        height: 40px;
+        height: 120px;
         width: auto;
+        max-width: none;
         object-fit: contain;
       }
 
@@ -435,14 +445,58 @@
          RESPONSIVE
          ------------------------------------------------------- */
 
-      @media (min-width: 1280px) {
+      @media (min-width: 640px) {
         .rowe-logo {
-          height: 88px;
-          max-width: 260px;
+          height: 44px;
+          max-width: 145px;
+        }
+
+        .kw-logo-wrap {
+          height: 96px;
         }
 
         .kw-logo {
-          height: 75px;
+          height: 135px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .rowe-logo {
+          height: 48px;
+          max-width: 160px;
+        }
+
+        .kw-logo-wrap {
+          height: 100px;
+        }
+
+        .kw-logo {
+          height: 150px;
+        }
+      }
+
+      @media (min-width: 1280px) {
+        .rowe-logo {
+          height: 52px;
+          max-width: 175px;
+        }
+
+        .kw-logo-wrap {
+          height: 102px;
+        }
+
+        .kw-logo {
+          height: 165px;
+        }
+      }
+
+      @media (min-width: 1536px) {
+        .kw-logo-wrap {
+          height: 105px;
+        }
+
+        .kw-logo {
+          height: 180px;
         }
       }
 
@@ -467,17 +521,8 @@
 
       @media (max-width: 767px) {
         .header-inner {
-          padding: 12px 16px;
-          gap: 12px;
-        }
-
-        .rowe-logo {
-          height: 58px;
-          max-width: 180px;
-        }
-
-        .kw-logo {
-          height: 28px;
+          padding: 0 16px;
+          gap: 8px;
         }
 
         .idx-content-container {
@@ -515,12 +560,16 @@
 
       @media (max-width: 480px) {
         .rowe-logo {
-          height: 52px;
-          max-width: 155px;
+          height: 36px;
+          max-width: 120px;
+        }
+
+        .kw-logo-wrap {
+          height: 78px;
         }
 
         .kw-logo {
-          height: 24px;
+          height: 112px;
         }
 
         .mobile-menu-button {
@@ -544,11 +593,13 @@
             class="rowe-logo"
           />
 
-          <img
-            src="https://movinginmobile.com/KW-MOBILE.png"
-            alt="Keller Williams Mobile"
-            class="kw-logo"
-          />
+          <div class="kw-logo-wrap">
+            <img
+              src="https://movinginmobile.com/KW-MOBILE.png"
+              alt="Keller Williams Mobile"
+              class="kw-logo"
+            />
+          </div>
         </a>
 
         <nav class="desktop-nav" aria-label="Main navigation">
