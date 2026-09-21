@@ -119,6 +119,12 @@ const ANALYTICS_PAGES = {
       "Answers to 50 common questions about moving to Mobile Alabama, neighborhoods, buying and selling homes, flooding, insurance, schools, and everyday life.",
     path: "/faq",
   },
+  openhouses: {
+    title: "Open Houses with Tina Rowe | Mobile Alabama REALTOR®",
+    description:
+      "See the Mobile and Baldwin County open houses Tina Rowe is personally hosting and get local guidance before your visit.",
+    path: "/open-houses",
+  },
   contact: {
     title: "Contact Tina Rowe | Mobile Alabama REALTOR®",
     description:
@@ -137,6 +143,7 @@ const PAGE_ROUTES = {
   resources: "/resources",
   contact: "/contact",
   faq: "/faq",
+  openhouses: "/open-houses",
 };
 
 const ROUTE_PAGES = Object.fromEntries(
@@ -2639,6 +2646,85 @@ function ResourcesPage({ setPage }) {
     </>
   );
 }
+
+function IDXOpenHouseWidget() {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    container.innerHTML = "";
+
+    const timer = window.setTimeout(() => {
+      const existingScript =
+        document.getElementById("idxwidgetsrc-172828");
+
+      if (existingScript) {
+        existingScript.remove();
+      }
+
+      container.innerHTML = "";
+
+      const script = document.createElement("script");
+      script.charset = "UTF-8";
+      script.type = "text/javascript";
+      script.id = "idxwidgetsrc-172828";
+      script.src =
+        "https://homes.movinginmobile.com/idx/widgets/172828";
+
+      container.appendChild(script);
+    }, 50);
+
+    return () => {
+      window.clearTimeout(timer);
+
+      const existingScript =
+        document.getElementById("idxwidgetsrc-172828");
+
+      if (existingScript) {
+        existingScript.remove();
+      }
+
+      container.innerHTML = "";
+    };
+  }, []);
+
+  return <div ref={containerRef} className="w-full" />;
+}
+
+function OpenHousesPage() {
+  return (
+    <>
+      <section className="bg-[#07111b] py-16 text-white">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="font-semibold uppercase tracking-widest text-red-600">
+            Current Open Houses
+          </p>
+
+          <h1 className="mt-3 font-display text-4xl font-medium uppercase sm:text-5xl">
+            Open Houses with Tina Rowe
+          </h1>
+
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/85">
+            See the homes Tina is personally hosting. Open house availability
+            changes frequently, so check back for upcoming opportunities.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-white py-14">
+        <div className="mx-auto max-w-6xl px-6">
+          <IDXOpenHouseWidget />
+        </div>
+      </section>
+    </>
+  );
+}
+
 function ContactPage({ setPage }) {
   return (
     <>
@@ -2900,6 +2986,7 @@ robots.setAttribute(
     faq: <FAQPage setPage={setPage} />,
     rowereport: <RoweReportPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
+    openhouses: <OpenHousesPage />,
   };
 
   return (

@@ -56,6 +56,11 @@ export default function StructuredData() {
     description:
       "Contact Tina Rowe for help buying, selling, or relocating in Mobile, Alabama, Mobile County, Baldwin County, and surrounding communities.",
   },
+  "/open-houses": {
+    name: "Open Houses with Tina Rowe | Mobile Alabama REALTOR®",
+    description:
+      "See the Mobile and Baldwin County open houses Tina Rowe is personally hosting and get local guidance before your visit.",
+  },
 };
 
 const currentPage =
