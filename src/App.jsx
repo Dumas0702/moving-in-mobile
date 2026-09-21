@@ -72,39 +72,57 @@ const GA_MEASUREMENT_ID = "G-3DL4PQGHQC";
 
 const ANALYTICS_PAGES = {
   home: {
-    title: "Moving in Mobile | Tina Rowe",
+    title: "Mobile Alabama REALTOR® | Tina Rowe | Moving in Mobile",
+    description:
+      "Work with Tina Rowe, a Mobile Alabama REALTOR®, for home buying, selling, relocation, neighborhood guidance, and local real estate expertise.",
     path: "/",
   },
   about: {
-    title: "About Tina Rowe | Moving in Mobile",
+    title: "Tina Rowe, Mobile Alabama REALTOR® | About",
+    description:
+      "Meet Tina Rowe, a Mobile Alabama REALTOR® helping buyers, sellers, and relocating clients navigate Mobile and Baldwin County real estate.",
     path: "/about",
   },
   sellers: {
-    title: "Sell Your Home in Mobile, Alabama | Tina Rowe",
+    title: "Sell Your Home in Mobile AL | Tina Rowe REALTOR®",
+    description:
+      "Sell your Mobile, Alabama home with strategic pricing, marketing, negotiation, and hands-on guidance from REALTOR® Tina Rowe.",
     path: "/sellers",
   },
   buyers: {
-    title: "Buy a Home in Mobile, Alabama | Tina Rowe",
+    title: "Homes for Sale in Mobile AL | Tina Rowe REALTOR®",
+    description:
+      "Search homes for sale in Mobile and Baldwin County and get expert buying and relocation guidance from Mobile Alabama REALTOR® Tina Rowe.",
     path: "/buyers",
   },
   neighborhoods: {
-    title: "Mobile & Baldwin County Neighborhoods | Tina Rowe",
+    title: "Mobile & Baldwin County Communities | Tina Rowe REALTOR®",
+    description:
+      "Explore Mobile and Baldwin County neighborhoods, communities, lifestyles, and current MLS listings with local REALTOR® Tina Rowe.",
     path: "/neighborhoods",
   },
   rowereport: {
     title: "The Rowe Report | Mobile Alabama Real Estate",
+    description:
+      "Watch The Rowe Report for Mobile Alabama real estate guidance, market information, neighborhoods, relocation insights, and local expertise.",
     path: "/rowe-report",
   },
   resources: {
-    title: "Mobile Alabama Real Estate Resources | Tina Rowe",
+    title: "Mobile Alabama Real Estate Resources | Tina Rowe REALTOR®",
+    description:
+      "Helpful Mobile Alabama real estate resources for buyers, sellers, homeowners, and people relocating to the Mobile and Baldwin County area.",
     path: "/resources",
   },
   faq: {
-    title: "Moving to Mobile Alabama FAQs | Tina Rowe",
+    title: "Moving to Mobile Alabama FAQs | Tina Rowe REALTOR®",
+    description:
+      "Answers to 50 common questions about moving to Mobile Alabama, neighborhoods, buying and selling homes, flooding, insurance, schools, and everyday life.",
     path: "/faq",
   },
   contact: {
-    title: "Contact Tina Rowe | Moving in Mobile",
+    title: "Contact Tina Rowe | Mobile Alabama REALTOR®",
+    description:
+      "Contact Tina Rowe for help buying, selling, or relocating in Mobile, Alabama, Mobile County, Baldwin County, and surrounding communities.",
     path: "/contact",
   },
 };
@@ -2627,7 +2645,7 @@ function ContactPage({ setPage }) {
       <Hero
         title="Let's Talk About Your Next Move —"
         redTitle="And Get It Right."
-        text="Whether you're considering selling, you're home didn't sell the first time, you're considering  buying, or just have questions — I'll give you clear, honest answers so you can move forward with confidence."
+        text="Whether you're considering selling, your home didn't sell the first time, you're considering buying, or just have questions — I'll give you clear, honest answers so you can move forward with confidence."
         button="Get My Plan"
       />
 
@@ -2727,9 +2745,42 @@ export default function MovingInMobileMockup() {
 
   document.title = analyticsPage.title;
 
-  const canonicalUrl = `https://movinginmobile.com${analyticsPage.path}`;
-  const pageLocation = `${window.location.origin}${analyticsPage.path}`;
-  let canonical = document.querySelector('link[rel="canonical"]');
+  const setMeta = (key, value, content) => {
+    let tag = document.querySelector(`meta[${key}="${value}"]`);
+
+    if (!tag) {
+      tag = document.createElement("meta");
+      tag.setAttribute(key, value);
+      document.head.appendChild(tag);
+    }
+
+    tag.setAttribute("content", content);
+  };
+
+  setMeta("name", "description", analyticsPage.description);
+  setMeta("property", "og:title", analyticsPage.title);
+  setMeta(
+    "property",
+    "og:description",
+    analyticsPage.description
+  );
+
+  const canonicalUrl =
+    `https://movinginmobile.com${analyticsPage.path}`;
+
+  const pageLocation =
+    `${window.location.origin}${analyticsPage.path}`;
+
+  setMeta("property", "og:url", canonicalUrl);
+  setMeta("name", "twitter:title", analyticsPage.title);
+  setMeta(
+    "name",
+    "twitter:description",
+    analyticsPage.description
+  );
+
+  let canonical =
+    document.querySelector('link[rel="canonical"]');
 
   if (!canonical) {
     canonical = document.createElement("link");
