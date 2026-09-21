@@ -10,6 +10,62 @@ export default function StructuredData() {
 
   const isFaqPage = currentPath === "/faq";
 
+  const pageSchema = {
+  "/": {
+    name: "Mobile Alabama REALTOR® | Tina Rowe | Moving in Mobile",
+    description:
+      "Work with Tina Rowe, a Mobile Alabama REALTOR®, for home buying, selling, relocation, neighborhood guidance, and local real estate expertise.",
+  },
+  "/about": {
+    name: "Tina Rowe, Mobile Alabama REALTOR® | About",
+    description:
+      "Meet Tina Rowe, a Mobile Alabama REALTOR® helping buyers, sellers, and relocating clients navigate Mobile and Baldwin County real estate.",
+  },
+  "/sellers": {
+    name: "Sell Your Home in Mobile AL | Tina Rowe REALTOR®",
+    description:
+      "Sell your Mobile, Alabama home with strategic pricing, marketing, negotiation, and hands-on guidance from REALTOR® Tina Rowe.",
+  },
+  "/buyers": {
+    name: "Homes for Sale in Mobile AL | Tina Rowe REALTOR®",
+    description:
+      "Search homes for sale in Mobile and Baldwin County and get expert buying and relocation guidance from Mobile Alabama REALTOR® Tina Rowe.",
+  },
+  "/neighborhoods": {
+    name: "Mobile & Baldwin County Communities | Tina Rowe REALTOR®",
+    description:
+      "Explore Mobile and Baldwin County neighborhoods, communities, lifestyles, and current MLS listings with local REALTOR® Tina Rowe.",
+  },
+  "/rowe-report": {
+    name: "The Rowe Report | Mobile Alabama Real Estate",
+    description:
+      "Watch The Rowe Report for Mobile Alabama real estate guidance, market information, neighborhoods, relocation insights, and local expertise.",
+  },
+  "/resources": {
+    name: "Mobile Alabama Real Estate Resources | Tina Rowe REALTOR®",
+    description:
+      "Helpful Mobile Alabama real estate resources for buyers, sellers, homeowners, and people relocating to the Mobile and Baldwin County area.",
+  },
+  "/faq": {
+    name: "Moving to Mobile Alabama FAQs | Tina Rowe REALTOR®",
+    description:
+      "Answers to 50 common questions about moving to Mobile Alabama, neighborhoods, buying and selling homes, flooding, insurance, schools, and everyday life.",
+  },
+  "/contact": {
+    name: "Contact Tina Rowe | Mobile Alabama REALTOR®",
+    description:
+      "Contact Tina Rowe for help buying, selling, or relocating in Mobile, Alabama, Mobile County, Baldwin County, and surrounding communities.",
+  },
+};
+
+const currentPage =
+  pageSchema[currentPath] || pageSchema["/"];
+
+const currentPageUrl =
+  currentPath === "/"
+    ? `${SITE_URL}/`
+    : `${SITE_URL}${currentPath}`;
+
   const faqSchema = {
     "@type": "FAQPage",
     "@id": `${SITE_URL}/faq#faq`,
@@ -209,28 +265,25 @@ export default function StructuredData() {
           "https://www.linkedin.com/in/tina-rowe-76368b353/",
         ],
       },
-
       {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-        url: `${SITE_URL}/`,
-        name: "Moving in Mobile",
-        alternateName: "Moving in Mobile with Tina Rowe",
-        description:
-          "Mobile, Alabama real estate information for sellers, buyers, and people relocating to the Mobile and Baldwin County areas.",
-        inLanguage: "en-US",
-        publisher: {
-          "@id": `${SITE_URL}/#real-estate-business`,
-        },
+          "@type": "WebSite",
+          "@id": `${SITE_URL}/#website`,
+          url: `${SITE_URL}/`,
+          name: "Moving in Mobile",
+          alternateName: "Moving in Mobile with Tina Rowe",
+          description:
+            "Mobile, Alabama real estate information for sellers, buyers, and people relocating to the Mobile and Baldwin County areas.",
+          inLanguage: "en-US",
+          publisher: {
+            "@id": `${SITE_URL}/#real-estate-business`,
+          },
       },
-
       {
         "@type": "WebPage",
-        "@id": `${SITE_URL}/#webpage`,
-        url: `${SITE_URL}/`,
-        name: "Moving in Mobile | Tina Rowe",
-        description:
-          "Work with Tina Rowe for strategic home selling, home buying, relocation assistance, neighborhood information, and Mobile, Alabama real estate guidance.",
+        "@id": `${currentPageUrl}#webpage`,
+        url: currentPageUrl,
+        name: currentPage.name,
+        description: currentPage.description,
         isPartOf: {
           "@id": `${SITE_URL}/#website`,
         },

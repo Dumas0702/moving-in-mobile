@@ -1,5 +1,9 @@
 RewriteEngine On
 
+# Redirect www to canonical non-www hostname
+RewriteCond %{HTTP_HOST} ^www\.movinginmobile\.com$ [NC]
+RewriteRule ^ https://movinginmobile.com%{REQUEST_URI} [R=301,L]
+
 # Preserve Hostinger's internal builds protection
 RewriteRule ^\.builds - [F,L]
 
