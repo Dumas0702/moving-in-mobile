@@ -402,21 +402,21 @@ function Header({ page, setPage }) {
         <NavLink
   to="/"
   onClick={handleNavigation}
-  className="flex min-w-0 shrink-0 items-center gap-2"
+  className="flex min-w-0 items-center gap-1 sm:gap-2"
   aria-label="Moving in Mobile home"
 >
   <img
     src={ASSETS.logo}
     alt="The Rowe Report"
-    className="h-[40px] w-auto max-w-[130px] object-contain sm:h-[44px] sm:max-w-[145px] md:h-[48px] md:max-w-[160px] xl:h-[52px] xl:max-w-[175px]"
+    className="h-[34px] w-auto max-w-[100px] object-contain sm:h-[40px] sm:max-w-[130px] md:h-[48px] md:max-w-[160px] xl:h-[52px] xl:max-w-[175px]"
   />
 
-  <div className="flex h-[92px] items-center overflow-hidden 2xl:h-[105px]">
+  <div className="flex h-[68px] items-center overflow-hidden sm:h-[82px] md:h-[92px] 2xl:h-[105px]">
     <img
       src={ASSETS.kw}
       alt="Keller Williams Mobile"
-      className="h-[120px] w-auto max-w-none object-contain sm:h-[135px] md:h-[150px] xl:h-[165px] 2xl:h-[180px]"
-    />
+      className="h-[92px] w-auto max-w-none object-contain sm:h-[115px] md:h-[150px] xl:h-[165px] 2xl:h-[180px]"
+   />
   </div>
 </NavLink>
 
@@ -452,7 +452,7 @@ function Header({ page, setPage }) {
         <button
           type="button"
           onClick={() => setMobileOpen((open) => !open)}
-          className="ml-auto rounded border border-white/25 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white xl:hidden"
+          className="ml-2 shrink-0 rounded border border-white/25 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white lg:hidden"
           aria-expanded={mobileOpen}
           aria-controls="mobile-navigation"
         >
@@ -463,7 +463,7 @@ function Header({ page, setPage }) {
       {mobileOpen ? (
         <div
           id="mobile-navigation"
-          className="border-t border-white/10 bg-black px-4 pb-4 xl:hidden"
+          className="border-t border-white/10 bg-black px-4 pb-4 lg:hidden"
         >
           <div className="mx-auto grid max-w-7xl gap-2">
             {headerNavItems.map((item) => (
