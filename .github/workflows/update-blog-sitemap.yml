@@ -52,8 +52,49 @@ jobs:
           git commit -m "Update blog sitemap"
           git push origin HEAD:main
 
-      - name: Send deployment notification
+      - name: Verify production deployment
+        id: verify
         if: steps.changes.outputs.changed == 'true'
+        continue-on-error: true
+        shell: bash
+        run: |
+          expected_hash="$(sha256sum public/sitemap.xml | awk '{print $1}')"
+
+          echo "Expected sitemap SHA-256: $expected_hash"
+
+          for attempt in {1..20}; do
+            echo "Production verification attempt $attempt of 20..."
+
+            if curl \
+              --fail \
+              --silent \
+              --show-error \
+              --header "Cache-Control: no-cache" \
+              --header "Pragma: no-cache" \
+              "https://movinginmobile.com/sitemap.xml?github_run=${GITHUB_RUN_ID}&attempt=${attempt}" \
+              --output /tmp/live-sitemap.xml
+            then
+              live_hash="$(sha256sum /tmp/live-sitemap.xml | awk '{print $1}')"
+
+              echo "Live sitemap SHA-256: $live_hash"
+
+              if [[ "$live_hash" == "$expected_hash" ]]; then
+                echo "Production sitemap matches the generated sitemap."
+                exit 0
+              fi
+            fi
+
+            if [[ "$attempt" -lt 20 ]]; then
+              echo "Production has not updated yet. Waiting 30 seconds..."
+              sleep 30
+            fi
+          done
+
+          echo "::error::Production sitemap did not match the expected sitemap within the verification window."
+          exit 1
+
+      - name: Send production verified email
+        if: steps.changes.outputs.changed == 'true' && steps.verify.outcome == 'success'
         uses: dawidd6/action-send-mail@v6
         with:
           server_address: smtp.gmail.com
@@ -61,19 +102,56 @@ jobs:
           secure: true
           username: ${{ secrets.BUILD_EMAIL_USERNAME }}
           password: ${{ secrets.BUILD_EMAIL_PASSWORD }}
-          subject: "Moving in Mobile: Blog update triggered production build"
+          subject: "Moving in Mobile: Production blog update verified"
           to: gregorymdumas@gmail.com,tinarowe@kw.com
           from: Moving in Mobile Build <${{ secrets.BUILD_EMAIL_USERNAME }}>
           body: |
             A published blog change was detected in Sanity.
 
-            The Moving in Mobile sitemap was updated and pushed to the main branch.
-            This should trigger a new Hostinger production deployment.
+            The sitemap was updated, pushed to the main branch, deployed by Hostinger, and verified on the live Moving in Mobile website.
 
-            Blog:
+            Production blog:
             https://movinginmobile.com/blog
 
-            Repository:
-            https://github.com/Dumas0702/moving-in-mobile
+            Production sitemap:
+            https://movinginmobile.com/sitemap.xml
+
+            GitHub workflow:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            No action is required.
 
             This is an automated notification.
+
+      - name: Send production verification warning
+        if: steps.changes.outputs.changed == 'true' && steps.verify.outcome == 'failure'
+        uses: dawidd6/action-send-mail@v6
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.BUILD_EMAIL_USERNAME }}
+          password: ${{ secrets.BUILD_EMAIL_PASSWORD }}
+          subject: "Moving in Mobile: Production blog update needs attention"
+          to: gregorymdumas@gmail.com
+          from: Moving in Mobile Build <${{ secrets.BUILD_EMAIL_USERNAME }}>
+          body: |
+            A published blog change was detected in Sanity and the updated sitemap was pushed to the main branch.
+
+            However, the live production sitemap did not match the expected sitemap within the verification window.
+
+            Please check the Hostinger deployment and GitHub workflow.
+
+            Production sitemap:
+            https://movinginmobile.com/sitemap.xml
+
+            GitHub workflow:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            This is an automated warning.
+
+      - name: Fail workflow if production verification failed
+        if: steps.changes.outputs.changed == 'true' && steps.verify.outcome == 'failure'
+        run: |
+          echo "Production verification failed."
+          exit 1
