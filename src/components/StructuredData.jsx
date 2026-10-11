@@ -10,6 +10,9 @@ export default function StructuredData() {
 
   const isFaqPage = currentPath === "/faq";
 
+  const isBlogPost =
+  currentPath.startsWith("/blog/");
+
   const pageSchema = {
   "/": {
     name: "Mobile Alabama REALTOR® | Tina Rowe | Moving in Mobile",
@@ -60,6 +63,11 @@ export default function StructuredData() {
     name: "Open Houses with Tina Rowe | Mobile Alabama REALTOR®",
     description:
       "See the Mobile and Baldwin County open houses Tina Rowe is personally hosting and get local guidance before your visit.",
+  },
+  "/blog": {
+    name: "Mobile Alabama Real Estate Blog | Tina Rowe",
+    description:
+      "Local real estate, relocation, neighborhood, buying, selling, and lifestyle insights from Mobile Alabama REALTOR® Tina Rowe.",
   },
 };
 
@@ -283,6 +291,8 @@ const currentPageUrl =
             "@id": `${SITE_URL}/#real-estate-business`,
           },
       },
+...(!isBlogPost
+  ? [
       {
         "@type": "WebPage",
         "@id": `${currentPageUrl}#webpage`,
@@ -305,6 +315,8 @@ const currentPageUrl =
         },
         inLanguage: "en-US",
       },
+    ]
+  : []),
       ...(isFaqPage ? [faqSchema] : []),
     ],
   };

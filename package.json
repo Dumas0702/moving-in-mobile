@@ -6,12 +6,15 @@
   "homepage": "https://gregorydumas.github.io/moving-in-mobile",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/generate-sitemap.mjs && vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@portabletext/react": "^8.0.1",
+    "@sanity/client": "^8.9.0",
+    "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.2.4",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
