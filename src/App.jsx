@@ -10,6 +10,12 @@ import StructuredData from "./components/StructuredData";
 
 import { FAQ_CATEGORIES } from "./data/faqData";
 
+import BlogPostBody from "./components/BlogPostBody";
+
+import { getBlogPost, getBlogPosts } from "./lib/blogQueries";
+
+import { urlFor } from "./lib/sanity";
+
 const BASE = window.location.pathname.startsWith("/moving-in-mobile/") ? "/moving-in-mobile/" : "/";
 
 const ASSETS = {
@@ -131,6 +137,12 @@ const ANALYTICS_PAGES = {
       "Contact Tina Rowe for help buying, selling, or relocating in Mobile, Alabama, Mobile County, Baldwin County, and surrounding communities.",
     path: "/contact",
   },
+  blog: {
+    title: "Mobile Alabama Real Estate Blog | Tina Rowe",
+    description:
+      "Local real estate, relocation, neighborhood, buying, selling, and lifestyle insights from Mobile Alabama REALTOR® Tina Rowe.",
+    path: "/blog",
+  },
 };
 
 const PAGE_ROUTES = {
@@ -144,6 +156,7 @@ const PAGE_ROUTES = {
   contact: "/contact",
   faq: "/faq",
   openhouses: "/open-houses",
+  blog: "/blog",
 };
 
 const ROUTE_PAGES = Object.fromEntries(
@@ -163,6 +176,10 @@ function getPageFromPath(pathname) {
   // Normalize trailing slashes.
   if (path.length > 1 && path.endsWith("/")) {
     path = path.slice(0, -1);
+  }
+
+  if (path.startsWith("/blog/")) {
+    return "blogpost";
   }
 
   return ROUTE_PAGES[path] || "home";
@@ -388,6 +405,7 @@ function Header({ page, setPage }) {
     { label: "Buyers", to: "/buyers" },
     { label: "Neighborhoods", to: "/neighborhoods" },
     { label: "Resources", to: "/resources" },
+    { label: "Blog", to: "/blog" },
     { label: "Contact", to: "/contact" },
   ];
 
@@ -979,6 +997,18 @@ function Footer({ setPage }) {
           >
             FAQ
           </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setPage("blog");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="text-left transition hover:text-red-500"
+          >
+            Blog
+          </button>
+
             {navItems.slice(0, 6).map((item) => (
               <button
                 key={item}
@@ -2725,6 +2755,565 @@ function OpenHousesPage() {
   );
 }
 
+function BlogPage({ setPage }) {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadPosts() {
+      try {
+        const results = await getBlogPosts();
+
+        if (active) {
+          setPosts(results || []);
+        }
+      } catch (error) {
+        console.error("Unable to load blog posts:", error);
+
+        if (active) {
+          setLoadError(
+            "The blog is temporarily unavailable. Please try again shortly."
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadPosts();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return (
+    <>
+      <section className="bg-[#07111b] py-16 text-white">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="font-semibold uppercase tracking-widest text-red-600">
+            Local Real Estate & Relocation
+          </p>
+
+          <h1 className="mt-3 font-display text-4xl font-medium uppercase sm:text-5xl">
+            Moving in Mobile Blog
+          </h1>
+
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-white/85">
+            Local insight about buying, selling, relocating, neighborhoods,
+            homeownership, and everyday life in Mobile and Baldwin County.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-neutral-50 py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          {loading ? (
+            <p className="text-center text-neutral-600">Loading articles...</p>
+          ) : loadError ? (
+            <p className="mx-auto max-w-xl rounded-lg bg-red-50 p-5 text-center text-red-700">
+              {loadError}
+            </p>
+          ) : posts.length === 0 ? (
+            <div className="mx-auto max-w-2xl rounded-lg bg-white p-8 text-center shadow-sm">
+              <h2 className="font-display text-3xl uppercase">
+                Articles Coming Soon
+              </h2>
+
+              <p className="mt-4 leading-7 text-neutral-600">
+                Tina is preparing local real estate and relocation resources.
+                Check back soon.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {posts.map((post) => {
+                const imageUrl = post.featuredImage?.asset
+                  ? urlFor(post.featuredImage)
+                      .width(900)
+                      .height(600)
+                      .fit("crop")
+                      .auto("format")
+                      .url()
+                  : null;
+
+                const publishedDate = post.publishedAt
+                  ? new Intl.DateTimeFormat("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    }).format(new Date(post.publishedAt))
+                  : "";
+
+                return (
+                  <article
+                    key={post._id}
+                    className="overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <NavLink to={`/blog/${post.slug}`}>
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={post.featuredImage?.alt || post.title}
+                          className="aspect-[3/2] w-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : null}
+
+                      <div className="p-6">
+                        {post.categories?.length ? (
+                          <p className="text-xs font-semibold uppercase tracking-widest text-red-600">
+                            {post.categories[0]}
+                          </p>
+                        ) : null}
+
+                        <h2 className="mt-2 font-display text-2xl font-semibold uppercase leading-tight">
+                          {post.title}
+                        </h2>
+
+                        <p className="mt-3 text-sm leading-6 text-neutral-600">
+                          {post.excerpt}
+                        </p>
+
+                        <div className="mt-5 flex items-center justify-between gap-4 text-xs text-neutral-500">
+                          <span>{post.author || "Tina Rowe"}</span>
+                          <span>{publishedDate}</span>
+                        </div>
+
+                        <p className="mt-5 font-semibold text-red-600">
+                          Read Article →
+                        </p>
+                      </div>
+                    </NavLink>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer setPage={setPage} />
+    </>
+  );
+}
+
+function BlogPostPage({ pathname, setPage }) {
+  const slug = decodeURIComponent(
+    pathname.replace(/^\/blog\//, "").replace(/\/$/, "")
+  );
+
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+  const [loadError, setLoadError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadPost() {
+      setLoading(true);
+      setNotFound(false);
+      setLoadError("");
+
+      try {
+        const result = await getBlogPost(slug);
+
+        if (!active) {
+          return;
+        }
+
+        if (!result) {
+          setNotFound(true);
+          return;
+        }
+
+        setPost(result);
+      } catch (error) {
+        console.error("Unable to load blog post:", error);
+
+        if (active) {
+          setLoadError(
+            "This article is temporarily unavailable. Please try again shortly."
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadPost();
+
+    return () => {
+      active = false;
+    };
+  }, [slug]);
+
+  useEffect(() => {
+    if (!post) {
+      return;
+    }
+
+    const articleUrl =
+      post.canonicalUrl ||
+      `https://movinginmobile.com/blog/${post.slug}`;
+
+    const title =
+      post.seoTitle || `${post.title} | Tina Rowe`;
+
+    const description =
+      post.metaDescription || post.excerpt;
+
+    const socialImageSource =
+      post.socialImage?.asset || post.featuredImage?.asset;
+
+    const socialImage = socialImageSource
+      ? urlFor(socialImageSource)
+          .width(1200)
+          .height(630)
+          .fit("crop")
+          .auto("format")
+          .url()
+      : "https://movinginmobile.com/og-image.png";
+
+    const setMeta = (key, value, content) => {
+      let tag = document.querySelector(`meta[${key}="${value}"]`);
+
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute(key, value);
+        document.head.appendChild(tag);
+      }
+
+      tag.setAttribute("content", content);
+    };
+
+    document.title = title;
+
+    setMeta("name", "description", description);
+
+    setMeta("property", "og:title", title);
+    setMeta("property", "og:description", description);
+    setMeta("property", "og:url", articleUrl);
+    setMeta("property", "og:type", "article");
+    setMeta("property", "og:image", socialImage);
+
+    setMeta("name", "twitter:title", title);
+    setMeta("name", "twitter:description", description);
+    setMeta("name", "twitter:image", socialImage);
+
+    if (post.publishedAt) {
+      setMeta(
+        "property",
+        "article:published_time",
+        post.publishedAt
+      );
+    }
+
+    if (post._updatedAt) {
+      setMeta(
+        "property",
+        "article:modified_time",
+        post._updatedAt
+      );
+    }
+
+    setMeta(
+      "property",
+      "article:author",
+      post.author || "Tina Rowe"
+    );
+
+    let canonical =
+      document.querySelector('link[rel="canonical"]');
+
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+
+    canonical.setAttribute("href", articleUrl);
+
+    let robots = document.querySelector('meta[name="robots"]');
+
+    if (!robots) {
+      robots = document.createElement("meta");
+      robots.setAttribute("name", "robots");
+      document.head.appendChild(robots);
+    }
+
+    const isStaging =
+      window.location.hostname === "staging.movinginmobile.com";
+
+    robots.setAttribute(
+      "content",
+      isStaging ? "noindex, nofollow" : "index, follow"
+    );
+
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "page_view", {
+        send_to: GA_MEASUREMENT_ID,
+        page_title: title,
+        page_location: window.location.href,
+        page_path: `/blog/${post.slug}`,
+      });
+    }
+
+    return () => {
+      document
+        .querySelectorAll(
+          'meta[property="article:published_time"], meta[property="article:modified_time"], meta[property="article:author"]'
+        )
+        .forEach((tag) => tag.remove());
+    };
+  }, [post]);
+
+  if (loading) {
+    return (
+      <>
+        <section className="bg-white py-24">
+          <div className="mx-auto max-w-4xl px-6 text-center text-neutral-600">
+            Loading article...
+          </div>
+        </section>
+
+        <Footer setPage={setPage} />
+      </>
+    );
+  }
+
+  if (notFound) {
+    return (
+      <>
+        <section className="bg-white py-24">
+          <div className="mx-auto max-w-3xl px-6 text-center">
+            <p className="font-semibold uppercase tracking-widest text-red-600">
+              Blog
+            </p>
+
+            <h1 className="mt-3 font-display text-4xl font-semibold uppercase">
+              Article Not Found
+            </h1>
+
+            <p className="mt-5 text-neutral-600">
+              This article may have been moved or is no longer available.
+            </p>
+
+            <NavLink
+              to="/blog"
+              className="mt-8 inline-flex rounded bg-red-600 px-6 py-3 font-semibold uppercase tracking-wide text-white transition hover:bg-red-700"
+            >
+              View All Articles
+            </NavLink>
+          </div>
+        </section>
+
+        <Footer setPage={setPage} />
+      </>
+    );
+  }
+
+  if (loadError || !post) {
+    return (
+      <>
+        <section className="bg-white py-24">
+          <div className="mx-auto max-w-3xl px-6 text-center">
+            <h1 className="font-display text-4xl font-semibold uppercase">
+              Unable To Load Article
+            </h1>
+
+            <p className="mt-5 text-neutral-600">
+              {loadError}
+            </p>
+          </div>
+        </section>
+
+        <Footer setPage={setPage} />
+      </>
+    );
+  }
+
+  const imageUrl = post.featuredImage?.asset
+    ? urlFor(post.featuredImage)
+        .width(1400)
+        .fit("max")
+        .auto("format")
+        .url()
+    : null;
+
+  const publishedDate = post.publishedAt
+    ? new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }).format(new Date(post.publishedAt))
+    : "";
+
+  const articleCanonical =
+    post.canonicalUrl ||
+    `https://movinginmobile.com/blog/${post.slug}`;
+
+  const schemaImageSource =
+    post.socialImage?.asset || post.featuredImage?.asset;
+
+  const schemaImage = schemaImageSource
+    ? urlFor(schemaImageSource)
+        .width(1200)
+        .height(630)
+        .fit("crop")
+        .auto("format")
+        .url()
+    : "https://movinginmobile.com/og-image.png";
+
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${articleCanonical}#article`,
+    headline: post.title,
+    description: post.metaDescription || post.excerpt,
+    image: [schemaImage],
+    datePublished: post.publishedAt,
+    dateModified: post._updatedAt || post.publishedAt,
+    author: {
+      "@type": "Person",
+      "@id": "https://movinginmobile.com/#tina-rowe",
+      name: post.author || "Tina Rowe",
+      url: "https://movinginmobile.com/about",
+    },
+    publisher: {
+      "@id": "https://movinginmobile.com/#real-estate-business",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleCanonical,
+    },
+    url: articleCanonical,
+    keywords: post.tags?.join(", "),
+    articleSection: post.categories?.join(", "),
+    inLanguage: "en-US",
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(blogPostingSchema),
+        }}
+      />
+
+      <article>
+        <header className="bg-[#07111b] py-14 text-white sm:py-20">
+          <div className="mx-auto max-w-5xl px-6 text-center">
+            {post.categories?.length ? (
+              <p className="font-semibold uppercase tracking-widest text-red-600">
+                {post.categories.join(" · ")}
+              </p>
+            ) : null}
+
+            <h1 className="mx-auto mt-4 max-w-4xl font-display text-4xl font-medium uppercase leading-tight sm:text-5xl lg:text-6xl">
+              {post.title}
+            </h1>
+
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/80">
+              {post.excerpt}
+            </p>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-white/65">
+              <span>By {post.author || "Tina Rowe"}</span>
+
+              {publishedDate ? (
+                <>
+                  <span aria-hidden="true">•</span>
+                  <time dateTime={post.publishedAt}>
+                    {publishedDate}
+                  </time>
+                </>
+              ) : null}
+            </div>
+          </div>
+        </header>
+
+        {imageUrl ? (
+          <div className="bg-white">
+            <div className="mx-auto max-w-6xl px-6 pt-10">
+              <img
+                src={imageUrl}
+                alt={post.featuredImage?.alt || post.title}
+                className="mx-auto max-h-[650px] w-full rounded-lg object-cover shadow-lg"
+              />
+            </div>
+          </div>
+        ) : null}
+
+        <section className="bg-white py-12 sm:py-16">
+          <div className="mx-auto max-w-3xl px-6">
+            <NavLink
+              to="/blog"
+              className="mb-8 inline-flex text-sm font-semibold uppercase tracking-wide text-red-600 hover:text-red-700"
+            >
+              ← Back to Blog
+            </NavLink>
+
+            <BlogPostBody value={post.body} />
+
+            {post.tags?.length ? (
+              <div className="mt-12 border-t border-neutral-200 pt-6">
+                <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
+                  Topics
+                </p>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-700"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            <aside className="mt-12 rounded-lg bg-[#07111b] p-7 text-white sm:p-9">
+              <p className="font-semibold uppercase tracking-widest text-red-600">
+                Planning Your Next Move?
+              </p>
+
+              <h2 className="mt-2 font-display text-3xl font-semibold uppercase">
+                Talk With Tina
+              </h2>
+
+              <p className="mt-4 leading-7 text-white/80">
+                Have questions about buying, selling, relocating, or finding
+                the right community in Mobile or Baldwin County? Tina can help.
+              </p>
+
+              <NavLink
+                to="/contact"
+                className="mt-6 inline-flex rounded bg-red-600 px-6 py-3 font-semibold uppercase tracking-wide text-white transition hover:bg-red-700"
+              >
+                Contact Tina
+              </NavLink>
+            </aside>
+          </div>
+        </section>
+      </article>
+
+      <Footer setPage={setPage} />
+    </>
+  );
+}
+
 function ContactPage({ setPage }) {
   return (
     <>
@@ -2813,6 +3402,10 @@ export default function MovingInMobileMockup() {
 
   const page = getPageFromPath(location.pathname);
 
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, [location.pathname]);
+
   const setPage = (pageKey) => {
     const path = PAGE_ROUTES[pageKey] || "/";
     navigate(path);
@@ -2825,7 +3418,11 @@ export default function MovingInMobileMockup() {
   const [popupSubmitError, setPopupSubmitError] = useState("");
   const popupDismissedRef = useRef(false);
 
- useEffect(() => {
+  useEffect(() => {
+   if (page === "blogpost") {
+     return;
+  }
+
   const analyticsPage =
     ANALYTICS_PAGES[page] || ANALYTICS_PAGES.home;
 
@@ -2987,6 +3584,13 @@ robots.setAttribute(
     rowereport: <RoweReportPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
     openhouses: <OpenHousesPage />,
+    blog: <BlogPage setPage={setPage} />,
+    blogpost: (
+      <BlogPostPage
+        pathname={location.pathname}
+        setPage={setPage}
+      />
+    ),
   };
 
   return (
