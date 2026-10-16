@@ -73,6 +73,24 @@ const ASSETS = {
 
 const phone = "(251) 895-9322";
 const LEAD_CAPTURE_ENDPOINT = "https://formspree.io/f/mgogbvkq";
+const LEAD_POPUP_STORAGE_KEY = "movingInMobileLeadPopupSuppressedUntil";
+const LEAD_POPUP_SUPPRESSION_MS = 30 * 24 * 60 * 60 * 1000;
+
+function getLeadPopupSuppressedUntil() {
+  try {
+    return Number(window.localStorage.getItem(LEAD_POPUP_STORAGE_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function setLeadPopupSuppression(suppressedUntil) {
+  try {
+    window.localStorage.setItem(LEAD_POPUP_STORAGE_KEY, String(suppressedUntil));
+  } catch {
+    // Continue without persistence when localStorage is unavailable.
+  }
+}
 
 const GA_MEASUREMENT_ID = "G-3DL4PQGHQC";
 
@@ -3416,7 +3434,7 @@ export default function MovingInMobileMockup() {
   const [popupSubmitted, setPopupSubmitted] = useState(false);
   const [popupSubmitting, setPopupSubmitting] = useState(false);
   const [popupSubmitError, setPopupSubmitError] = useState("");
-  const popupDismissedRef = useRef(false);
+  const popupSuppressedUntilRef = useRef(getLeadPopupSuppressedUntil());
 
   useEffect(() => {
    if (page === "blogpost") {
@@ -3502,6 +3520,9 @@ robots.setAttribute(
 }, [page]);
 
   const openLeadPopup = (requestType = "General Inquiry") => {
+    const suppressedUntil = Date.now() + LEAD_POPUP_SUPPRESSION_MS;
+    popupSuppressedUntilRef.current = suppressedUntil;
+    setLeadPopupSuppression(suppressedUntil);
     setLeadRequestType(getRequestLabel(requestType));
     setPopupSubmitted(false);
     setPopupSubmitError("");
@@ -3509,12 +3530,17 @@ robots.setAttribute(
   };
 
   const closeLeadPopup = () => {
-    popupDismissedRef.current = true;
+    const suppressedUntil = Date.now() + LEAD_POPUP_SUPPRESSION_MS;
+    popupSuppressedUntilRef.current = suppressedUntil;
+    setLeadPopupSuppression(suppressedUntil);
     setShowPopup(false);
   };
 
   const handlePopupSubmit = async (event) => {
     event.preventDefault();
+    const suppressedUntil = Date.now() + LEAD_POPUP_SUPPRESSION_MS;
+    popupSuppressedUntilRef.current = suppressedUntil;
+    setLeadPopupSuppression(suppressedUntil);
     setPopupSubmitting(true);
     setPopupSubmitError("");
 
@@ -3559,15 +3585,41 @@ robots.setAttribute(
     };
     window.addEventListener("navigatePage", handleNavigatePage);
 
-    const delay = 6500;
-    const timer = window.setTimeout(() => {
-      if (!popupDismissedRef.current) {
+    const isPopupSuppressed = () => {
+      const suppressedUntil = Math.max(
+        popupSuppressedUntilRef.current,
+        getLeadPopupSuppressedUntil()
+      );
+
+      return suppressedUntil > Date.now();
+    };
+
+    const showAutomaticPopup = () => {
+      if (!isPopupSuppressed()) {
         openLeadPopup("Initial Website Visit");
       }
-    }, delay);
+    };
+
+    const isMobile = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    let timer;
+
+    const handleExitIntent = (event) => {
+      if (event.clientY <= 0 && !event.relatedTarget) {
+        showAutomaticPopup();
+      }
+    };
+
+    if (isMobile) {
+      timer = window.setTimeout(showAutomaticPopup, 60000);
+    } else {
+      document.addEventListener("mouseleave", handleExitIntent);
+    }
 
     return () => {
-      window.clearTimeout(timer);
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+      document.removeEventListener("mouseleave", handleExitIntent);
       window.removeEventListener("openLeadPopup", handleOpenLeadPopup);
       window.removeEventListener("navigatePage", handleNavigatePage);
     };
